@@ -1,3 +1,5 @@
+package com.belhard.bookstore.entity;
+
 import java.util.Objects;
 
 public class Book {
@@ -71,7 +73,7 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book{" +
+        return "com.belhard.bookstore.entity.Book{" +
                 "id=" + id +
                 ", author='" + author + '\'' +
                 ", title='" + title + '\'' +

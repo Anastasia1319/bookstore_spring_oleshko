@@ -1,3 +1,6 @@
+package com.belhard.bookstore.dao;
+
+import com.belhard.bookstore.entity.Book;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +14,7 @@ public class BookDaoImpl implements BookDao {
     @Override
     public  List<Book> findAll() {
         List<Book> books = new ArrayList<>();
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);) {
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM books");
             while (resultSet.next()) {
@@ -33,7 +36,7 @@ public class BookDaoImpl implements BookDao {
     @Override
     public Book findById(Long id) {
         Book book = null;
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);) {
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM books WHERE id = ?");
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -54,7 +57,7 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public Book create(Book book) {
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);) {
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement statement = connection.prepareStatement("INSERT INTO books (author, title, publishin_year, isbn, price)" +
                     "VALUES (?, ?, ?, ?, ?)");
             statement.setString(1, book.getAuthor());
@@ -70,7 +73,7 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public Book update(Book book) {
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);) {
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement statement = connection.prepareStatement("UPDATE books SET author = ?, title = ?, " +
                     "publishin_year = ?, isbn = ?, price = ?)");
             statement.setString(1, book.getAuthor());
@@ -87,7 +90,7 @@ public class BookDaoImpl implements BookDao {
     @Override
     public boolean delete(Long id) {
         boolean resultOfDelete = true;
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);) {
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement statement = connection.prepareStatement("DELETE FROM books WHERE id = ?");
             statement.setLong(1, id);
             if (statement.executeUpdate() == 0) {
@@ -102,7 +105,7 @@ public class BookDaoImpl implements BookDao {
     @Override
     public Book findByIsbn(String isbn) {
         Book book = null;
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);) {
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM books WHERE isbn = ?");
             statement.setString(1, isbn);
             ResultSet resultSet = statement.executeQuery();
@@ -124,7 +127,7 @@ public class BookDaoImpl implements BookDao {
     @Override
     public List<Book> findByAuthor(String author) {
         List<Book> books = new ArrayList<>();
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);) {
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM books WHERE author = ?");
             statement.setString(1, author);
             ResultSet resultSet = statement.executeQuery();
@@ -147,7 +150,7 @@ public class BookDaoImpl implements BookDao {
     @Override
     public long countAll() {
         long count = 0;
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);) {
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM books");
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();

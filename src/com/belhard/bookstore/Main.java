@@ -1,3 +1,9 @@
+package com.belhard.bookstore;
+
+import com.belhard.bookstore.dao.BookDao;
+import com.belhard.bookstore.dao.BookDaoImpl;
+import com.belhard.bookstore.entity.Book;
+
 import java.util.List;
 import java.util.Scanner;
 
