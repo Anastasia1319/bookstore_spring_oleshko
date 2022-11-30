@@ -1,5 +1,6 @@
 package com.belhard.bookstore.entity;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Book {
@@ -8,7 +9,7 @@ public class Book {
     private String title;
     private Integer publishinYear;
     private String isbn;
-    private Double price;
+    private BigDecimal price;
 
     public Long getId() {
         return id;
@@ -50,11 +51,11 @@ public class Book {
         this.isbn = isbn;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

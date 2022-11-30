@@ -24,7 +24,7 @@ public class BookDaoImpl implements BookDao {
                 book.setTitle(resultSet.getString("title"));
                 book.setPublishinYear(resultSet.getInt("publishin_year"));
                 book.setIsbn(resultSet.getString("isbn"));
-                book.setPrice(resultSet.getDouble("price"));
+                book.setPrice(resultSet.getBigDecimal("price"));
                 books.add(book);
             }
         } catch (SQLException e) {
@@ -47,7 +47,7 @@ public class BookDaoImpl implements BookDao {
                 book.setTitle(resultSet.getString("title"));
                 book.setPublishinYear(resultSet.getInt("publishin_year"));
                 book.setIsbn(resultSet.getString("isbn"));
-                book.setPrice(resultSet.getDouble("price"));
+                book.setPrice(resultSet.getBigDecimal("price"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -64,7 +64,7 @@ public class BookDaoImpl implements BookDao {
             statement.setString(2, book.getTitle());
             statement.setInt(3, book.getPublishinYear());
             statement.setString(4, book.getIsbn());
-            statement.setDouble(5, book.getPrice());
+            statement.setBigDecimal(5, book.getPrice());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -80,7 +80,7 @@ public class BookDaoImpl implements BookDao {
             statement.setString(2, book.getTitle());
             statement.setInt(3, book.getPublishinYear());
             statement.setString(4, book.getIsbn());
-            statement.setDouble(5, book.getPrice());
+            statement.setBigDecimal(5, book.getPrice());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -116,7 +116,7 @@ public class BookDaoImpl implements BookDao {
                 book.setTitle(resultSet.getString("title"));
                 book.setPublishinYear(resultSet.getInt("publishin_year"));
                 book.setIsbn(resultSet.getString("isbn"));
-                book.setPrice(resultSet.getDouble("price"));
+                book.setPrice(resultSet.getBigDecimal("price"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -138,7 +138,7 @@ public class BookDaoImpl implements BookDao {
                 book.setTitle(resultSet.getString("title"));
                 book.setPublishinYear(resultSet.getInt("publishin_year"));
                 book.setIsbn(resultSet.getString("isbn"));
-                book.setPrice(resultSet.getDouble("price"));
+                book.setPrice(resultSet.getBigDecimal("price"));
                 books.add(book);
             }
         } catch (SQLException e) {
