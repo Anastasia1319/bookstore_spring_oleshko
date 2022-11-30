@@ -26,14 +26,7 @@ public class BookDaoImpl implements BookDao {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(SELECT_ALL);
             while (resultSet.next()) {
-                Book book = new Book();
-                book.setId(resultSet.getLong("id"));
-                book.setAuthor(resultSet.getString("author"));
-                book.setTitle(resultSet.getString("title"));
-                book.setPublishinYear(resultSet.getInt("publishin_year"));
-                book.setIsbn(resultSet.getString("isbn"));
-                book.setPrice(resultSet.getBigDecimal("price"));
-                books.add(book);
+                books.add(mapResultSetToBook(resultSet));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -49,13 +42,7 @@ public class BookDaoImpl implements BookDao {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                book = new Book();
-                book.setId(resultSet.getLong("id"));
-                book.setAuthor(resultSet.getString("author"));
-                book.setTitle(resultSet.getString("title"));
-                book.setPublishinYear(resultSet.getInt("publishin_year"));
-                book.setIsbn(resultSet.getString("isbn"));
-                book.setPrice(resultSet.getBigDecimal("price"));
+                book = mapResultSetToBook(resultSet);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -67,11 +54,7 @@ public class BookDaoImpl implements BookDao {
     public Book create(Book book) {
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement statement = connection.prepareStatement(CREATE);
-            statement.setString(1, book.getAuthor());
-            statement.setString(2, book.getTitle());
-            statement.setInt(3, book.getPublishinYear());
-            statement.setString(4, book.getIsbn());
-            statement.setBigDecimal(5, book.getPrice());
+            mapBookToStatementData(book, statement);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -82,11 +65,7 @@ public class BookDaoImpl implements BookDao {
     public Book update(Book book) {
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement statement = connection.prepareStatement(UPDATE);
-            statement.setString(1, book.getAuthor());
-            statement.setString(2, book.getTitle());
-            statement.setInt(3, book.getPublishinYear());
-            statement.setString(4, book.getIsbn());
-            statement.setBigDecimal(5, book.getPrice());
+            mapBookToStatementData(book, statement);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -95,12 +74,12 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public boolean delete(Long id) {
-        boolean resultOfDelete = true;
+        boolean resultOfDelete = false;
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement statement = connection.prepareStatement(DELETE_BY_ID);
             statement.setLong(1, id);
-            if (statement.executeUpdate() == 0) {
-                resultOfDelete = false;
+            if (statement.executeUpdate() == 1) {
+                resultOfDelete = true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -116,13 +95,7 @@ public class BookDaoImpl implements BookDao {
             statement.setString(1, isbn);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                book = new Book();
-                book.setId(resultSet.getLong("id"));
-                book.setAuthor(resultSet.getString("author"));
-                book.setTitle(resultSet.getString("title"));
-                book.setPublishinYear(resultSet.getInt("publishin_year"));
-                book.setIsbn(resultSet.getString("isbn"));
-                book.setPrice(resultSet.getBigDecimal("price"));
+                book = mapResultSetToBook(resultSet);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -138,14 +111,7 @@ public class BookDaoImpl implements BookDao {
             statement.setString(1, author);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                Book book = new Book();
-                book.setId(resultSet.getLong("id"));
-                book.setAuthor(resultSet.getString("author"));
-                book.setTitle(resultSet.getString("title"));
-                book.setPublishinYear(resultSet.getInt("publishin_year"));
-                book.setIsbn(resultSet.getString("isbn"));
-                book.setPrice(resultSet.getBigDecimal("price"));
-                books.add(book);
+                books.add(mapResultSetToBook(resultSet));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -165,5 +131,24 @@ public class BookDaoImpl implements BookDao {
             e.printStackTrace();
         }
         return count;
+    }
+
+    private Book mapResultSetToBook(ResultSet resultSet) throws SQLException{
+        Book book = new Book();
+        book.setId(resultSet.getLong("id"));
+        book.setAuthor(resultSet.getString("author"));
+        book.setTitle(resultSet.getString("title"));
+        book.setPublishinYear(resultSet.getInt("publishin_year"));
+        book.setIsbn(resultSet.getString("isbn"));
+        book.setPrice(resultSet.getBigDecimal("price"));
+        return book;
+    }
+
+    private void mapBookToStatementData (Book book, PreparedStatement statement) throws SQLException {
+        statement.setString(1, book.getAuthor());
+        statement.setString(2, book.getTitle());
+        statement.setInt(3, book.getPublishinYear());
+        statement.setString(4, book.getIsbn());
+        statement.setBigDecimal(5, book.getPrice());
     }
 }
