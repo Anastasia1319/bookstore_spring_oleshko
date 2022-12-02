@@ -53,12 +53,18 @@ public class BookDaoImpl implements BookDao {
     @Override
     public Book create(Book book) {
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
-            PreparedStatement statement = connection.prepareStatement(CREATE);
+            PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
             mapBookToStatementData(book, statement);
+            statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                Long id = resultSet.getLong("id");
+                return findById(id);
+            }
+            throw new RuntimeException("Couldn't create book: " + book);
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't create book: " + book, e);
         }
-        return findByIsbn(book.getIsbn());
     }
 
     @Override
@@ -69,7 +75,7 @@ public class BookDaoImpl implements BookDao {
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't update book: " + book, e);
         }
-        return findByIsbn(book.getIsbn());
+        return findById(book.getId());
     }
 
     @Override
@@ -121,19 +127,19 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public long countAll() {
-        long count;
+        Long count;
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement statement = connection.prepareStatement(COUNT_ALL);
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
-            count = resultSet.getInt("count");
+            count = resultSet.getLong("count");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return count;
     }
 
-    private Book mapResultSetToBook(ResultSet resultSet) throws SQLException{
+    private Book mapResultSetToBook(ResultSet resultSet) throws SQLException {
         Book book = new Book();
         book.setId(resultSet.getLong("id"));
         book.setAuthor(resultSet.getString("author"));
