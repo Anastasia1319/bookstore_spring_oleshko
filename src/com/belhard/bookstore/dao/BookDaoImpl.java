@@ -80,17 +80,13 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public boolean delete(Long id) {
-        boolean resultOfDelete = false;
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement statement = connection.prepareStatement(DELETE_BY_ID);
             statement.setLong(1, id);
-            if (statement.executeUpdate() == 1) {
-                resultOfDelete = true;
-            }
+            return statement.executeUpdate() == 1;
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't delete book with id: " + id, e);
         }
-        return resultOfDelete;
     }
 
     @Override
