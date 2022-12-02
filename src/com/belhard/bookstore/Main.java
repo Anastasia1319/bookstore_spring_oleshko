@@ -1,7 +1,7 @@
 package com.belhard.bookstore;
 
 import com.belhard.bookstore.data.dao.BookDao;
-import com.belhard.bookstore.data.dao.BookDaoImpl;
+import com.belhard.bookstore.data.dao.impl.BookDaoImpl;
 import com.belhard.bookstore.data.connection.DataSource;
 import com.belhard.bookstore.data.entity.Book;
 
