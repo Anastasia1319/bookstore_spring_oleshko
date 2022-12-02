@@ -29,7 +29,7 @@ public class BookDaoImpl implements BookDao {
                 books.add(mapResultSetToBook(resultSet));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return books;
     }
@@ -45,7 +45,7 @@ public class BookDaoImpl implements BookDao {
                 book = mapResultSetToBook(resultSet);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Couldn't find book with id: " + id, e);
         }
         return book;
     }
@@ -56,7 +56,7 @@ public class BookDaoImpl implements BookDao {
             PreparedStatement statement = connection.prepareStatement(CREATE);
             mapBookToStatementData(book, statement);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Couldn't create book: " + book, e);
         }
         return findByIsbn(book.getIsbn());
     }
@@ -67,7 +67,7 @@ public class BookDaoImpl implements BookDao {
             PreparedStatement statement = connection.prepareStatement(UPDATE);
             mapBookToStatementData(book, statement);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Couldn't update book: " + book, e);
         }
         return findByIsbn(book.getIsbn());
     }
@@ -82,7 +82,7 @@ public class BookDaoImpl implements BookDao {
                 resultOfDelete = true;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Couldn't delete book with id: " + id, e);
         }
         return resultOfDelete;
     }
@@ -98,7 +98,7 @@ public class BookDaoImpl implements BookDao {
                 book = mapResultSetToBook(resultSet);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Couldn't find book with isbn: " + isbn, e);
         }
         return book;
     }
@@ -114,21 +114,21 @@ public class BookDaoImpl implements BookDao {
                 books.add(mapResultSetToBook(resultSet));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Couldn't find book by author: " + author, e);
         }
         return books;
     }
 
     @Override
     public long countAll() {
-        long count = 0;
+        long count;
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement statement = connection.prepareStatement(COUNT_ALL);
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
             count = resultSet.getInt("count");
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return count;
     }
