@@ -125,7 +125,7 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public long countAll() {
-        Long count;
+        long count;
         try (Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(COUNT_ALL)) {
             ResultSet resultSet = statement.executeQuery();
