@@ -1,4 +1,4 @@
-package com.belhard.bookstore.entity;
+package com.belhard.bookstore.data.entity;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -74,7 +74,7 @@ public class Book {
 
     @Override
     public String toString() {
-        return "com.belhard.bookstore.entity.Book{" +
+        return "com.belhard.bookstore.data.entity.Book{" +
                 "id=" + id +
                 ", author='" + author + '\'' +
                 ", title='" + title + '\'' +
