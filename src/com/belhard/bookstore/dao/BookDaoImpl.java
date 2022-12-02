@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookDaoImpl implements BookDao {
-    private static final String URL = "jdbc:postgresql://localhost:5432/bookstore_bh";
-    private static final String USER = "postgres";
-    private static final String PASSWORD = "root";
     private static final String SELECT_ALL = "SELECT * FROM books";
     private static final String FIND_BY_ID = "SELECT * FROM books WHERE id = ?";
     private static final String CREATE = "INSERT INTO books (author, title, publishin_year, isbn, price) VALUES (?, ?, ?, ?, ?)";
@@ -17,14 +14,19 @@ public class BookDaoImpl implements BookDao {
     private static final String FIND_BY_ISBN = "SELECT * FROM books WHERE isbn = ?";
     private static final String FIND_BY_AUTHOR = "SELECT * FROM books WHERE author = ?";
     private static final String COUNT_ALL = "SELECT COUNT(*) FROM books";
+    private final DataSource dataSource;
+
+    public BookDaoImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
 
     @Override
     public  List<Book> findAll() {
         List<Book> books = new ArrayList<>();
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
+        try (Connection connection = dataSource.getConnection();
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(SELECT_ALL);
+            ResultSet resultSet = statement.executeQuery(SELECT_ALL)) {
             while (resultSet.next()) {
                 books.add(mapResultSetToBook(resultSet));
             }
@@ -37,8 +39,8 @@ public class BookDaoImpl implements BookDao {
     @Override
     public Book findById(Long id) {
         Book book = null;
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
-            PreparedStatement statement = connection.prepareStatement(FIND_BY_ID);
+        try (Connection connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement(FIND_BY_ID)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -52,8 +54,8 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public Book create(Book book) {
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
-            PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
+        try (Connection connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS)) {
             mapBookToStatementData(book, statement);
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
@@ -69,8 +71,8 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public Book update(Book book) {
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
-            PreparedStatement statement = connection.prepareStatement(UPDATE);
+        try (Connection connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement(UPDATE)) {
             mapBookToStatementData(book, statement);
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't update book: " + book, e);
@@ -80,8 +82,8 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public boolean delete(Long id) {
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
-            PreparedStatement statement = connection.prepareStatement(DELETE_BY_ID);
+        try (Connection connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement(DELETE_BY_ID)) {
             statement.setLong(1, id);
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
@@ -92,8 +94,8 @@ public class BookDaoImpl implements BookDao {
     @Override
     public Book findByIsbn(String isbn) {
         Book book = null;
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
-            PreparedStatement statement = connection.prepareStatement(FIND_BY_ISBN);
+        try (Connection connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement(FIND_BY_ISBN)) {
             statement.setString(1, isbn);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -108,8 +110,8 @@ public class BookDaoImpl implements BookDao {
     @Override
     public List<Book> findByAuthor(String author) {
         List<Book> books = new ArrayList<>();
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
-            PreparedStatement statement = connection.prepareStatement(FIND_BY_AUTHOR);
+        try (Connection connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement(FIND_BY_AUTHOR)) {
             statement.setString(1, author);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -124,8 +126,8 @@ public class BookDaoImpl implements BookDao {
     @Override
     public long countAll() {
         Long count;
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
-            PreparedStatement statement = connection.prepareStatement(COUNT_ALL);
+        try (Connection connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement(COUNT_ALL)) {
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
             count = resultSet.getLong("count");
