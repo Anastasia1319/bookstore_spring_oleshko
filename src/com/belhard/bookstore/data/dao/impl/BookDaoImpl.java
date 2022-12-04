@@ -1,6 +1,10 @@
-package com.belhard.bookstore.dao;
+package com.belhard.bookstore.data.dao.impl;
 
-import com.belhard.bookstore.entity.Book;
+import com.belhard.bookstore.data.connection.DataSource;
+import com.belhard.bookstore.data.dao.BookDao;
+import com.belhard.bookstore.data.entity.Book;
+import com.belhard.bookstore.exceptions.NotFoundException;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
