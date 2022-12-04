@@ -2,6 +2,8 @@ package com.belhard.bookstore.service.impl;
 
 import com.belhard.bookstore.data.dao.BookDao;
 import com.belhard.bookstore.data.entity.Book;
+import com.belhard.bookstore.exceptions.NotFoundException;
+import com.belhard.bookstore.exceptions.NotUpdateException;
 import com.belhard.bookstore.service.BookService;
 import com.belhard.bookstore.service.dto.BookDto;
 
@@ -27,7 +29,7 @@ public class BookServiceImpl implements BookService {
     public BookDto getById(Long id) {
         Book book = bookDao.findById(id);
         if (book == null) {
-            throw  new RuntimeException("Book with id: " + id + " not found!");
+            throw  new NotFoundException("Book with id: " + id + " not found!");
         }
         return toDto(book);
     }
@@ -42,14 +44,14 @@ public class BookServiceImpl implements BookService {
 
     private void validate(BookDto dto) {
         if (dto.getIsbn().length() > 13) {
-            throw new RuntimeException("ISBN number cannot be longer than 13 characters.");
+            throw new NotUpdateException("ISBN number cannot be longer than 13 characters.");
         }
         LocalDate date = LocalDate.now();
         if (dto.getPublishinYear() < 0 || dto.getPublishinYear() > date.getYear()) {
-            throw new RuntimeException("Incorrect year of publication of the book entered.");
+            throw new NotUpdateException("Incorrect year of publication of the book entered.");
         }
         if (dto.getPrice().signum() <= 0) {
-            throw new RuntimeException("Incorrect price of the book entered.");
+            throw new NotUpdateException("Incorrect price of the book entered.");
         }
     }
 
@@ -64,7 +66,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public void delete(Long id) {
         if (!bookDao.delete(id)) {
-            throw new RuntimeException("Couldn't delete book with id: " + id + "!");
+            throw new NotFoundException("Couldn't delete book with id: " + id + "!");
         }
     }
 
