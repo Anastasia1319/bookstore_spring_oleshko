@@ -45,7 +45,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Long id) {
-
+        if (!userDao.delete(id)) {
+            throw new NotFoundException("Couldn't delete user with id: " + id + "!");
+        }
     }
 
     private UserDto toDto(User user) {
