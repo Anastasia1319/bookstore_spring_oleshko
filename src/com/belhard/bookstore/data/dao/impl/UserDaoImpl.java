@@ -72,7 +72,13 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User update(User user) {
-        return null;
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE)) {
+            mapUserToStatementData(user, statement);
+        } catch (SQLException e) {
+            throw new RuntimeException("Couldn't update user: " + user, e);
+        }
+        return findById(user.getId());
     }
 
     @Override

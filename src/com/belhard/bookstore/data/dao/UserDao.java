@@ -11,4 +11,5 @@ public interface UserDao {
     boolean delete (Long id);
     User findByEmail(String email);
     int countAll ();
+    User findById(Long id);
 }
