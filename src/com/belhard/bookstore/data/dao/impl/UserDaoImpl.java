@@ -37,8 +37,6 @@ public class UserDaoImpl implements UserDao {
         return null;
     }
 
-
-
     @Override
     public User create(User user) {
         return null;
@@ -112,8 +110,35 @@ public class UserDaoImpl implements UserDao {
             case "Customer":
                 role = Role.CUSTOMER;
                 break;
-            default: throw new RuntimeException("Not found this role");
+            default:
+                throw new RuntimeException("Not found this role");
         }
         return role;
+    }
+
+    private void mapUserToStatementData (User user, PreparedStatement statement) throws SQLException {
+        statement.setString(1, user.getFirstName());
+        statement.setString(2, user.getLastName());
+        statement.setString(3, user.getEmail());
+        statement.setString(4, user.getPassword());
+        statement.setInt(5, toIdRole(user.getRole()));
+    }
+
+    private int toIdRole (Role role) {
+        int nameRole;
+        switch (role) {
+            case ADMIN:
+                nameRole = 1;
+                break;
+            case MANAGER:
+                nameRole = 2;
+                break;
+            case CUSTOMER:
+                nameRole = 3;
+                break;
+            default:
+                throw new RuntimeException("Not found this role");
+        }
+        return nameRole;
     }
 }
