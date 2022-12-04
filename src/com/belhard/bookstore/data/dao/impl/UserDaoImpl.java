@@ -62,7 +62,18 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findByEmail(String email) {
-        return null;
+        User user = null;
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_BY_EMAIL)) {
+            statement.setString(1, email);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                user = mapResultSetToUser(resultSet);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Couldn't find book with isbn: " + email, e);
+        }
+        return user;
     }
 
     @Override
