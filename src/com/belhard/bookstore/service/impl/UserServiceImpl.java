@@ -3,6 +3,7 @@ package com.belhard.bookstore.service.impl;
 import com.belhard.bookstore.data.dao.UserDao;
 import com.belhard.bookstore.data.entity.User;
 import com.belhard.bookstore.exceptions.NotFoundException;
+import com.belhard.bookstore.exceptions.NotUpdateException;
 import com.belhard.bookstore.service.UserService;
 import com.belhard.bookstore.service.dto.UserDto;
 
@@ -35,7 +36,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto create(UserDto dto) {
-        return null;
+        validate(dto);
+        User toCreate = toEntity(dto);
+        User created = userDao.create(toCreate);
+        return toDto(created);
+    }
+
+    private void validate (UserDto dto) {
+        if (dto.getPassword().length() < 8) {
+            throw new NotUpdateException("Password cannot be shorter than 8 characters.");
+        }
     }
 
     @Override
@@ -59,5 +69,15 @@ public class UserServiceImpl implements UserService {
         userDto.setPassword(user.getPassword());
         userDto.setRole(user.getRole());
         return userDto;
+    }
+
+    private User toEntity (UserDto dto) {
+        User user = new User();
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
+        user.setEmail(dto.getEmail());
+        user.setPassword(dto.getPassword());
+        user.setRole(dto.getRole());
+        return user;
     }
 }
