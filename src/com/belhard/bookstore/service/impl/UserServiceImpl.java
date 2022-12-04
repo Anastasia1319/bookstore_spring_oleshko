@@ -1,6 +1,7 @@
 package com.belhard.bookstore.service.impl;
 
 import com.belhard.bookstore.data.dao.UserDao;
+import com.belhard.bookstore.data.entity.User;
 import com.belhard.bookstore.service.UserService;
 import com.belhard.bookstore.service.dto.UserDto;
 
@@ -16,7 +17,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getAll() {
-        return null;
+        return userDao.findAll()
+                .stream()
+                .map(this::toDto)
+                .toList();
     }
 
     @Override
@@ -37,5 +41,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(Long id) {
 
+    }
+
+    private UserDto toDto(User user) {
+        UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setFirstName(user.getFirstName());
+        userDto.setLastName(user.getLastName());
+        userDto.setEmail(user.getEmail());
+        userDto.setPassword(user.getPassword());
+        userDto.setRole(user.getRole());
+        return userDto;
     }
 }
