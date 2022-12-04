@@ -10,12 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoImpl implements UserDao {
-    private static final String SELECT_ALL = "SELECT first_name, last_name, email, \"password\", name_role FROM users, \"role\" WHERE users.role_id = role.role_id";
-    private static final String FIND_BY_EMAIL = "SELECT first_name, last_name, email, \"password\", name_role FROM users, \"role\" WHERE users.role_id = role.role_id AND email = ?";
-    private static final String FIND_BY_ID = "SELECT first_name, last_name, email, \"password\", name_role FROM users, \"role\" WHERE users.role_id = role.role_id AND id = ?";
+    private static final String SELECT_ALL = "SELECT user_id, first_name, last_name, email, \"password\", name_role FROM users, \"role\" WHERE users.role_id = role.role_id";
+    private static final String FIND_BY_EMAIL = "SELECT user_id, first_name, last_name, email, \"password\", name_role FROM users, \"role\" WHERE users.role_id = role.role_id AND email = ?";
+    private static final String FIND_BY_ID = "SELECT user_id, first_name, last_name, email, \"password\", name_role FROM users, \"role\" WHERE users.role_id = role.role_id AND user_id = ?";
     private static final String CREATE = "INSERT INTO users (first_name, last_name, email, \"password\", role_id) VALUES (?, ?, ?, ?, ?)";
     private static final String UPDATE = "UPDATE users SET first_name = ?, last_name = ?, email = ?, \"password\" = ?, role_id = ?)";
-    private static final String DELETE_BY_ID = "DELETE FROM users WHERE id = ?";
+    private static final String DELETE_BY_ID = "DELETE FROM users WHERE user_id = ?";
     private static final String COUNT_ALL = "SELECT COUNT(*) FROM users";
     private final DataSource dataSource;
 
@@ -35,7 +35,7 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return null;
+        return users;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class UserDaoImpl implements UserDao {
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
-                Long id = resultSet.getLong("id");
+                Long id = resultSet.getLong("user_id");
                 return findById(id);
             }
             throw new RuntimeException("Couldn't create user: " + user);
