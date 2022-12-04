@@ -67,7 +67,16 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public int countAll() {
-        return 0;
+        int count;
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(COUNT_ALL)) {
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            count = resultSet.getInt("count");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return count;
     }
     private User mapResultSetToUser(ResultSet resultSet) throws SQLException {
         User user = new User();
