@@ -5,6 +5,7 @@ import com.belhard.bookstore.data.entity.Book;
 import com.belhard.bookstore.service.BookService;
 import com.belhard.bookstore.service.dto.BookDto;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class BookServiceImpl implements BookService {
@@ -33,7 +34,23 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto create(BookDto dto) {
-        return null;
+        validate(dto);
+        Book toCreate = toEntity(dto);
+        Book created = bookDao.create(toCreate);
+        return toDto(created);
+    }
+
+    private void validate(BookDto dto) {
+        if (dto.getIsbn().length() > 13) {
+            throw new RuntimeException("ISBN number cannot be longer than 13 characters.");
+        }
+        LocalDate date = LocalDate.now();
+        if (dto.getPublishinYear() < 0 || dto.getPublishinYear() > date.getYear()) {
+            throw new RuntimeException("Incorrect year of publication of the book entered.");
+        }
+        if (dto.getPrice().signum() <= 0) {
+            throw new RuntimeException("Incorrect price of the book entered.");
+        }
     }
 
     @Override
@@ -57,6 +74,16 @@ public class BookServiceImpl implements BookService {
         bookDto.setIsbn(book.getIsbn());
         bookDto.setPrice(book.getPrice());
         return bookDto;
+    }
+
+    private Book toEntity (BookDto dto) {
+        Book book = new Book();
+        book.setAuthor(dto.getAuthor());
+        book.setTitle(dto.getTitle());
+        book.setPublishinYear(dto.getPublishinYear());
+        book.setIsbn(dto.getIsbn());
+        book.setPrice(dto.getPrice());
+        return book;
     }
 
 }
