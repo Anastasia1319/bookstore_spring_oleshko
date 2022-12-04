@@ -55,7 +55,10 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto update(BookDto dto) {
-        return null;
+        validate(dto);
+        Book toUpdate = toEntity(dto);
+        Book updated = bookDao.update(toUpdate);
+        return toDto(updated);
     }
 
     @Override
