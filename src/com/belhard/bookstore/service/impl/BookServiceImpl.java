@@ -7,6 +7,7 @@ import com.belhard.bookstore.exceptions.NotUpdateException;
 import com.belhard.bookstore.service.BookService;
 import com.belhard.bookstore.service.dto.BookDto;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -91,4 +92,10 @@ public class BookServiceImpl implements BookService {
         return book;
     }
 
+    public BigDecimal sumPriceByAuthor (String author) {
+        return bookDao.findByAuthor(author)
+                .stream()
+                .map(Book::getPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
 }
