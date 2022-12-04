@@ -50,7 +50,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto update(UserDto dto) {
-        return null;
+        validate(dto);
+        User toUpdate = toEntity(dto);
+        User updated = userDao.update(toUpdate);
+        return toDto(updated);
     }
 
     @Override
