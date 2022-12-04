@@ -1,15 +1,16 @@
 package com.belhard.bookstore.service.impl;
 
+import com.belhard.bookstore.data.dao.UserDao;
 import com.belhard.bookstore.service.UserService;
 import com.belhard.bookstore.service.dto.UserDto;
 
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
-    private final UserDto userDto;
+    private final UserDao userDao;
 
-    public UserServiceImpl(UserDto userDto) {
-        this.userDto = userDto;
+    public UserServiceImpl(UserDao userDao) {
+        this.userDao = userDao;
     }
 
 
