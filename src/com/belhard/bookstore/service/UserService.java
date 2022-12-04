@@ -10,4 +10,5 @@ public interface UserService {
     UserDto create (UserDto dto);
     UserDto update (UserDto dto);
     void delete(Long id);
+    UserDto login(String email, String password);
 }

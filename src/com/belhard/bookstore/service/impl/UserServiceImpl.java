@@ -63,6 +63,14 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    public UserDto login(String email, String password) {
+        User user = userDao.findByEmail(email);
+        if (user == null || !password.equals(user.getPassword())) {
+            throw new NotFoundException("User with email: " + email + "and with password: " + password + " not found!");
+        }
+        return toDto(user);
+    }
+
     private UserDto toDto(User user) {
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());
