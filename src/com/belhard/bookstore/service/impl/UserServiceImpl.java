@@ -6,6 +6,13 @@ import com.belhard.bookstore.service.dto.UserDto;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
+    private final UserDto userDto;
+
+    public UserServiceImpl(UserDto userDto) {
+        this.userDto = userDto;
+    }
+
+
     @Override
     public List<UserDto> getAll() {
         return null;
