@@ -12,6 +12,7 @@ import java.util.List;
 public class UserDaoImpl implements UserDao {
     private static final String SELECT_ALL = "SELECT first_name, last_name, email, \"password\", name_role FROM users, \"role\" WHERE users.role_id = role.role_id";
     private static final String FIND_BY_EMAIL = "SELECT first_name, last_name, email, \"password\", name_role FROM users, \"role\" WHERE users.role_id = role.role_id AND email = ?";
+    private static final String FIND_BY_ID = "SELECT first_name, last_name, email, \"password\", name_role FROM users, \"role\" WHERE users.role_id = role.role_id AND id = ?";
     private static final String CREATE = "INSERT INTO users (first_name, last_name, email, \"password\", role_id) VALUES (?, ?, ?, ?, ?)";
     private static final String UPDATE = "UPDATE users SET first_name = ?, last_name = ?, email = ?, \"password\" = ?, role_id = ?)";
     private static final String DELETE_BY_ID = "DELETE FROM users WHERE id = ?";
@@ -39,7 +40,34 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User create(User user) {
-        return null;
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS)) {
+            mapUserToStatementData(user, statement);
+            statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                Long id = resultSet.getLong("id");
+                return findById(id);
+            }
+            throw new RuntimeException("Couldn't create user: " + user);
+        } catch (SQLException e) {
+            throw new RuntimeException("Couldn't create user: " + user, e);
+        }
+    }
+
+    public User findById(Long id) {
+        User user = null;
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_BY_ID)) {
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                user = mapResultSetToUser(resultSet);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Couldn't find user with id: " + id, e);
+        }
+        return user;
     }
 
     @Override
@@ -69,7 +97,7 @@ public class UserDaoImpl implements UserDao {
                 user = mapResultSetToUser(resultSet);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Couldn't find book with isbn: " + email, e);
+            throw new RuntimeException("Couldn't find user with email: " + email, e);
         }
         return user;
     }
