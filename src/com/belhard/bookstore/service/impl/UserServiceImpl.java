@@ -2,6 +2,7 @@ package com.belhard.bookstore.service.impl;
 
 import com.belhard.bookstore.data.dao.UserDao;
 import com.belhard.bookstore.data.entity.User;
+import com.belhard.bookstore.exceptions.NotFoundException;
 import com.belhard.bookstore.service.UserService;
 import com.belhard.bookstore.service.dto.UserDto;
 
@@ -25,7 +26,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getByEmail(String email) {
-        return null;
+        User user = userDao.findByEmail(email);
+        if (user == null) {
+            throw new NotFoundException("User with email: " + email + " not found!");
+        }
+        return toDto(user);
     }
 
     @Override
