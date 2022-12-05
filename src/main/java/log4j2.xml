@@ -30,8 +30,8 @@
             <Appender-Ref ref = "LogToFile"/>
         </Logger>
 
-        <Root level = "debug">
-            <Appender-Ref ref = "Console" level = "trace"/>
+        <Root level = "ERROR">
+            <Appender-Ref ref = "Console" level = "ERROR"/>
             <Appender-Ref ref = "LogToFile"/>
         </Root>
     </Loggers>
