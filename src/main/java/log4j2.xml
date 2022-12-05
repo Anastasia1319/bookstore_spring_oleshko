@@ -25,6 +25,10 @@
             <Appender-Ref ref = "Console"/>
             <Appender-Ref ref = "LogToFile"/>
         </Logger>
+        <Logger name = "com.belhard.bookstore.data.dao.impl.UserDaoImpl" level = "DEBUG" additivity = "false">
+            <Appender-Ref ref = "Console"/>
+            <Appender-Ref ref = "LogToFile"/>
+        </Logger>
 
         <Root level = "debug">
             <Appender-Ref ref = "Console" level = "trace"/>

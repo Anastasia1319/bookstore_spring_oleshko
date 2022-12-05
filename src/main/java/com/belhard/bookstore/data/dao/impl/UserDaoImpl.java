@@ -4,6 +4,8 @@ import com.belhard.bookstore.data.connection.DataSource;
 import com.belhard.bookstore.data.dao.UserDao;
 import com.belhard.bookstore.data.entity.Role;
 import com.belhard.bookstore.data.entity.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ public class UserDaoImpl implements UserDao {
     private static final String DELETE_BY_ID = "DELETE FROM users WHERE user_id = ?";
     private static final String COUNT_ALL = "SELECT COUNT(*) FROM users";
     private final DataSource dataSource;
+    private static final Logger logger = LogManager.getLogger(UserDaoImpl.class);
 
     public UserDaoImpl(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -35,6 +38,7 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        logger.debug("Implemented database access - findAll");
         return users;
     }
 
@@ -47,6 +51,7 @@ public class UserDaoImpl implements UserDao {
             ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
                 Long id = resultSet.getLong("user_id");
+                logger.debug("Implemented database access - create");
                 return findById(id);
             }
             throw new RuntimeException("Couldn't create user: " + user);
@@ -67,6 +72,7 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't find user with id: " + id, e);
         }
+        logger.debug("Implemented database access - findById");
         return user;
     }
 
@@ -78,6 +84,7 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't update user: " + user, e);
         }
+        logger.debug("Implemented database access - update");
         return findById(user.getId());
     }
 
@@ -86,6 +93,7 @@ public class UserDaoImpl implements UserDao {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_BY_ID)) {
             statement.setLong(1, id);
+            logger.debug("Implemented database access - delete");
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't delete user with id: " + id, e);
@@ -105,6 +113,7 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't find user with email: " + email, e);
         }
+        logger.debug("Implemented database access - findByEmail");
         return user;
     }
 
@@ -119,6 +128,7 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        logger.debug("Implemented database access - countAll");
         return count;
     }
     private User mapResultSetToUser(ResultSet resultSet) throws SQLException {
