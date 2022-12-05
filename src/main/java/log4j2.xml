@@ -21,6 +21,11 @@
         <Logger name = "com.belhard.bookstore.data.connection.DataSource" level = "INFO" additivity = "false">
             <Appender-Ref ref = "Console"/>
         </Logger>
+        <Logger name = "com.belhard.bookstore.data.dao.impl.BookDaoImpl" level = "DEBUG" additivity = "false">
+            <Appender-Ref ref = "Console"/>
+            <Appender-Ref ref = "LogToFile"/>
+        </Logger>
+
         <Root level = "debug">
             <Appender-Ref ref = "Console" level = "trace"/>
             <Appender-Ref ref = "LogToFile"/>
