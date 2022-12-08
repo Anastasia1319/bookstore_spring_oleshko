@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Configuration status="DEBUG">
+<Configuration status="WARN ">
     <Properties>
         <property name="LOG_DIR">logs</property>
         <property name="ARCHIVE_LOG_DIR">${LOG_DIR}/archive</property>
@@ -20,19 +20,18 @@
     <Loggers>
         <Logger name = "com.belhard.bookstore.data.connection.DataSource" level = "INFO" additivity = "false">
             <Appender-Ref ref = "Console"/>
-        </Logger>
-        <Logger name = "com.belhard.bookstore.data.dao.impl.BookDaoImpl" level = "DEBUG" additivity = "false">
-            <Appender-Ref ref = "Console"/>
             <Appender-Ref ref = "LogToFile"/>
         </Logger>
-        <Logger name = "com.belhard.bookstore.data.dao.impl.UserDaoImpl" level = "DEBUG" additivity = "false">
+        <Logger name = "com.belhard.bookstore.data.dao.impl" level = "DEBUG" additivity = "false">
             <Appender-Ref ref = "Console"/>
-            <Appender-Ref ref = "LogToFile"/>
+        </Logger>
+        <Logger name = "com.belhard.bookstore.service.impl" level = "DEBUG" additivity = "false">
+            <Appender-Ref ref = "Console"/>
         </Logger>
 
         <Root level = "ERROR">
-            <Appender-Ref ref = "Console" level = "ERROR"/>
-            <Appender-Ref ref = "LogToFile"/>
+            <Appender-Ref ref = "Console"/>
+            <Appender-Ref ref = "LogToFile" level = "INFO"/>
         </Root>
     </Loggers>
 </Configuration>

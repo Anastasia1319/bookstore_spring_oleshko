@@ -8,7 +8,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DataSource {
-    private static final Logger logger = LogManager.getLogger(DataSource.class);
+    private static final Logger logger = LogManager.getLogger(DataSource.class); //log
     private static final String URL = "jdbc:postgresql://localhost:5432/bookstore_bh";
     private static final String USER = "postgres";
     private static final String PASSWORD = "root";

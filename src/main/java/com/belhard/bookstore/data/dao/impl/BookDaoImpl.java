@@ -20,7 +20,7 @@ public class BookDaoImpl implements BookDao {
     private static final String FIND_BY_AUTHOR = "SELECT * FROM books WHERE author = ?";
     private static final String COUNT_ALL = "SELECT COUNT(*) FROM books";
     private final DataSource dataSource;
-    private static final Logger logger = LogManager.getLogger(BookDaoImpl.class);
+    private static final Logger log = LogManager.getLogger(BookDaoImpl.class);
 
     public BookDaoImpl(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -33,13 +33,14 @@ public class BookDaoImpl implements BookDao {
         try (Connection connection = dataSource.getConnection();
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(SELECT_ALL)) {
+            log.info("Connected to URL");
             while (resultSet.next()) {
                 books.add(mapResultSetToBook(resultSet));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        logger.debug("Implemented database access - findAll");
+        log.debug("Implemented database access - findAll");
         return books;
     }
 
@@ -56,7 +57,7 @@ public class BookDaoImpl implements BookDao {
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't find book with id: " + id, e);
         }
-        logger.debug("Implemented database access - findById");
+        log.debug("Implemented database access - findById");
         return book;
     }
 
@@ -69,7 +70,7 @@ public class BookDaoImpl implements BookDao {
             ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
                 Long id = resultSet.getLong("id");
-                logger.debug("Implemented database access - create");
+                log.debug("Implemented database access - create");
                 return findById(id);
             }
             throw new RuntimeException("Couldn't create book: " + book);
@@ -86,7 +87,7 @@ public class BookDaoImpl implements BookDao {
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't update book: " + book, e);
         }
-        logger.debug("Implemented database access - update");
+        log.debug("Implemented database access - update");
         return findById(book.getId());
     }
 
@@ -95,7 +96,7 @@ public class BookDaoImpl implements BookDao {
         try (Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(DELETE_BY_ID)) {
             statement.setLong(1, id);
-            logger.debug("Implemented database access - delete");
+            log.debug("Implemented database access - delete");
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't delete book with id: " + id, e);
@@ -115,7 +116,7 @@ public class BookDaoImpl implements BookDao {
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't find book with isbn: " + isbn, e);
         }
-        logger.debug("Implemented database access - findByIsbn");
+        log.debug("Implemented database access - findByIsbn");
         return book;
     }
 
@@ -132,7 +133,7 @@ public class BookDaoImpl implements BookDao {
         } catch (SQLException e) {
             throw new RuntimeException("Couldn't find book by author: " + author, e);
         }
-        logger.debug("Implemented database access - findByAuthor");
+        log.debug("Implemented database access - findByAuthor");
         return books;
     }
 
@@ -147,7 +148,7 @@ public class BookDaoImpl implements BookDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        logger.debug("Implemented database access - count");
+        log.debug("Implemented database access - count");
         return count;
     }
 
