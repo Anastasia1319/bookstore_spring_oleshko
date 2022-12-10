@@ -83,7 +83,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public void delete(Long id) {
         if (!bookDao.delete(id)) {
-            log.error("Book with id {} deleted", id);
+            log.error("Book with id {} not deleted", id);
             throw new NotFoundException("Couldn't delete book with id: " + id + "!");
         }
         log.info("Book with id {} deleted", id);

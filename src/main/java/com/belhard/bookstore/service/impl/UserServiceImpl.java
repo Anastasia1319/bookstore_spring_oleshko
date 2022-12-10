@@ -6,11 +6,14 @@ import com.belhard.bookstore.exceptions.NotFoundException;
 import com.belhard.bookstore.exceptions.NotUpdateException;
 import com.belhard.bookstore.service.UserService;
 import com.belhard.bookstore.service.dto.UserDto;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
+    private static final Logger log = LogManager.getLogger(UserServiceImpl.class);
 
     public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
@@ -19,6 +22,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getAll() {
+        log.info("Received a list of users from UserDaoImpl");
         return userDao.findAll()
                 .stream()
                 .map(this::toDto)
@@ -28,10 +32,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getByEmail(String email) {
         User user = userDao.findByEmail(email);
+        log.info("The UserDaoImpl class method was called to search");
         if (user == null) {
+            log.warn("User with email: {} not found!", email);
             throw new NotFoundException("User with email: " + email + " not found!");
         }
-        return toDto(user);
+        UserDto userDto = toDto(user);
+        log.info("Search result: {}", userDto);
+        return userDto;
     }
 
     @Override
@@ -39,13 +47,17 @@ public class UserServiceImpl implements UserService {
         validate(dto);
         User toCreate = toEntity(dto);
         User created = userDao.create(toCreate);
-        return toDto(created);
+        UserDto userDto = toDto(created);
+        log.info("Creation result: {}", userDto);
+        return userDto;
     }
 
     private void validate (UserDto dto) {
         if (dto.getPassword().length() < 8) {
+            log.error("Password shorter 8 characters");
             throw new NotUpdateException("Password cannot be shorter than 8 characters.");
         }
+        log.info("Parameters have been successfully validated");
     }
 
     @Override
@@ -53,22 +65,29 @@ public class UserServiceImpl implements UserService {
         validate(dto);
         User toUpdate = toEntity(dto);
         User updated = userDao.update(toUpdate);
-        return toDto(updated);
+        UserDto userDto = toDto(updated);
+        log.info("Update result: {}", userDto);
+        return userDto;
     }
 
     @Override
     public void delete(Long id) {
         if (!userDao.delete(id)) {
+            log.error("User with id {} not deleted", id);
             throw new NotFoundException("Couldn't delete user with id: " + id + "!");
         }
+        log.info("User with id {} deleted", id);
     }
 
     public UserDto login(String email, String password) {
         User user = userDao.findByEmail(email);
         if (user == null || !password.equals(user.getPassword())) {
+            log.error("Incorrect email or password");
             throw new NotFoundException("User with email: " + email + "and with password: " + password + " not found!");
         }
-        return toDto(user);
+        UserDto userDto = toDto(user);
+        log.info("Login completed");
+        return userDto;
     }
 
     private UserDto toDto(User user) {
@@ -79,6 +98,7 @@ public class UserServiceImpl implements UserService {
         userDto.setEmail(user.getEmail());
         userDto.setPassword(user.getPassword());
         userDto.setRole(user.getRole());
+        log.info("User transformed to UserDto");
         return userDto;
     }
 
@@ -89,6 +109,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(dto.getEmail());
         user.setPassword(dto.getPassword());
         user.setRole(dto.getRole());
+        log.info("UserDto transformed to User");
         return user;
     }
 }
