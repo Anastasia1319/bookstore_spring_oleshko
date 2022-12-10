@@ -39,7 +39,7 @@ public class BookDaoImpl implements BookDao {
                 books.add(mapResultSetToBook(resultSet));
             }
         } catch (SQLException e) {
-            log.error("Unable to get list of books matching search criteria", e);
+            log.error("Database access error", e);
             throw new RuntimeException(e);
         }
         log.info("Created a list of books matching the search criteria");
@@ -59,7 +59,7 @@ public class BookDaoImpl implements BookDao {
                 log.info("Book matching search criteria: {}", book);
             }
         } catch (SQLException e) {
-            log.error("Unable to get book matching search criteria", e);
+            log.error("Database access error", e);
             throw new RuntimeException("Couldn't find book with id: " + id, e);
         }
         return book;
@@ -77,12 +77,11 @@ public class BookDaoImpl implements BookDao {
                 Long id = resultSet.getLong("id");
                 log.info("Book {} created", book);
                 return findById(id);
-            } else {
-                log.warn("Book {} wasn't created", book);
-                throw new NotFoundException("Couldn't create book: " + book);
             }
+            log.warn("Book {} wasn't created", book);
+            throw new NotFoundException("Couldn't create book: " + book);
         } catch (SQLException e) {
-            log.error("Unable to create book", e);
+            log.error("Database access error", e);
             throw new RuntimeException("Couldn't create book: " + book, e);
         }
     }
@@ -94,7 +93,7 @@ public class BookDaoImpl implements BookDao {
             log.info("Connected to URL");
             mapBookToStatementData(book, statement);
         } catch (SQLException e) {
-            log.error("Unable to update book {}", book, e);
+            log.error("Database access error", e);
             throw new RuntimeException("Couldn't update book: " + book, e);
         }
         log.info("Book {} updated", book);
@@ -110,7 +109,7 @@ public class BookDaoImpl implements BookDao {
             log.info("Book with id {} deleted", id);
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
-            log.error("Unable to delete book with id  {}", id, e);
+            log.error("Database access error", e);
             throw new RuntimeException("Couldn't delete book with id: " + id, e);
         }
     }
@@ -128,7 +127,7 @@ public class BookDaoImpl implements BookDao {
                 log.info("Book matching search criteria: {}", book);
             }
         } catch (SQLException e) {
-            log.error("Unable to get book matching search criteria", e);
+            log.error("Database access error", e);
             throw new RuntimeException("Couldn't find book with isbn: " + isbn, e);
         }
         return book;
@@ -146,7 +145,7 @@ public class BookDaoImpl implements BookDao {
                 books.add(mapResultSetToBook(resultSet));
             }
         } catch (SQLException e) {
-            log.error("Unable to get list of books matching search criteria", e);
+            log.error("Database access error", e);
             throw new RuntimeException("Couldn't find book by author: " + author, e);
         }
         log.info("Created a list of books matching the search criteria");
@@ -163,7 +162,7 @@ public class BookDaoImpl implements BookDao {
             resultSet.next();
             count = resultSet.getLong("count");
         } catch (SQLException e) {
-            log.error("Unable to count objects", e);
+            log.error("Database access error", e);
             throw new RuntimeException(e);
         }
         log.info("Number of objects in the database: {}", count);

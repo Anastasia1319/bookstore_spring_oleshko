@@ -4,6 +4,7 @@ import com.belhard.bookstore.data.connection.DataSource;
 import com.belhard.bookstore.data.dao.UserDao;
 import com.belhard.bookstore.data.entity.Role;
 import com.belhard.bookstore.data.entity.User;
+import com.belhard.bookstore.exceptions.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,7 +21,7 @@ public class UserDaoImpl implements UserDao {
     private static final String DELETE_BY_ID = "DELETE FROM users WHERE user_id = ?";
     private static final String COUNT_ALL = "SELECT COUNT(*) FROM users";
     private final DataSource dataSource;
-    private static final Logger logger = LogManager.getLogger(UserDaoImpl.class);
+    private static final Logger log = LogManager.getLogger(UserDaoImpl.class);
 
     public UserDaoImpl(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -32,13 +33,15 @@ public class UserDaoImpl implements UserDao {
         try (Connection connection = dataSource.getConnection();
             Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(SELECT_ALL)) {
+            log.info("Connected to URL");
             while (resultSet.next()) {
                 users.add(mapResultSetToUser(resultSet));
             }
         } catch (SQLException e) {
+            log.error("Database access error", e);
             throw new RuntimeException(e);
         }
-        logger.debug("Implemented database access - findAll");
+        log.info("Created a list of users matching the search criteria");
         return users;
     }
 
@@ -46,33 +49,37 @@ public class UserDaoImpl implements UserDao {
     public User create(User user) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS)) {
+            log.info("Connected to URL");
             mapUserToStatementData(user, statement);
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
                 Long id = resultSet.getLong("user_id");
-                logger.debug("Implemented database access - create");
+                log.info("User {} created", user);
                 return findById(id);
             }
-            throw new RuntimeException("Couldn't create user: " + user);
+            log.warn("User {} wasn't created", user);
+            throw new NotFoundException("Couldn't create user: " + user);
         } catch (SQLException e) {
-            throw new RuntimeException("Couldn't create user: " + user, e);
+            log.error("Database access error", e);
+            throw new RuntimeException("User " + user + "was not created", e);
         }
     }
-
     public User findById(Long id) {
         User user = null;
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_BY_ID)) {
+            log.info("Connected to URL");
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 user = mapResultSetToUser(resultSet);
             }
         } catch (SQLException e) {
+            log.error("Database access error", e);
             throw new RuntimeException("Couldn't find user with id: " + id, e);
         }
-        logger.debug("Implemented database access - findById");
+        log.info("User with id {} found: {}", id, user);
         return user;
     }
 
@@ -80,11 +87,13 @@ public class UserDaoImpl implements UserDao {
     public User update(User user) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE)) {
+            log.info("Connected to URL");
             mapUserToStatementData(user, statement);
         } catch (SQLException e) {
+            log.error("Database access error", e);
             throw new RuntimeException("Couldn't update user: " + user, e);
         }
-        logger.debug("Implemented database access - update");
+        log.info("User {} was update", user);
         return findById(user.getId());
     }
 
@@ -92,10 +101,17 @@ public class UserDaoImpl implements UserDao {
     public boolean delete(Long id) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_BY_ID)) {
+            log.info("Connected to URL");
             statement.setLong(1, id);
-            logger.debug("Implemented database access - delete");
-            return statement.executeUpdate() == 1;
+            boolean deletedResult = (statement.executeUpdate() == 1);
+            if (deletedResult) {
+                log.info("User with id {} was delete", id);
+            } else {
+                log.info("User with id {} was not delete", id);
+            }
+            return deletedResult;
         } catch (SQLException e) {
+            log.error("Database access error", e);
             throw new RuntimeException("Couldn't delete user with id: " + id, e);
         }
     }
@@ -105,15 +121,17 @@ public class UserDaoImpl implements UserDao {
         User user = null;
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_BY_EMAIL)) {
+            log.info("Connected to URL");
             statement.setString(1, email);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 user = mapResultSetToUser(resultSet);
+                log.info("User matching search criteria: {}", user);
             }
         } catch (SQLException e) {
+            log.error("Database access error", e);
             throw new RuntimeException("Couldn't find user with email: " + email, e);
         }
-        logger.debug("Implemented database access - findByEmail");
         return user;
     }
 
@@ -122,13 +140,15 @@ public class UserDaoImpl implements UserDao {
         int count;
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(COUNT_ALL)) {
+            log.info("Connected to URL");
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
             count = resultSet.getInt("count");
         } catch (SQLException e) {
+            log.error("Database access error", e);
             throw new RuntimeException(e);
         }
-        logger.debug("Implemented database access - countAll");
+        log.info("Number of objects in the database: {}", count);
         return count;
     }
     private User mapResultSetToUser(ResultSet resultSet) throws SQLException {
@@ -139,6 +159,7 @@ public class UserDaoImpl implements UserDao {
         user.setEmail(resultSet.getString("email"));
         user.setPassword(resultSet.getString("password"));
         user.setRole(toRole(resultSet.getString("name_role")));
+        log.info("Created a user based on the results from the database");
         return user;
     }
 
@@ -166,6 +187,7 @@ public class UserDaoImpl implements UserDao {
         statement.setString(3, user.getEmail());
         statement.setString(4, user.getPassword());
         statement.setInt(5, toIdRole(user.getRole()));
+        log.info("Object prepared for transfer to the database");
     }
 
     private int toIdRole (Role role) {
