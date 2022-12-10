@@ -106,8 +106,13 @@ public class BookDaoImpl implements BookDao {
             PreparedStatement statement = connection.prepareStatement(DELETE_BY_ID)) {
             log.info("Connected to URL");
             statement.setLong(1, id);
-            log.info("Book with id {} deleted", id);
-            return statement.executeUpdate() == 1;
+            boolean deletedResult = (statement.executeUpdate() == 1);
+            if (deletedResult) {
+                log.info("Book with id {} deleted", id);
+            } else {
+                log.info("Book with id {} was not delete", id);
+            }
+            return deletedResult;
         } catch (SQLException e) {
             log.error("Database access error", e);
             throw new RuntimeException("Couldn't delete book with id: " + id, e);
