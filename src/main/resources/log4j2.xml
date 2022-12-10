@@ -8,29 +8,29 @@
     </Properties>
     <ThresholdFilter level = "trace"/>
     <Appenders>
-        <Console name="Console" target="SYSTEM_OUT">
+        <Console name="Console" target="SYSTEM_OUT" level = "DEBUG">
             <PatternLayout pattern="${pattern_console}"/>
         </Console>
 
-        <File name="LogToFile" fileName="${LOG_DIR}/text.log" bufferedIO = "true">
+        <File name="LogToFile" fileName="${LOG_DIR}/text.log" bufferedIO = "true" level = "INFO">
             <PatternLayout pattern="${pattern_file}"/>
         </File>
     </Appenders>
 
     <Loggers>
-        <Logger name = "com.belhard.bookstore.data.connection.DataSource" level = "INFO" additivity = "false">
+        <Logger name = "com.belhard.bookstore.data.connection" level = "INFO" additivity = "false">
             <Appender-Ref ref = "Console"/>
             <Appender-Ref ref = "LogToFile"/>
         </Logger>
-        <Logger name = "com.belhard.bookstore.data.dao.impl" level = "DEBUG" additivity = "false">
+        <Logger name = "com.belhard.bookstore.data.dao" level = "DEBUG" additivity = "false">
             <Appender-Ref ref = "Console"/>
         </Logger>
-        <Logger name = "com.belhard.bookstore.service.impl" level = "DEBUG" additivity = "false">
+        <Logger name = "com.belhard.bookstore.service" level = "DEBUG" additivity = "false">
             <Appender-Ref ref = "Console"/>
         </Logger>
 
         <Root level = "ERROR">
-            <Appender-Ref ref = "Console"/>
+            <Appender-Ref ref = "Console" level = "DEBUG"/>
             <Appender-Ref ref = "LogToFile" level = "INFO"/>
         </Root>
     </Loggers>
