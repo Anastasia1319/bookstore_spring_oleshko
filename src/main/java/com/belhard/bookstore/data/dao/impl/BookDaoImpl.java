@@ -3,6 +3,7 @@ package com.belhard.bookstore.data.dao.impl;
 import com.belhard.bookstore.data.connection.DataSource;
 import com.belhard.bookstore.data.dao.BookDao;
 import com.belhard.bookstore.data.entity.Book;
+import com.belhard.bookstore.exceptions.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -38,9 +39,10 @@ public class BookDaoImpl implements BookDao {
                 books.add(mapResultSetToBook(resultSet));
             }
         } catch (SQLException e) {
+            log.error("Unable to get list of books matching search criteria", e);
             throw new RuntimeException(e);
         }
-        log.debug("Implemented database access - findAll");
+        log.info("Created a list of books matching the search criteria");
         return books;
     }
 
@@ -49,15 +51,17 @@ public class BookDaoImpl implements BookDao {
         Book book = null;
         try (Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(FIND_BY_ID)) {
+            log.info("Connected to URL");
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 book = mapResultSetToBook(resultSet);
+                log.info("Book matching search criteria: {}", book);
             }
         } catch (SQLException e) {
+            log.error("Unable to get book matching search criteria", e);
             throw new RuntimeException("Couldn't find book with id: " + id, e);
         }
-        log.debug("Implemented database access - findById");
         return book;
     }
 
@@ -65,16 +69,20 @@ public class BookDaoImpl implements BookDao {
     public Book create(Book book) {
         try (Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS)) {
+            log.info("Connected to URL");
             mapBookToStatementData(book, statement);
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
                 Long id = resultSet.getLong("id");
-                log.debug("Implemented database access - create");
+                log.info("Book {} created", book);
                 return findById(id);
+            } else {
+                log.warn("Book {} wasn't created", book);
+                throw new NotFoundException("Couldn't create book: " + book);
             }
-            throw new RuntimeException("Couldn't create book: " + book);
         } catch (SQLException e) {
+            log.error("Unable to create book", e);
             throw new RuntimeException("Couldn't create book: " + book, e);
         }
     }
@@ -83,11 +91,13 @@ public class BookDaoImpl implements BookDao {
     public Book update(Book book) {
         try (Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(UPDATE)) {
+            log.info("Connected to URL");
             mapBookToStatementData(book, statement);
         } catch (SQLException e) {
+            log.error("Unable to update book {}", book, e);
             throw new RuntimeException("Couldn't update book: " + book, e);
         }
-        log.debug("Implemented database access - update");
+        log.info("Book {} updated", book);
         return findById(book.getId());
     }
 
@@ -95,10 +105,12 @@ public class BookDaoImpl implements BookDao {
     public boolean delete(Long id) {
         try (Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(DELETE_BY_ID)) {
+            log.info("Connected to URL");
             statement.setLong(1, id);
-            log.debug("Implemented database access - delete");
+            log.info("Book with id {} deleted", id);
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
+            log.error("Unable to delete book with id  {}", id, e);
             throw new RuntimeException("Couldn't delete book with id: " + id, e);
         }
     }
@@ -108,15 +120,17 @@ public class BookDaoImpl implements BookDao {
         Book book = null;
         try (Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(FIND_BY_ISBN)) {
+            log.info("Connected to URL");
             statement.setString(1, isbn);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 book = mapResultSetToBook(resultSet);
+                log.info("Book matching search criteria: {}", book);
             }
         } catch (SQLException e) {
+            log.error("Unable to get book matching search criteria", e);
             throw new RuntimeException("Couldn't find book with isbn: " + isbn, e);
         }
-        log.debug("Implemented database access - findByIsbn");
         return book;
     }
 
@@ -125,15 +139,17 @@ public class BookDaoImpl implements BookDao {
         List<Book> books = new ArrayList<>();
         try (Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(FIND_BY_AUTHOR)) {
+            log.info("Connected to URL");
             statement.setString(1, author);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 books.add(mapResultSetToBook(resultSet));
             }
         } catch (SQLException e) {
+            log.error("Unable to get list of books matching search criteria", e);
             throw new RuntimeException("Couldn't find book by author: " + author, e);
         }
-        log.debug("Implemented database access - findByAuthor");
+        log.info("Created a list of books matching the search criteria");
         return books;
     }
 
@@ -142,13 +158,15 @@ public class BookDaoImpl implements BookDao {
         long count;
         try (Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(COUNT_ALL)) {
+            log.info("Connected to URL");
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
             count = resultSet.getLong("count");
         } catch (SQLException e) {
+            log.error("Unable to count objects", e);
             throw new RuntimeException(e);
         }
-        log.debug("Implemented database access - count");
+        log.info("Number of objects in the database: {}", count);
         return count;
     }
 
@@ -160,6 +178,7 @@ public class BookDaoImpl implements BookDao {
         book.setPublishinYear(resultSet.getInt("publishin_year"));
         book.setIsbn(resultSet.getString("isbn"));
         book.setPrice(resultSet.getBigDecimal("price"));
+        log.info("Created a book based on the results from the database");
         return book;
     }
 
@@ -169,5 +188,6 @@ public class BookDaoImpl implements BookDao {
         statement.setInt(3, book.getPublishinYear());
         statement.setString(4, book.getIsbn());
         statement.setBigDecimal(5, book.getPrice());
+        log.info("Object prepared for transfer to the database");
     }
 }
