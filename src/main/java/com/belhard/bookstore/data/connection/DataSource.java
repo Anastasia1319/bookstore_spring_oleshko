@@ -8,7 +8,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DataSource {
-    private static final Logger logger = LogManager.getLogger(DataSource.class); //log
+    private static final Logger log = LogManager.getLogger(DataSource.class); //log
     private static final String URL = "jdbc:postgresql://localhost:5432/bookstore_bh";
     private static final String USER = "postgres";
     private static final String PASSWORD = "root";
@@ -17,9 +17,10 @@ public class DataSource {
     public Connection getConnection() {
         try {
             Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            logger.info("Is connected");
+            log.info("Is connected");
             return connection;
         } catch (SQLException e) {
+            log.error("Database connection not created: ", e);
             throw new RuntimeException(e);
         }
     }
