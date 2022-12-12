@@ -8,10 +8,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DataSource {
-    private static final Logger log = LogManager.getLogger(DataSource.class); //log
-    private static final String URL = "jdbc:postgresql://localhost:5432/bookstore_bh";
-    private static final String USER = "postgres";
-    private static final String PASSWORD = "root";
+    private static final Logger log = LogManager.getLogger(DataSource.class);
+    private static final String URL = "jdbc:postgresql://surus.db.elephantsql.com/llpjwimb";
+    private static final String USER = "llpjwimb";
+    private static final String PASSWORD = "J7F660-xGX74oV9lT1bGlB-IAs2Z33gf";
     private Connection connection;
 
     public Connection getConnection() {
