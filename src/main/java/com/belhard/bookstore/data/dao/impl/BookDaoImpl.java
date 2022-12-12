@@ -92,6 +92,7 @@ public class BookDaoImpl implements BookDao {
             PreparedStatement statement = connection.prepareStatement(UPDATE)) {
             log.info("Connected to URL");
             mapBookToStatementData(book, statement);
+            statement.executeUpdate();
         } catch (SQLException e) {
             log.error("Database access error", e);
             throw new RuntimeException("Couldn't update book: " + book, e);

@@ -13,11 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoImpl implements UserDao {
-    private static final String SELECT_ALL = "SELECT user_id, first_name, last_name, email, \"password\", name_role FROM users, \"role\" WHERE users.role_id = role.role_id";
-    private static final String FIND_BY_EMAIL = "SELECT user_id, first_name, last_name, email, \"password\", name_role FROM users, \"role\" WHERE users.role_id = role.role_id AND email = ?";
-    private static final String FIND_BY_ID = "SELECT user_id, first_name, last_name, email, \"password\", name_role FROM users, \"role\" WHERE users.role_id = role.role_id AND user_id = ?";
-    private static final String CREATE = "INSERT INTO users (first_name, last_name, email, \"password\", role_id) VALUES (?, ?, ?, ?, ?)";
-    private static final String UPDATE = "UPDATE users SET first_name = ?, last_name = ?, email = ?, \"password\" = ?, role_id = ?)";
+    private static final String SELECT_ALL = "SELECT u.user_id, u.first_name, u.last_name, u.email, u.password, r.name_role " +
+            "FROM users u JOIN role r ON u.role_id = r.role_id;";
+    private static final String FIND_BY_EMAIL = "SELECT u.user_id, u.first_name, u.last_name, u.email, u.password, " +
+            "r.name_role FROM users u JOIN role r ON u.role_id = r.role_id WHERE u.email = ?";
+    private static final String FIND_BY_ID = "SELECT u.user_id, u.first_name, u.last_name, u.email, u.password, " +
+            "r.name_role FROM users u JOIN role r ON u.role_id = r.role_id WHERE u.user_id = ?";
+    private static final String CREATE = "INSERT INTO users (first_name, last_name, email, password, role_id) " +
+            "VALUES (?, ?, ?, ?, (SELECT r.role_id FROM role r WHERE r.name_role = ?))";
+    private static final String UPDATE = "UPDATE users SET first_name = ?, last_name = ?, email = ?, password = ?, role_id = (SELECT r.role_id FROM role r WHERE r.name_role = ?)";
     private static final String DELETE_BY_ID = "DELETE FROM users WHERE user_id = ?";
     private static final String COUNT_ALL = "SELECT COUNT(*) FROM users";
     private final DataSource dataSource;
@@ -89,12 +93,13 @@ public class UserDaoImpl implements UserDao {
              PreparedStatement statement = connection.prepareStatement(UPDATE)) {
             log.info("Connected to URL");
             mapUserToStatementData(user, statement);
+            statement.executeUpdate();
         } catch (SQLException e) {
             log.error("Database access error", e);
             throw new RuntimeException("Couldn't update user: " + user, e);
         }
         log.info("User {} was update", user);
-        return findById(user.getId());
+        return findByEmail(user.getEmail());
     }
 
     @Override
@@ -158,27 +163,9 @@ public class UserDaoImpl implements UserDao {
         user.setLastName(resultSet.getString("last_name"));
         user.setEmail(resultSet.getString("email"));
         user.setPassword(resultSet.getString("password"));
-        user.setRole(toRole(resultSet.getString("name_role")));
+        user.setRole(Role.valueOf(resultSet.getString("name_role")));
         log.info("Created a user based on the results from the database");
         return user;
-    }
-
-    private Role toRole (String nameRole){
-        Role role;
-        switch (nameRole) {
-            case "Admin":
-                role = Role.ADMIN;
-                break;
-            case "Manager":
-                role = Role.MANAGER;
-                break;
-            case "Customer":
-                role = Role.CUSTOMER;
-                break;
-            default:
-                throw new RuntimeException("Not found this role");
-        }
-        return role;
     }
 
     private void mapUserToStatementData (User user, PreparedStatement statement) throws SQLException {
@@ -186,25 +173,8 @@ public class UserDaoImpl implements UserDao {
         statement.setString(2, user.getLastName());
         statement.setString(3, user.getEmail());
         statement.setString(4, user.getPassword());
-        statement.setInt(5, toIdRole(user.getRole()));
+        statement.setString(5, (user.getRole()).name());
         log.info("Object prepared for transfer to the database");
     }
 
-    private int toIdRole (Role role) {
-        int nameRole;
-        switch (role) {
-            case ADMIN:
-                nameRole = 1;
-                break;
-            case MANAGER:
-                nameRole = 2;
-                break;
-            case CUSTOMER:
-                nameRole = 3;
-                break;
-            default:
-                throw new RuntimeException("Not found this role");
-        }
-        return nameRole;
-    }
 }
