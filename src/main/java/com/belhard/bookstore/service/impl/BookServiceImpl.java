@@ -6,6 +6,8 @@ import com.belhard.bookstore.exceptions.NotFoundException;
 import com.belhard.bookstore.exceptions.NotUpdateException;
 import com.belhard.bookstore.service.BookService;
 import com.belhard.bookstore.service.dto.BookDto;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -13,6 +15,7 @@ import java.util.List;
 
 public class BookServiceImpl implements BookService {
     private final BookDao bookDao;
+    private static final Logger log = LogManager.getLogger(BookServiceImpl.class);
 
     public BookServiceImpl(BookDao bookDao) {
         this.bookDao = bookDao;
@@ -20,6 +23,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookDto> getAll() {
+        log.info("Received a list of books from BookDaoImpl");
         return bookDao.findAll()
                 .stream()
                 .map(this::toDto)
@@ -29,10 +33,14 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto getById(Long id) {
         Book book = bookDao.findById(id);
+        log.info("The BookDaoImpl class method was called to search");
         if (book == null) {
+            log.warn("Book with id: {} not found!", id);
             throw  new NotFoundException("Book with id: " + id + " not found!");
         }
-        return toDto(book);
+        BookDto bookDto = toDto(book);
+        log.info("Search result: {}", bookDto);
+        return bookDto;
     }
 
     @Override
@@ -40,20 +48,26 @@ public class BookServiceImpl implements BookService {
         validate(dto);
         Book toCreate = toEntity(dto);
         Book created = bookDao.create(toCreate);
-        return toDto(created);
+        BookDto bookDto = toDto(created);
+        log.info("Creation result: {}", bookDto);
+        return bookDto;
     }
 
     private void validate(BookDto dto) {
         if (dto.getIsbn().length() > 13) {
+            log.error("Isbn parameter value is invalid");
             throw new NotUpdateException("ISBN number cannot be longer than 13 characters.");
         }
         LocalDate date = LocalDate.now();
         if (dto.getPublishinYear() < 0 || dto.getPublishinYear() > date.getYear()) {
+            log.error("Invalid publication year value");
             throw new NotUpdateException("Incorrect year of publication of the book entered.");
         }
         if (dto.getPrice().signum() <= 0) {
+            log.error("Invalid price value");
             throw new NotUpdateException("Incorrect price of the book entered.");
         }
+        log.info("Parameters have been successfully validated");
     }
 
     @Override
@@ -61,14 +75,18 @@ public class BookServiceImpl implements BookService {
         validate(dto);
         Book toUpdate = toEntity(dto);
         Book updated = bookDao.update(toUpdate);
-        return toDto(updated);
+        BookDto bookDto = toDto(updated);
+        log.info("Update result: {}", bookDto);
+        return bookDto;
     }
 
     @Override
     public void delete(Long id) {
         if (!bookDao.delete(id)) {
+            log.error("Book with id {} not deleted", id);
             throw new NotFoundException("Couldn't delete book with id: " + id + "!");
         }
+        log.info("Book with id {} deleted", id);
     }
 
     private BookDto toDto(Book book) {
@@ -79,6 +97,7 @@ public class BookServiceImpl implements BookService {
         bookDto.setPublishinYear(book.getPublishinYear());
         bookDto.setIsbn(book.getIsbn());
         bookDto.setPrice(book.getPrice());
+        log.info("Book transformed to BookDto");
         return bookDto;
     }
 
@@ -89,10 +108,12 @@ public class BookServiceImpl implements BookService {
         book.setPublishinYear(dto.getPublishinYear());
         book.setIsbn(dto.getIsbn());
         book.setPrice(dto.getPrice());
+        log.info("BookDto transformed to Book");
         return book;
     }
 
     public BigDecimal sumPriceByAuthor (String author) {
+        log.info("Calculation of the cost of all books of the author");
         return bookDao.findByAuthor(author)
                 .stream()
                 .map(Book::getPrice)
