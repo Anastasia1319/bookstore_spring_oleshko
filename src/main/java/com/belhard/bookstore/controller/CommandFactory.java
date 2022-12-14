@@ -15,5 +15,6 @@ public class CommandFactory {
     private CommandFactory() {
         BookService bookService = new BookServiceImpl(new BookDaoImpl(new DataSource()));
         commands = new HashMap<>();
+        commands.put("book", new BookCommand(bookService));
     }
 }
