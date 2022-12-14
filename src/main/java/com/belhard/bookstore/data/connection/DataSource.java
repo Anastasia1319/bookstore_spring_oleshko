@@ -16,11 +16,15 @@ public class DataSource {
 
     public Connection getConnection() {
         try {
+            Class.forName("org.postgresql.Driver");
             Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
             log.info("Is connected");
             return connection;
         } catch (SQLException e) {
             log.error("Database connection not created: ", e);
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            log.error("Not found Driver class for connection with PostgreSQL");
             throw new RuntimeException(e);
         }
     }
