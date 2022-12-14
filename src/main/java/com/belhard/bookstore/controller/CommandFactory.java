@@ -16,10 +16,14 @@ public class CommandFactory {
         BookService bookService = new BookServiceImpl(new BookDaoImpl(new DataSource()));
         commands = new HashMap<>();
         commands.put("book", new BookCommand(bookService));
+        commands.put("error", new ErrorCommand());
     }
 
     public Command getCommand(String action) {
         Command controller = commands.get(action);
+        if (controller == null) {
+            controller = commands.get("error");
+        }
         return controller;
     }
 }
