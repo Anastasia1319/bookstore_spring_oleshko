@@ -17,4 +17,9 @@ public class CommandFactory {
         commands = new HashMap<>();
         commands.put("book", new BookCommand(bookService));
     }
+
+    public Command getCommand(String action) {
+        Command controller = commands.get(action);
+        return controller;
+    }
 }
