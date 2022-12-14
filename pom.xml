@@ -64,7 +64,8 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.3.2</version>
                 <configuration>
-                    <outputDirectory>%TOMCAT_HOME%\webapps</outputDirectory>
+                    <warName>bookstore</warName>
+                    <outputDirectory>${env.TOMCAT_HOME}/webapps</outputDirectory>
                 </configuration>
             </plugin>
         </plugins>
