@@ -16,7 +16,7 @@ public class BookCommand implements Command{
         long id = processReq(req);
         BookDto bookDto = bookService.getById(id);
         req.setAttribute("book", bookDto);
-        return null;
+        return "jsp/book.jsp";
     }
 
     private static long processReq(HttpServletRequest req) {
