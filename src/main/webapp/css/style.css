@@ -16,3 +16,6 @@ body {
 .center {
   text-align: center;
 }
+.error {
+    color: #C70039;
+}
