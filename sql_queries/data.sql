@@ -22,3 +22,33 @@ VALUES ('Oscar Wilde', 'The Picture of Dorian Grey', 2019, '5-17-099056-6', 9.86
 		('Michael Bulgakov', 'Heart of dog', 2013, '5-389-06294-8', 10.69),
 		('Aldous Huxley', 'Oh brave new world', 2013, '5-17-062823-0', 18.69),
 		('Franz Kafka', 'Process', 2015, '5-17-089289-1', 10.33);
+
+INSERT INTO "role" (name_role)
+VALUES ('ADMIN'),
+	('MANAGER'),
+	('CUSTOMER');
+
+	INSERT INTO users (first_name, last_name, email, "password", role_id)
+    VALUES ('Oliver', 'Phelps', 'oliver4444@jmail.com', '15975328', 1),
+    	('Jack', 'Black', 'jack13@jmail.com', '11111111', 3),
+    	('Teresa', 'Gilmore', 'teresa@jmail.com', '24863157', 2),
+    	('Harry', 'Floyd', 'harry@jmail.com', '12131516', 3),
+    	('Willis', 'Scott', 'will@jmail.com', '75315982', 2),
+    	('Pauline', 'Patrick', 'pauline@jmail.com', '99999999', 3),
+    	('Fay', 'Warren', 'fay777@jmail.com', '55557777', 3),
+    	('Laurel', 'Murphy', 'laurel@jmail.com', '13151719', 1),
+    	('Candice', 'Mosley', 'candy@jmail.com', '45454545', 3),
+    	('Victoria', 'Holmes', 'viki@jmail.com', '7595ai23', 2),
+    	('Ronald', 'Fox', 'fox@jmail.com', '75315384', 3),
+    	('Piers', 'Wilkerson', 'piers@jmail.com', '24936578', 2),
+    	('Hector', 'Goodwin', 'goodwin@jmail.com', '55555555', 3),
+    	('Dominick', 'Robbins', 'dom@jmail.com', '15171819', 3),
+    	('Patricia', 'Henry', 'henry@jmail.com', '10000001', 3),
+    	('Margaret', 'Marshall', 'maggy@jmail.com', '5657aaoi', 3),
+    	('Meryl', 'Osborne', 'meryl@jmail.com', 'mosborne', 3),
+    	('Colin', 'Wood', 'wood@jmail.com', 'wood1313', 3),
+    	('Rudolph', 'Gilbert ', 'rudy@jmail.com', '1213aaaa', 3),
+    	('Isabella', 'Garrett', 'isabella@jmail.com', '13141583', 1),
+    	('Susanna ', 'Watts', 'susy@jmail.com', '45494863', 2),
+    	('Basil', 'Rodgers', 'basil@jmail.com', '35762524', 3),
+    	('Michael', 'Mosley', 'micky@jmail.com', '25289113', 3);
