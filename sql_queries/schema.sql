@@ -1,4 +1,10 @@
-CREATE TABLE books (
+/*
+DELETE IF EXISTS TABLE users;
+DELETE IF EXISTS TABLE roles;
+DELETE IF EXISTS TABLE books;
+*/
+
+CREATE TABLE IF NOT EXISTS books (
 	"id" BIGSERIAL PRIMARY KEY,
 	author VARCHAR(50),
 	title VARCHAR(100),
@@ -7,12 +13,12 @@ CREATE TABLE books (
 	price DECIMAL(8, 2)
 );
 
-CREATE TABLE "role" (
+CREATE TABLE IF NOT EXIST "roles" (
 	role_id BIGSERIAL PRIMARY KEY,
 	name_role VARCHAR(50)
 );
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXIST users (
 	user_id BIGSERIAL PRIMARY KEY,
 	first_name VARCHAR(50) NOT NULL,
 	last_name VARCHAR(50),
