@@ -4,6 +4,6 @@
         <title>Bookstore</title>
     </head>
     <body>
-        <a href="controller?command=books">Catalog</a>
+        <jsp:include page="jsp/navbar.jsp"/>
     </body>
 </html>
