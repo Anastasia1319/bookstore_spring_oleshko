@@ -43,6 +43,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDto getById(Long id) {
+        User user = userDao.findById(id);
+        log.info("The UserDaoImpl class method was called to search");
+        if (user == null) {
+            log.warn("User with email: {} not found!", id);
+            throw new NotFoundException("User with id: " + id + " not found!");
+        }
+        UserDto userDto = toDto(user);
+        log.info("Search result: {}", userDto);
+        return userDto;
+    }
+
+    @Override
     public UserDto create(UserDto dto) {
         validate(dto);
         User toCreate = toEntity(dto);

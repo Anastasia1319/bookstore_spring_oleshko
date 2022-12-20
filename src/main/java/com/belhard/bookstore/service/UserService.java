@@ -7,6 +7,7 @@ import java.util.List;
 public interface UserService {
     List<UserDto> getAll();
     UserDto getByEmail (String email);
+    UserDto getById (Long id);
     UserDto create (UserDto dto);
     UserDto update (UserDto dto);
     void delete(Long id);
