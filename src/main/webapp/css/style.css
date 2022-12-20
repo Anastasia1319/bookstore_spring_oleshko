@@ -1,5 +1,5 @@
 p {
-    color: blue;
+    color: black;
     font-size: 30px;
 }
 h2 {
@@ -7,7 +7,7 @@ h2 {
     font-size: 20px;
 }
 h1 {
-    color: #4BED9B;
+    color: #076043;
     font-size: 30px;
 }
 body {
@@ -40,8 +40,8 @@ body {
 }
 
 ul.nav{
-    margin-left: 0px;
-    padding-left: 0px;
+    margin-left: 10px;
+    padding-left: 10px;
     list-style: none;
 }
 .nav li {
