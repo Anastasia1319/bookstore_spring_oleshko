@@ -1,5 +1,8 @@
-package com.belhard.bookstore.controller;
+package com.belhard.bookstore.controller.command.impl;
 
+import com.belhard.bookstore.controller.command.Command;
+import com.belhard.bookstore.controller.command.impl.book.BookCommand;
+import com.belhard.bookstore.controller.command.impl.book.BooksCommand;
 import com.belhard.bookstore.data.connection.DataSource;
 import com.belhard.bookstore.data.dao.impl.BookDaoImpl;
 import com.belhard.bookstore.service.BookService;

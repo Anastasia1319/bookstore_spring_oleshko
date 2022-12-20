@@ -1,12 +1,13 @@
-package com.belhard.bookstore.controller;
+package com.belhard.bookstore.controller.command.impl.book;
 
+import com.belhard.bookstore.controller.command.Command;
 import com.belhard.bookstore.service.BookService;
 import com.belhard.bookstore.service.dto.BookDto;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
 
-public class BooksCommand implements Command{
+public class BooksCommand implements Command {
     private final BookService bookService;
 
     public BooksCommand(BookService bookService) {

@@ -1,8 +1,9 @@
-package com.belhard.bookstore.controller;
+package com.belhard.bookstore.controller.command.impl;
 
+import com.belhard.bookstore.controller.command.Command;
 import jakarta.servlet.http.HttpServletRequest;
 
-public class ErrorCommand implements Command{
+public class ErrorCommand implements Command {
     public ErrorCommand() {
     }
 
