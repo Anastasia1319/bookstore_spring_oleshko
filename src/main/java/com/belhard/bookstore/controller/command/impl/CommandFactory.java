@@ -4,6 +4,7 @@ import com.belhard.bookstore.controller.command.Command;
 import com.belhard.bookstore.controller.command.impl.book.BookCommand;
 import com.belhard.bookstore.controller.command.impl.book.BooksCommand;
 import com.belhard.bookstore.controller.command.impl.user.UserCommand;
+import com.belhard.bookstore.controller.command.impl.user.UsersCommand;
 import com.belhard.bookstore.data.connection.DataSource;
 import com.belhard.bookstore.data.dao.impl.BookDaoImpl;
 import com.belhard.bookstore.data.dao.impl.UserDaoImpl;
@@ -26,7 +27,8 @@ public class CommandFactory {
         commands.put("book", new BookCommand(bookService));
         commands.put("error", new ErrorCommand());
         commands.put("books", new BooksCommand(bookService));
-        commands.put("users", new UserCommand(userService));
+        commands.put("user", new UserCommand(userService));
+        commands.put("users", new UsersCommand(userService));
     }
 
     public Command getCommand(String action) {
