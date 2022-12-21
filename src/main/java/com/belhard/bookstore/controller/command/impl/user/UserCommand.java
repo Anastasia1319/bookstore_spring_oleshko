@@ -1,6 +1,7 @@
 package com.belhard.bookstore.controller.command.impl.user;
 
 import com.belhard.bookstore.controller.command.Command;
+import com.belhard.bookstore.exceptions.ApplicationException;
 import com.belhard.bookstore.service.UserService;
 import com.belhard.bookstore.service.dto.UserDto;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,6 +21,11 @@ public class UserCommand implements Command {
         return "jsp/user.jsp";
     }
     private static long processReq(HttpServletRequest req) {
-        return Long.parseLong(req.getParameter("id"));
+        try {
+            String rawId = req.getParameter("id");
+            return Long.parseLong(rawId);
+        } catch (Exception e) {
+            throw new ApplicationException("Incorrect request data: " + e);
+        }
     }
 }
