@@ -13,6 +13,9 @@ import java.util.Properties;
 public class DataSource {
     private static final Logger log = LogManager.getLogger(DataSource.class);
     private static final String PATH_TO_PROPERTIES = "/config.properties";
+    private static String url;
+    private static String user;
+    private static String password;
 
     private Connection connection;
 
@@ -27,8 +30,9 @@ public class DataSource {
             try (InputStream in = getClass().getResourceAsStream(PATH_TO_PROPERTIES)) {
                 Properties properties = new Properties();
                 properties.load(in);
-                connection = DriverManager.getConnection(properties.getProperty("URL"), properties.getProperty("USER"),
-                        properties.getProperty("PASSWORD"));
+                getConnectionConfig();
+                connection = DriverManager.getConnection(properties.getProperty(url), properties.getProperty(user),
+                        properties.getProperty(password));
                 log.info("Is connected");
             }
         } catch (SQLException e) {
@@ -40,6 +44,18 @@ public class DataSource {
         } catch (IOException e) {
             log.error("Failed to read config.properties", e);
             throw new RuntimeException(e);
+        }
+    }
+
+    private static void getConnectionConfig() {
+        if (ConfigManager.INSTANCE.getConfig("db").equals("remote")) {
+            url = "db.remote.url";
+            user = "db.remote.user";
+            password = "db.remote.password";
+        } else {
+            url = "db.local.url";
+            user = "db.local.user";
+            password = "db.local.password";
         }
     }
 }
