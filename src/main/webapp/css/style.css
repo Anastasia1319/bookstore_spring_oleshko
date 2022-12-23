@@ -7,7 +7,7 @@ h2 {
     font-size: 20px;
 }
 h1 {
-    color: #076043;
+    color: #08694a;
     font-size: 30px;
 }
 body {
@@ -49,15 +49,70 @@ ul.nav{
 }
 ul.nav a {
      display: inline-block;
-     width: 5em;
-     padding:10px;
-     background-color: #f4f4f4;
-     border: 1px dashed #333;
+     width: 10em;
+     padding:15px;
+     background-color: #F9F0DA;
+     border: 2px dashed #324b4e;
      text-decoration: none;
-     color: #333;
+     color: #324b4e;
      text-align: center;
 }
 ul.nav a:hover{
      background-color: #333;
      color: #f4f4f4;
+}
+
+.header {
+	float: left;
+  font-size: 2em;
+  background: linear-gradient(135deg, #5eb8b2 20%, #131b9e 70%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  padding: 0.3em 0.6em ;
+  border: 3px solid transparent;
+  border-image: linear-gradient(135deg, #5eb8b2 20%, #131b9e 70%);
+  border-image-slice: 1;
+}
+* {box-sizing: border-box;}
+form {
+  width: auto;
+  float: right;
+  margin-right: 30px;
+}
+input {
+  width: 250px;
+  height: 42px;
+  padding-left: 15px;
+  border-radius: 42px;
+  border: 2px solid #324b4e;
+  background: #F9F0DA;
+  outline: none;
+  position: relative;
+  transition: .3s linear;
+}
+input:focus {
+  width: 300px;
+}
+button {
+  width: 42px;
+  height: 42px;
+  background: none;
+  border: none;
+  position: absolute;
+  top: -2px;
+  right: 0;
+}
+button:before{
+  content: "\f002";
+  font-family: FontAwesome;
+  color: #324b4e;
+}
+form label {
+	display: inline-block;
+     width: 12em;
+     padding:15px;
+     text-decoration: none;
+     color: #324b4e;
+     text-align: center;
 }

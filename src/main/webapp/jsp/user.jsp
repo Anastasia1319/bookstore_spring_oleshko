@@ -7,6 +7,7 @@
     <link href="css/style.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
+    <jsp:include page="navbar.jsp"/>
     <div class="center">
       <img src="jpg/user.jpg" alt="User" />
       <h1>User</h1>
