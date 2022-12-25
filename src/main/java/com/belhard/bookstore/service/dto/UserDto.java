@@ -36,6 +36,10 @@ public class UserDto {
         this.lastName = lastName;
     }
 
+    public String getUserName() {
+        return getFirstName() + " " + getLastName();
+    }
+
     public String getEmail() {
         return email;
     }

@@ -9,6 +9,7 @@ import com.belhard.bookstore.service.dto.UserDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
@@ -25,6 +26,7 @@ public class UserServiceImpl implements UserService {
         log.info("Received a list of users from UserDaoImpl");
         return userDao.findAll()
                 .stream()
+                .sorted(Comparator.comparing(User::getId))
                 .map(this::toDto)
                 .toList();
     }
@@ -36,6 +38,19 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             log.warn("User with email: {} not found!", email);
             throw new NotFoundException("User with email: " + email + " not found!");
+        }
+        UserDto userDto = toDto(user);
+        log.info("Search result: {}", userDto);
+        return userDto;
+    }
+
+    @Override
+    public UserDto getById(Long id) {
+        User user = userDao.findById(id);
+        log.info("The UserDaoImpl class method was called to search");
+        if (user == null) {
+            log.warn("User with email: {} not found!", id);
+            throw new NotFoundException("User with id: " + id + " not found!");
         }
         UserDto userDto = toDto(user);
         log.info("Search result: {}", userDto);
