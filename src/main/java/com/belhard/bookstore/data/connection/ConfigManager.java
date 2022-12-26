@@ -9,7 +9,7 @@ import java.util.Properties;
 
 public class ConfigManager {
     public static ConfigManager INSTANCE = new ConfigManager();
-    private static final String PATH_TO_PROPERTIES = "/config.properties";
+    private static final String PATH_TO_PROPERTIES = "/application.properties";
     private static final Logger log = LogManager.getLogger(ConfigManager.class);
     private Properties properties;
 
@@ -18,7 +18,7 @@ public class ConfigManager {
             properties = new Properties();
             properties.load(in);
         } catch (IOException e) {
-            log.error("Failed to read config.properties", e);
+            log.error("Failed to read application.properties", e);
             throw new RuntimeException(e);
         }
     }

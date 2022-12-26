@@ -12,7 +12,7 @@ import java.util.Properties;
 
 public class DataSource {
     private static final Logger log = LogManager.getLogger(DataSource.class);
-    private static final String PATH_TO_PROPERTIES = "/config.properties";
+    private static final String PATH_TO_PROPERTIES = "/application.properties";
     private static String url;
     private static String user;
     private static String password;
@@ -42,7 +42,7 @@ public class DataSource {
             log.error("Not found Driver class for connection with PostgreSQL");
             throw new RuntimeException(e);
         } catch (IOException e) {
-            log.error("Failed to read config.properties", e);
+            log.error("Failed to read application.properties", e);
             throw new RuntimeException(e);
         }
     }
