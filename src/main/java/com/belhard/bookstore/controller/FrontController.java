@@ -2,7 +2,6 @@ package com.belhard.bookstore.controller;
 
 import com.belhard.bookstore.AppConfig;
 import com.belhard.bookstore.controller.command.Command;
-import com.belhard.bookstore.controller.command.impl.CommandFactory;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,7 +15,7 @@ public class FrontController extends HttpServlet {
     private AnnotationConfigApplicationContext context;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         context = new AnnotationConfigApplicationContext(AppConfig.class);
     }
     @Override
@@ -27,15 +26,14 @@ public class FrontController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("command");
-        CommandFactory commandFactory = CommandFactory.INSTANCE;
-        Command command = commandFactory.getCommand(action);
+        Command command = context.getBean(action, Command.class);
         String page;
         try {
             page = command.execute(req);
         } catch (Exception e) {
             req.setAttribute("Error_message", "Sorry!... Incorrect request");
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            page = commandFactory.getCommand("error").execute(req);
+            page = context.getBean("error", Command.class).execute(req);
         }
         req.getRequestDispatcher(page).forward(req, resp);
     }

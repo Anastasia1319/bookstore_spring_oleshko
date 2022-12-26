@@ -5,7 +5,9 @@ import com.belhard.bookstore.exceptions.ApplicationException;
 import com.belhard.bookstore.service.BookService;
 import com.belhard.bookstore.service.dto.BookDto;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.stereotype.Controller;
 
+@Controller("book")
 public class BookCommand implements Command {
     private final BookService bookService;
 
