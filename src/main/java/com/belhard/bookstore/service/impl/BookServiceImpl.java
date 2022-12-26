@@ -8,11 +8,13 @@ import com.belhard.bookstore.service.BookService;
 import com.belhard.bookstore.service.dto.BookDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+@Service
 public class BookServiceImpl implements BookService {
     private final BookDao bookDao;
     private static final Logger log = LogManager.getLogger(BookServiceImpl.class);
