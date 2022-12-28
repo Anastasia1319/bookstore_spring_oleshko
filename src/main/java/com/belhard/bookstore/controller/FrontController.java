@@ -24,7 +24,9 @@ public class FrontController extends HttpServlet {
     }
     @Override
     public void destroy() {
-        context.close();
+        if (context != null) {
+            context.close();
+        }
         log.info("Context is closed");
     }
 
