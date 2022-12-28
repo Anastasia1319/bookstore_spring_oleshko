@@ -17,7 +17,7 @@ public class BookDaoImpl implements BookDao {
     private static final String SELECT_ALL = "SELECT b.id, b.author, b.title, b.publishin_year, b.isbn, b.price FROM books b";
     private static final String FIND_BY_ID = "SELECT b.id, b.author, b.title, b.publishin_year, b.isbn, b.price FROM books b WHERE id = ?";
     private static final String CREATE = "INSERT INTO books (author, title, publishin_year, isbn, price) VALUES (?, ?, ?, ?, ?)";
-    private static final String UPDATE = "UPDATE books SET author = ?, title = ?, publishin_year = ?, isbn = ?, price = ?)";
+    private static final String UPDATE = "UPDATE books SET author = ?, title = ?, publishin_year = ?, isbn = ?, price = ?";
     private static final String DELETE_BY_ID = "DELETE FROM books WHERE id = ?";
     private static final String FIND_BY_ISBN = "SELECT b.id, b.author, b.title, b.publishin_year, b.isbn, b.price FROM books b WHERE isbn = ?";
     private static final String FIND_BY_AUTHOR = "SELECT b.id, b.author, b.title, b.publishin_year, b.isbn, b.price FROM books b WHERE author = ?";
