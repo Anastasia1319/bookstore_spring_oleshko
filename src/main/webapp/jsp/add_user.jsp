@@ -15,7 +15,9 @@
     <label>Last name<input type="text" name="last_name" placeholder="last name..."></label><br/>
     <label>Email<input type="email" name="email" placeholder="email..." required></label><br/>
     <label>Password<input type="password" name="password" placeholder="password..." minlength="8" required></label><br/>
-    <label>Role<input type="text" name="role" placeholder="role..." required></label><br/>
+    <label>Admin<input type="radio" id="ADMIN" name="role" value="ADMIN"></label>
+    <label>Manager<input type="radio" id="MANAGER" name="role" value="MANAGER"></label>
+    <label>Customer<input type="radio" id="CUSTOMER" name="role" value="CUSTOMER" checked></label><br/>
     <input type="submit" value="Register">
 </form>
 </body>

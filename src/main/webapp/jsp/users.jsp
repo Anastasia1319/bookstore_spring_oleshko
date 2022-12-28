@@ -18,6 +18,7 @@
             <th>Name</th>
             <th>Email</th>
             <th>Role</th>
+            <th>Actions</th>
         </thead>
         <tbody>
         <c:forEach var="user" items="${requestScope.users}">
@@ -28,6 +29,7 @@
               </td>
               <td>${user.email}</td>
               <td>${user.role}</td>
+              <td><a href="controller?command=edit_user_form&id=${user.id}">Edit</a></td>
             </tr>
         </c:forEach>
         </tbody>
