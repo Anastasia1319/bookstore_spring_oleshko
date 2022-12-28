@@ -2,6 +2,8 @@ package com.belhard.bookstore.controller;
 
 import com.belhard.bookstore.AppConfig;
 import com.belhard.bookstore.controller.command.Command;
+import com.belhard.bookstore.exceptions.ApplicationException;
+import com.belhard.bookstore.exceptions.NotFoundException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -32,18 +34,41 @@ public class FrontController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String action = req.getParameter("command");
-        Command command = context.getBean(action, Command.class);
         String page;
         try {
+            Command command = context.getBean(req.getParameter("command"), Command.class);
+            if (command == null) {
+                command = context.getBean("error", Command.class);
+            }
             log.info("DoGet method is started");
             page = command.execute(req);
+        } catch (NotFoundException e) {
+            page = processNotFoundException(req, resp, e);
+        } catch (ApplicationException e) {
+            page = processApplicationException(req, resp, e);
         } catch (Exception e) {
-            log.error("Context is not created", e);
-            req.setAttribute("Error_message", "Sorry!... Incorrect request");
-            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            page = context.getBean("error", Command.class).execute(req);
+            page = processException(req, resp, e);
         }
         req.getRequestDispatcher(page).forward(req, resp);
+    }
+
+    private String processNotFoundException(HttpServletRequest req, HttpServletResponse resp, NotFoundException e) {
+        log.error("NotFoundException", e);
+        req.setAttribute("Error_message", "Sorry! Nothing found. We're really sorry!");
+        resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        return context.getBean("error", Command.class).execute(req);
+    }
+
+    private String processApplicationException(HttpServletRequest req, HttpServletResponse resp, ApplicationException e) {
+        log.error("ApplicationException", e);
+        req.setAttribute("Error_message", "Sorry!... Incorrect request");
+        resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        return context.getBean("error", Command.class).execute(req);
+    }
+    private String processException(HttpServletRequest req, HttpServletResponse resp, Exception e) {
+        log.error("UnknownException", e);
+        req.setAttribute("Error_message", "Sorry!... Incorrect request");
+        resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        return context.getBean("error", Command.class).execute(req);
     }
 }

@@ -27,7 +27,7 @@ public class BookCommand implements Command {
         try {
             String rawId = req.getParameter("id");
             return Long.parseLong(rawId);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new ApplicationException("Incorrect request data: " + e);
         }
 
