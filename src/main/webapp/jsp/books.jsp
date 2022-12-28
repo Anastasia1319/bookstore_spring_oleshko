@@ -14,15 +14,24 @@
       <a href="controller?command=add_book_form">Add book to catalogue</a>
       <table>
         <thead>
-            <th>Id</th><th>Title</th><th>Author</th><th>Price</th>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Price</th>
         </thead>
         <tbody>
         <c:forEach var="book" items="${requestScope.books}">
             <tr>
-                <td>${book.id}</td><td>${book.title}</td><td>${book.author}</td><td>${book.price}</td>
+                <td>${book.id}</td>
+              <td>
+                  <a href="controller?command=book&id=${book.id}">${book.title}</a>
+              </td>
+              <td>${book.author}</td>
+              <td>${book.price}</td>
             </tr>
         </c:forEach>
         </tbody>
+      </table>
     </div>
   </body>
 </html>
