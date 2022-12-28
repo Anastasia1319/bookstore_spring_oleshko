@@ -8,7 +8,8 @@
 </head>
 <body>
 <jsp:include page="navbar.jsp"/>
-<form action="controller" method="post">
+<h1>You can register in this form!</h1>
+<form class="left" action="controller" method="post">
     <input type="hidden" name="command" value="add_user">
     <label>First name<input type="text" name="first_name" placeholder="first name..." required></label><br/>
     <label>Last name<input type="text" name="last_name" placeholder="last name..."></label><br/>

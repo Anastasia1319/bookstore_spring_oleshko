@@ -8,7 +8,8 @@
 </head>
 <body>
     <jsp:include page="navbar.jsp"/>
-    <form action="controller" method="post">
+    <h1>You can add book here!</h1>
+    <form class="left" action="controller" method="post">
         <input type="hidden" name="command" value="add_book">
         <label>Title<input type="text" name="title" placeholder="title..."></label><br/>
         <label>Author<input type="text" name="author" placeholder="author..."></label><br/>
