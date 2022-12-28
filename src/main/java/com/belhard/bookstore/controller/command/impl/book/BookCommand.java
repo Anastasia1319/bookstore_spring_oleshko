@@ -17,7 +17,7 @@ public class BookCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest req) {
-        long id = processReq(req);
+        Long id = processReq(req);
         BookDto bookDto = bookService.getById(id);
         req.setAttribute("book", bookDto);
         return "jsp/book.jsp";

@@ -11,6 +11,7 @@
     <div class="center">
       <img src="jpg/books.jpg" width="700" height="550" alt="Books" />
       <h1>Books</h1>
+      <a href="controller?command=add_book_form">Add book to catalogue</a>
       <table>
         <thead>
             <th>Id</th><th>Title</th><th>Author</th><th>Price</th>
