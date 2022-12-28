@@ -37,9 +37,6 @@ public class FrontController extends HttpServlet {
         String page;
         try {
             Command command = context.getBean(req.getParameter("command"), Command.class);
-            if (command == null) {
-                command = context.getBean("error", Command.class);
-            }
             log.info("DoGet method is started");
             page = command.execute(req);
         } catch (NotFoundException e) {
@@ -53,20 +50,20 @@ public class FrontController extends HttpServlet {
     }
 
     private String processNotFoundException(HttpServletRequest req, HttpServletResponse resp, NotFoundException e) {
-        log.error("NotFoundException", e);
+        log.error(e.getClass().getSimpleName());
         req.setAttribute("Error_message", "Sorry! Nothing found. We're really sorry!");
         resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
         return context.getBean("error", Command.class).execute(req);
     }
 
     private String processApplicationException(HttpServletRequest req, HttpServletResponse resp, ApplicationException e) {
-        log.error("ApplicationException", e);
+        log.error(e.getClass().getSimpleName());
         req.setAttribute("Error_message", "Sorry!... Incorrect request");
         resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         return context.getBean("error", Command.class).execute(req);
     }
     private String processException(HttpServletRequest req, HttpServletResponse resp, Exception e) {
-        log.error("UnknownException", e);
+        log.error(e.getClass().getSimpleName());
         req.setAttribute("Error_message", "Sorry!... Incorrect request");
         resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
         return context.getBean("error", Command.class).execute(req);
