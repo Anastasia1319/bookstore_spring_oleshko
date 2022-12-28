@@ -4,6 +4,7 @@ import com.belhard.bookstore.AppConfig;
 import com.belhard.bookstore.controller.command.Command;
 import com.belhard.bookstore.exceptions.ApplicationException;
 import com.belhard.bookstore.exceptions.NotFoundException;
+import com.belhard.bookstore.exceptions.NotUpdateException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -43,7 +44,9 @@ public class FrontController extends HttpServlet {
             page = processNotFoundException(req, resp, e);
         } catch (ApplicationException e) {
             page = processApplicationException(req, resp, e);
-        } catch (Exception e) {
+        } catch (NotUpdateException e) {
+            page = processNotUpdateException(req, resp, e);
+        }catch (Exception e) {
             page = processException(req, resp, e);
         }
         req.getRequestDispatcher(page).forward(req, resp);
@@ -57,6 +60,12 @@ public class FrontController extends HttpServlet {
     }
 
     private String processApplicationException(HttpServletRequest req, HttpServletResponse resp, ApplicationException e) {
+        log.error(e.getClass().getSimpleName());
+        req.setAttribute("Error_message", "Sorry!... Incorrect request");
+        resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        return context.getBean("error", Command.class).execute(req);
+    }
+    private String processNotUpdateException(HttpServletRequest req, HttpServletResponse resp, NotUpdateException e) {
         log.error(e.getClass().getSimpleName());
         req.setAttribute("Error_message", "Sorry!... Incorrect request");
         resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
