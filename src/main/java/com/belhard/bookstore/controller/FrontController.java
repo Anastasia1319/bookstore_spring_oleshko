@@ -68,4 +68,9 @@ public class FrontController extends HttpServlet {
         resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
         return context.getBean("error", Command.class).execute(req);
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doGet(req, resp);
+    }
 }

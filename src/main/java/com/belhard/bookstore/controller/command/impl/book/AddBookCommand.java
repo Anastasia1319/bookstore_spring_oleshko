@@ -33,7 +33,7 @@ public class AddBookCommand implements Command {
         BigDecimal price = BigDecimal.valueOf(Double.valueOf(req.getParameter("price")));
         BookDto toCreate = new BookDto();
         toCreate.setTitle(title);
-        toCreate.setTitle(author);
+        toCreate.setAuthor(author);
         toCreate.setPublishinYear(publishing_year);
         toCreate.setIsbn(isbn);
         toCreate.setPrice(price);
