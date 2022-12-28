@@ -18,6 +18,7 @@
             <th>Title</th>
             <th>Author</th>
             <th>Price</th>
+            <th>Actions</th>
         </thead>
         <tbody>
         <c:forEach var="book" items="${requestScope.books}">
@@ -28,6 +29,7 @@
               </td>
               <td>${book.author}</td>
               <td>${book.price}</td>
+              <td><a href="controller?command=edit_book_form&id=${book.id}">Edit</a></td>
             </tr>
         </c:forEach>
         </tbody>
