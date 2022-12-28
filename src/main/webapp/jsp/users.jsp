@@ -14,15 +14,24 @@
       <a href="controller?command=add_user_form">User registration</a>
       <table>
         <thead>
-            <th>Id</th><th>Name</th><th>Email</th><th>Role</th>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
         </thead>
         <tbody>
         <c:forEach var="user" items="${requestScope.users}">
             <tr>
-                <td>${user.id}</td><td>${user.userName}</td><td>${user.email}</td><td>${user.role}</td>
+                <td>${user.id}</td>
+              <td>
+                <a href="controller?command=user&id=${user.id}">${user.userName}</a>
+              </td>
+              <td>${user.email}</td>
+              <td>${user.role}</td>
             </tr>
         </c:forEach>
         </tbody>
+      </table>
     </div>
   </body>
 </html>
