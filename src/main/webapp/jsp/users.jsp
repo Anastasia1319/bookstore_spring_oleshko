@@ -11,6 +11,7 @@
     <div class="center">
       <img src="jpg/users.jpg" width="700" height="550" alt="Users" />
       <h1>Users</h1>
+      <a href="controller?command=add_user_form">User registration</a>
       <table>
         <thead>
             <th>Id</th><th>Name</th><th>Email</th><th>Role</th>
