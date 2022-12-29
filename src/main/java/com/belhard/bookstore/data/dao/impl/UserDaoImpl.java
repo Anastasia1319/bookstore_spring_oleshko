@@ -55,7 +55,6 @@ public class UserDaoImpl implements UserDao {
             mapUserToStatementData(user, statement);
             return statement;
         }, keyHolder);
-        log.info("Object creation method called");
         return Optional.ofNullable(keyHolder.getKey())
                 .map(Number::longValue)
                 .map(this::findById)
@@ -72,7 +71,7 @@ public class UserDaoImpl implements UserDao {
         int rowsUpdated = jdbcTemplate.update(UPDATE, user.getFirstName(), user.getLastName(), user.getEmail(),
                 user.getPassword(), user.getRole(), user.getId());
         if (rowsUpdated == 0) {
-            log.warn("Updated rows (user): 0");
+            log.warn("Updated rows (users): 0");
             throw new NotUpdateException("Couldn't update user: {}" + user);
         }
         return findById(user.getId());
@@ -83,7 +82,7 @@ public class UserDaoImpl implements UserDao {
         log.info("Trying to delete a row with a user in the database");
         int rowsUpdated = jdbcTemplate.update(DELETE_BY_ID, id);
         if (rowsUpdated == 0) {
-            log.warn("Updated rows on deletion (user): 0");
+            log.warn("Updated rows on deletion (users): 0");
             throw new NotUpdateException("Couldn't delete user with id: " + id);
         }
         return rowsUpdated == 1;
