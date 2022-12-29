@@ -7,11 +7,13 @@ import com.belhard.bookstore.data.entity.User;
 import com.belhard.bookstore.exceptions.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class UserDaoImpl implements UserDao {
     private static final String SELECT_ALL = "SELECT u.user_id, u.first_name, u.last_name, u.email, u.password, r.name_role " +
             "FROM users u JOIN role r ON u.role_id = r.role_id;";

@@ -8,12 +8,15 @@ import com.belhard.bookstore.service.BookService;
 import com.belhard.bookstore.service.dto.BookDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+@Service
 public class BookServiceImpl implements BookService {
+    public static final int ISBN_LENGTH = 13;
     private final BookDao bookDao;
     private static final Logger log = LogManager.getLogger(BookServiceImpl.class);
 
@@ -54,7 +57,7 @@ public class BookServiceImpl implements BookService {
     }
 
     private void validate(BookDto dto) {
-        if (dto.getIsbn().length() > 13) {
+        if (dto.getIsbn().length() > ISBN_LENGTH) {
             log.error("Isbn parameter value is invalid");
             throw new NotUpdateException("ISBN number cannot be longer than 13 characters.");
         }

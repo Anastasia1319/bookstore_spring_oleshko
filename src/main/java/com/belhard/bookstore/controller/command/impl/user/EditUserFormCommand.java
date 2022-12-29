@@ -1,26 +1,26 @@
-package com.belhard.bookstore.controller.command.impl.book;
+package com.belhard.bookstore.controller.command.impl.user;
 
 import com.belhard.bookstore.controller.command.Command;
 import com.belhard.bookstore.exceptions.ApplicationException;
-import com.belhard.bookstore.service.BookService;
-import com.belhard.bookstore.service.dto.BookDto;
+import com.belhard.bookstore.service.UserService;
+import com.belhard.bookstore.service.dto.UserDto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 
-@Controller("book")
-public class BookCommand implements Command {
-    private final BookService bookService;
+@Controller("edit_user_form")
+public class EditUserFormCommand implements Command {
+    private final UserService userService;
 
-    public BookCommand(BookService bookService) {
-        this.bookService = bookService;
+    public EditUserFormCommand(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
     public String execute(HttpServletRequest req) {
         Long id = processReq(req);
-        BookDto bookDto = bookService.getById(id);
-        req.setAttribute("book", bookDto);
-        return "jsp/book.jsp";
+        UserDto userDto = userService.getById(id);
+        req.setAttribute("user", userDto);
+        return "jsp/edit_user.jsp";
     }
 
     private static long processReq(HttpServletRequest req) {
@@ -30,6 +30,5 @@ public class BookCommand implements Command {
         } catch (RuntimeException e) {
             throw new ApplicationException("Incorrect request data: " + e);
         }
-
     }
 }

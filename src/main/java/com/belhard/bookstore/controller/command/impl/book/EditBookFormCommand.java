@@ -7,11 +7,11 @@ import com.belhard.bookstore.service.dto.BookDto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 
-@Controller("book")
-public class BookCommand implements Command {
+@Controller("edit_book_form")
+public class EditBookFormCommand implements Command {
     private final BookService bookService;
 
-    public BookCommand(BookService bookService) {
+    public EditBookFormCommand(BookService bookService) {
         this.bookService = bookService;
     }
 
@@ -20,7 +20,7 @@ public class BookCommand implements Command {
         Long id = processReq(req);
         BookDto bookDto = bookService.getById(id);
         req.setAttribute("book", bookDto);
-        return "jsp/book.jsp";
+        return "jsp/edit_book.jsp";
     }
 
     private static long processReq(HttpServletRequest req) {

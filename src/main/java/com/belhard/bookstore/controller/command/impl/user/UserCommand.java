@@ -5,7 +5,9 @@ import com.belhard.bookstore.exceptions.ApplicationException;
 import com.belhard.bookstore.service.UserService;
 import com.belhard.bookstore.service.dto.UserDto;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.stereotype.Controller;
 
+@Controller("user")
 public class UserCommand implements Command {
     private final UserService userService;
 
