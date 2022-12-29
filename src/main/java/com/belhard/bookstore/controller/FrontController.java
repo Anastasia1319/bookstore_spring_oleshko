@@ -51,26 +51,26 @@ public class FrontController extends HttpServlet {
     }
 
     private String processNotFoundException(HttpServletRequest req, HttpServletResponse resp, NotFoundException e) {
-        log.error(e.getClass().getSimpleName());
+        log.error("NotFoundException from FrontController", e);
         req.setAttribute("Error_message", "Sorry! Nothing found. We're really sorry!");
         resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
         return context.getBean("error", Command.class).execute(req);
     }
 
     private String processApplicationException(HttpServletRequest req, HttpServletResponse resp, ApplicationException e) {
-        log.error(e.getClass().getSimpleName());
+        log.error("ApplicationException from FrontController", e);
         req.setAttribute("Error_message", "Sorry!... Incorrect request");
         resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         return context.getBean("error", Command.class).execute(req);
     }
     private String processNotUpdateException(HttpServletRequest req, HttpServletResponse resp, NotUpdateException e) {
-        log.error(e.getClass().getSimpleName());
+        log.error("NotUpdateException from FrontController", e);
         req.setAttribute("Error_message", "Sorry!... Incorrect request");
         resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         return context.getBean("error", Command.class).execute(req);
     }
     private String processException(HttpServletRequest req, HttpServletResponse resp, Exception e) {
-        log.error(e.getClass().getSimpleName());
+        log.error("Exception from FrontController", e);
         req.setAttribute("Error_message", "Sorry!... Incorrect request");
         resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
         return context.getBean("error", Command.class).execute(req);
