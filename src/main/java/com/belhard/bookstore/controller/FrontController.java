@@ -23,14 +23,12 @@ public class FrontController extends HttpServlet {
     @Override
     public void init() {
         context = new AnnotationConfigApplicationContext(AppConfig.class);
-        log.info("Created context");
     }
     @Override
     public void destroy() {
         if (context != null) {
             context.close();
         }
-        log.info("Context is closed");
     }
 
     @Override

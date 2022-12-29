@@ -14,11 +14,11 @@ import javax.sql.DataSource;
 @ComponentScan
 @PropertySource("classpath:application.properties")
 public class AppConfig {
-    @Value("${db.remote.url}")
+    @Value("${spring.datasource.jdbc-url}")
     private static String dbUrl;
-    @Value("${db.remote.user}")
+    @Value("${spring.datasource.user}")
     private static String dbUser;
-    @Value("${db.remote.password}")
+    @Value("${spring.datasource.password}")
     private static String dbPassword;
 
     @Bean
