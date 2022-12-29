@@ -17,12 +17,6 @@ import java.util.Properties;
 public class DataSource {
     private static final Logger log = LogManager.getLogger(DataSource.class);
     private static final String PATH_TO_PROPERTIES = "/application.properties";
-    /*@Value("${db.remote.url}")
-    private static String url;
-    @Value("${db.remote.user}")
-    private static String user;
-    @Value("${db.remote.password}")
-    private static String password;*/
 
     private Connection connection;
 
