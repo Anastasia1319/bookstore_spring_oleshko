@@ -20,7 +20,7 @@ public class BookDaoImpl implements BookDao {
     private static final String SELECT_ALL = "SELECT b.id, b.author, b.title, b.publishin_year, b.isbn, b.price FROM books b";
     private static final String FIND_BY_ID = "SELECT b.id, b.author, b.title, b.publishin_year, b.isbn, b.price FROM books b WHERE id = ?";
     private static final String CREATE = "INSERT INTO books (author, title, publishin_year, isbn, price) VALUES (?, ?, ?, ?, ?)";
-    private static final String UPDATE = "UPDATE books SET author = ?, title = ?, publishin_year = ?, isbn = ?, price = ?";
+    private static final String UPDATE = "UPDATE books SET author = ?, title = ?, publishin_year = ?, isbn = ?, price = ? WHERE id = ?";
     private static final String DELETE_BY_ID = "DELETE FROM books WHERE id = ?";
     private static final String FIND_BY_ISBN = "SELECT b.id, b.author, b.title, b.publishin_year, b.isbn, b.price FROM books b WHERE isbn = ?";
     private static final String FIND_BY_AUTHOR = "SELECT b.id, b.author, b.title, b.publishin_year, b.isbn, b.price FROM books b WHERE author = ?";
@@ -53,7 +53,7 @@ public class BookDaoImpl implements BookDao {
         log.info("Object creation method called");
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
-            PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement statement = connection.prepareStatement(CREATE, new String[]{"id"});
             mapBookToStatementData(book, statement);
             return statement;
         }, keyHolder);
@@ -66,7 +66,7 @@ public class BookDaoImpl implements BookDao {
     @Override
     public Book update(Book book) {
         log.info("Trying to update a row with a book in the database");
-        int rowsUpdated = jdbcTemplate.update(UPDATE, book.getAuthor(), book.getTitle(), book.getPublishinYear(), book.getIsbn(), book.getPrice());
+        int rowsUpdated = jdbcTemplate.update(UPDATE, book.getAuthor(), book.getTitle(), book.getPublishinYear(), book.getIsbn(), book.getPrice(), book.getId());
         if (rowsUpdated == 0) {
             log.warn("Updated rows (books): 0");
             throw new NotUpdateException("Couldn't update book: {}" + book);

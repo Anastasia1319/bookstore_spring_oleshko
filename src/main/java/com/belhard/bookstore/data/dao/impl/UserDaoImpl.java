@@ -26,7 +26,7 @@ public class UserDaoImpl implements UserDao {
     private static final String CREATE = "INSERT INTO users (first_name, last_name, email, password, role_id) " +
             "VALUES (?, ?, ?, ?, (SELECT r.role_id FROM role r WHERE r.name_role = ?))";
     private static final String UPDATE = "UPDATE users SET first_name = ?, last_name = ?, email = ?, password = ?, role_id = (SELECT r.role_id FROM role r WHERE r.name_role = ?)" +
-            "WHERE user_id = ?";
+            " WHERE user_id = ?";
     private static final String DELETE_BY_ID = "DELETE FROM users WHERE user_id = ?";
     private static final String COUNT_ALL = "SELECT COUNT(*) FROM users";
     private final JdbcTemplate jdbcTemplate;
@@ -51,7 +51,7 @@ public class UserDaoImpl implements UserDao {
         log.info("Object creation method called");
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
-            PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement statement = connection.prepareStatement(CREATE, new String[]{"user_id"});
             mapUserToStatementData(user, statement);
             return statement;
         }, keyHolder);
@@ -69,7 +69,7 @@ public class UserDaoImpl implements UserDao {
     public User update(User user) {
         log.info("Trying to update a row with a user in the database");
         int rowsUpdated = jdbcTemplate.update(UPDATE, user.getFirstName(), user.getLastName(), user.getEmail(),
-                user.getPassword(), user.getRole(), user.getId());
+                user.getPassword(), user.getRole().name(), user.getId());
         if (rowsUpdated == 0) {
             log.warn("Updated rows (users): 0");
             throw new NotUpdateException("Couldn't update user: {}" + user);
