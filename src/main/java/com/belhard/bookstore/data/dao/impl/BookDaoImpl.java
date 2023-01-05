@@ -62,7 +62,6 @@ public class BookDaoImpl implements BookDao {
                 .map(this::findById)
                 .orElseThrow();
     }
-
     @Override
     public Book update(Book book) {
         log.info("Trying to update a row with a book in the database");
@@ -100,7 +99,7 @@ public class BookDaoImpl implements BookDao {
     @Override
     public long countAll() {
         log.info("Created a database call - counting the number of rows");
-        return jdbcTemplate.getFetchSize();
+        return jdbcTemplate.queryForObject(COUNT_ALL, Integer.class);
     }
 
     private void mapBookToStatementData (Book book, PreparedStatement statement) throws SQLException {

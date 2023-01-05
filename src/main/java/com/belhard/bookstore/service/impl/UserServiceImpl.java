@@ -121,6 +121,7 @@ public class UserServiceImpl implements UserService {
 
     private User toEntity (UserDto dto) {
         User user = new User();
+        user.setId(dto.getId());
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
         user.setEmail(dto.getEmail());
