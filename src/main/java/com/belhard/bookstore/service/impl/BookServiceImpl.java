@@ -92,6 +92,15 @@ public class BookServiceImpl implements BookService {
         log.info("Book with id {} deleted", id);
     }
 
+    @Override
+    public List<BookDto> getByAuthor(String author) {
+        log.info("Received a list of books by author from BookDaoImpl");
+        return bookDao.findByAuthor(author)
+                .stream()
+                .map(this::toDto)
+                .toList();
+    }
+
     private BookDto toDto(Book book) {
         BookDto bookDto = new BookDto();
         bookDto.setId(book.getId());
