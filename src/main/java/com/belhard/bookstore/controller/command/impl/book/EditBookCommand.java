@@ -6,7 +6,6 @@ import com.belhard.bookstore.service.dto.BookDto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 
-import java.math.BigDecimal;
 
 @Controller("edit_book")
 public class EditBookCommand implements Command {
