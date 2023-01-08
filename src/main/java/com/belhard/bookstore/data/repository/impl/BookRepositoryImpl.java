@@ -36,7 +36,7 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public Book create(Book entity) {
-        BookDto toCreat = converter.toDto(entity);
+        BookDto toCreat = converter.toBookDto(entity);
         BookDto created = bookDao.create(toCreat);
         Book book = converter.toBookEntity(created);
         log.info("Creation result: {}", book);
@@ -45,7 +45,7 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public Book update(Book entity) {
-        BookDto bookDto = converter.toDto(entity);
+        BookDto bookDto = converter.toBookDto(entity);
         BookDto updated = bookDao.update(bookDto);
         Book book = converter.toBookEntity(updated);
         log.info("Update result: {}", book);
