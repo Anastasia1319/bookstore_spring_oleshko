@@ -6,7 +6,7 @@ import com.belhard.bookstore.data.entity.Book;
 import java.util.List;
 
 public interface BookRepository extends CrudRepository<Book, Long>{
-    BookDto findByIsbn (String isbn);
-    List<BookDto> findByAuthor (String author);
+    Book findByIsbn (String isbn);
+    List<Book> findByAuthor (String author);
     long countAll();
 }

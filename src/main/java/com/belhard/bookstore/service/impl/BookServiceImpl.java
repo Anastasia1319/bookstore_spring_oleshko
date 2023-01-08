@@ -3,6 +3,7 @@ package com.belhard.bookstore.service.impl;
 import com.belhard.bookstore.data.dao.BookDao;
 import com.belhard.bookstore.data.entity.Book;
 import com.belhard.bookstore.data.repository.BookRepository;
+import com.belhard.bookstore.data.repository.Converter;
 import com.belhard.bookstore.exceptions.NotFoundException;
 import com.belhard.bookstore.exceptions.NotUpdateException;
 import com.belhard.bookstore.service.BookService;
@@ -21,6 +22,7 @@ import java.util.List;
 public class BookServiceImpl implements BookService {
     public static final int ISBN_LENGTH = 13;
     private final BookRepository bookRepository;
+    private Converter converter;
 
     @Override
     public List<BookDto> getAll() {
@@ -47,7 +49,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto create(BookDto dto) {
         validate(dto);
-        Book toCreate = toEntity(dto);
+        Book toCreate = converter.toBookEntity(dto);
         Book created = bookRepository.create(toCreate);
         BookDto bookDto = toDto(created);
         log.info("Creation result: {}", bookDto);
@@ -74,7 +76,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto update(BookDto dto) {
         validate(dto);
-        Book toUpdate = toEntity(dto);
+        Book toUpdate = converter.toBookEntity(dto);
         Book updated = bookRepository.update(toUpdate);
         BookDto bookDto = toDto(updated);
         log.info("Update result: {}", bookDto);
@@ -109,18 +111,6 @@ public class BookServiceImpl implements BookService {
         bookDto.setPrice(book.getPrice());
         log.info("Book transformed to BookDto");
         return bookDto;
-    }
-
-    private Book toEntity (BookDto dto) {
-        Book book = new Book();
-        book.setId(dto.getId());
-        book.setAuthor(dto.getAuthor());
-        book.setTitle(dto.getTitle());
-        book.setPublishinYear(dto.getPublishinYear());
-        book.setIsbn(dto.getIsbn());
-        book.setPrice(dto.getPrice());
-        log.info("BookDto transformed to Book");
-        return book;
     }
 
     public BigDecimal sumPriceByAuthor (String author) {

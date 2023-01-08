@@ -36,12 +36,12 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public BookDto findByIsbn(String isbn) {
+    public Book findByIsbn(String isbn) {
         return null;
     }
 
     @Override
-    public List<BookDto> findByAuthor(String author) {
+    public List<Book> findByAuthor(String author) {
         return null;
     }
 
