@@ -1,4 +1,4 @@
-package com.belhard.bookstore.data.dao.impl;
+package com.belhard.bookstore.data.dao.impl.mapper;
 
 import com.belhard.bookstore.data.entity.Role;
 import com.belhard.bookstore.data.dto.UserDto;

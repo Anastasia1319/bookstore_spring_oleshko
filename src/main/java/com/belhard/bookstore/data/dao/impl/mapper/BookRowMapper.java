@@ -1,4 +1,4 @@
-package com.belhard.bookstore.data.dao.impl;
+package com.belhard.bookstore.data.dao.impl.mapper;
 
 import com.belhard.bookstore.data.dto.BookDto;
 import lombok.extern.log4j.Log4j2;

@@ -1,6 +1,7 @@
 package com.belhard.bookstore.data.dao.impl;
 
 import com.belhard.bookstore.data.dao.UserDao;
+import com.belhard.bookstore.data.dao.impl.mapper.UserRowMapper;
 import com.belhard.bookstore.data.dto.UserDto;
 import com.belhard.bookstore.exceptions.NotUpdateException;
 import lombok.RequiredArgsConstructor;
