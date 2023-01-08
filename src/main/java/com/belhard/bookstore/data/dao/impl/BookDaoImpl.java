@@ -1,8 +1,7 @@
 package com.belhard.bookstore.data.dao.impl;
 
 import com.belhard.bookstore.data.dao.BookDao;
-import com.belhard.bookstore.data.dao.dto.BookDto;
-import com.belhard.bookstore.data.entity.Book;
+import com.belhard.bookstore.data.dto.BookDto;
 import com.belhard.bookstore.exceptions.NotUpdateException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

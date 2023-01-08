@@ -2,6 +2,7 @@ package com.belhard.bookstore.service.impl;
 
 import com.belhard.bookstore.data.dao.BookDao;
 import com.belhard.bookstore.data.entity.Book;
+import com.belhard.bookstore.data.repository.BookRepository;
 import com.belhard.bookstore.exceptions.NotFoundException;
 import com.belhard.bookstore.exceptions.NotUpdateException;
 import com.belhard.bookstore.service.BookService;
@@ -19,12 +20,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
     public static final int ISBN_LENGTH = 13;
-    private final BookDao bookDao;
+    private final BookRepository bookRepository;
 
     @Override
     public List<BookDto> getAll() {
         log.info("Received a list of books from BookDaoImpl");
-        return bookDao.findAll()
+        return bookRepository.findAll()
                 .stream()
                 .map(this::toDto)
                 .toList();
@@ -32,7 +33,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto getById(Long id) {
-        Book book = bookDao.findById(id);
+        Book book = bookRepository.findById(id);
         log.info("The BookDaoImpl class method was called to search");
         if (book == null) {
             log.warn("Book with id: {} not found!", id);
@@ -47,7 +48,7 @@ public class BookServiceImpl implements BookService {
     public BookDto create(BookDto dto) {
         validate(dto);
         Book toCreate = toEntity(dto);
-        Book created = bookDao.create(toCreate);
+        Book created = bookRepository.create(toCreate);
         BookDto bookDto = toDto(created);
         log.info("Creation result: {}", bookDto);
         return bookDto;
@@ -74,7 +75,7 @@ public class BookServiceImpl implements BookService {
     public BookDto update(BookDto dto) {
         validate(dto);
         Book toUpdate = toEntity(dto);
-        Book updated = bookDao.update(toUpdate);
+        Book updated = bookRepository.update(toUpdate);
         BookDto bookDto = toDto(updated);
         log.info("Update result: {}", bookDto);
         return bookDto;
@@ -82,7 +83,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void delete(Long id) {
-        if (!bookDao.delete(id)) {
+        if (!bookRepository.delete(id)) {
             log.error("Book with id {} not deleted", id);
             throw new NotFoundException("Couldn't delete book with id: " + id + "!");
         }
@@ -92,7 +93,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<BookDto> getByAuthor(String author) {
         log.info("Received a list of books by author from BookDaoImpl");
-        return bookDao.findByAuthor(author)
+        return bookRepository.findByAuthor(author)
                 .stream()
                 .map(this::toDto)
                 .toList();
@@ -124,7 +125,7 @@ public class BookServiceImpl implements BookService {
 
     public BigDecimal sumPriceByAuthor (String author) {
         log.info("Calculation of the cost of all books of the author");
-        return bookDao.findByAuthor(author)
+        return bookRepository.findByAuthor(author)
                 .stream()
                 .map(Book::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);

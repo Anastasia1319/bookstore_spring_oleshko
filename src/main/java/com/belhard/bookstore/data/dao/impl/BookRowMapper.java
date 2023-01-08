@@ -1,6 +1,6 @@
 package com.belhard.bookstore.data.dao.impl;
 
-import com.belhard.bookstore.data.dao.dto.BookDto;
+import com.belhard.bookstore.data.dto.BookDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
