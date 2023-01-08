@@ -1,7 +1,7 @@
 package com.belhard.bookstore.data.dao.impl;
 
 import com.belhard.bookstore.data.dao.UserDao;
-import com.belhard.bookstore.data.entity.User;
+import com.belhard.bookstore.data.dto.UserDto;
 import com.belhard.bookstore.exceptions.NotUpdateException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -34,18 +34,18 @@ public class UserDaoImpl implements UserDao {
     private final UserRowMapper rowMapper;
 
     @Override
-    public List<User> findAll() {
+    public List<UserDto> findAll() {
         log.info("Created a list of users matching the search criteria");
         return jdbcTemplate.query(SELECT_ALL, rowMapper);
     }
 
     @Override
-    public User create(User user) {
+    public UserDto create(UserDto userDto) {
         log.info("Object creation method called");
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement statement = connection.prepareStatement(CREATE, new String[]{"user_id"});
-            mapUserToStatementData(user, statement);
+            mapUserToStatementData(userDto, statement);
             return statement;
         }, keyHolder);
         return Optional.ofNullable(keyHolder.getKey())
@@ -53,21 +53,21 @@ public class UserDaoImpl implements UserDao {
                 .map(this::findById)
                 .orElseThrow();
     }
-    public User findById(Long id) {
+    public UserDto findById(Long id) {
         log.info("User with id {} found", id);
         return jdbcTemplate.queryForObject(FIND_BY_ID, rowMapper, id);
     }
 
     @Override
-    public User update(User user) {
+    public UserDto update(UserDto userDto) {
         log.info("Trying to update a row with a user in the database");
-        int rowsUpdated = jdbcTemplate.update(UPDATE, user.getFirstName(), user.getLastName(), user.getEmail(),
-                user.getPassword(), user.getRole().name(), user.getId());
+        int rowsUpdated = jdbcTemplate.update(UPDATE, userDto.getFirstName(), userDto.getLastName(), userDto.getEmail(),
+                userDto.getPassword(), userDto.getRole().name(), userDto.getId());
         if (rowsUpdated == 0) {
             log.warn("Updated rows (users): 0");
-            throw new NotUpdateException("Couldn't update user: {}" + user);
+            throw new NotUpdateException("Couldn't update user: {}" + userDto);
         }
-        return findById(user.getId());
+        return findById(userDto.getId());
     }
 
     @Override
@@ -82,7 +82,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User findByEmail(String email) {
+    public UserDto findByEmail(String email) {
         log.info("User with email {} found", email);
         return jdbcTemplate.queryForObject(FIND_BY_EMAIL, rowMapper, email);
     }
@@ -92,13 +92,12 @@ public class UserDaoImpl implements UserDao {
         log.info("Created a database call - counting the number of rows");
         return jdbcTemplate.getFetchSize();
     }
-    private void mapUserToStatementData (User user, PreparedStatement statement) throws SQLException {
-        statement.setString(1, user.getFirstName());
-        statement.setString(2, user.getLastName());
-        statement.setString(3, user.getEmail());
-        statement.setString(4, user.getPassword());
-        statement.setString(5, (user.getRole()).name());
+    private void mapUserToStatementData (UserDto userDto, PreparedStatement statement) throws SQLException {
+        statement.setString(1, userDto.getFirstName());
+        statement.setString(2, userDto.getLastName());
+        statement.setString(3, userDto.getEmail());
+        statement.setString(4, userDto.getPassword());
+        statement.setString(5, (userDto.getRole()).name());
         log.info("Object prepared for transfer to the database");
     }
-
 }

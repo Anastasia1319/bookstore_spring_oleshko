@@ -1,11 +1,10 @@
 package com.belhard.bookstore.service.impl;
 
 import com.belhard.bookstore.data.dao.UserDao;
-import com.belhard.bookstore.data.entity.User;
+import com.belhard.bookstore.data.entity.UserDto;
 import com.belhard.bookstore.exceptions.NotFoundException;
 import com.belhard.bookstore.exceptions.NotUpdateException;
 import com.belhard.bookstore.service.UserService;
-import com.belhard.bookstore.service.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -20,52 +19,52 @@ public class UserServiceImpl implements UserService {
     private final UserDao userDao;
 
     @Override
-    public List<UserDto> getAll() {
+    public List<com.belhard.bookstore.service.dto.UserDto> getAll() {
         log.info("Received a list of users from UserDaoImpl");
         return userDao.findAll()
                 .stream()
-                .sorted(Comparator.comparing(User::getId))
+                .sorted(Comparator.comparing(UserDto::getId))
                 .map(this::toDto)
                 .toList();
     }
 
     @Override
-    public UserDto getByEmail(String email) {
-        User user = userDao.findByEmail(email);
+    public com.belhard.bookstore.service.dto.UserDto getByEmail(String email) {
+        UserDto user = userDao.findByEmail(email);
         log.info("The UserDaoImpl class method was called to search");
         if (user == null) {
             log.warn("User with email: {} not found!", email);
             throw new NotFoundException("User with email: " + email + " not found!");
         }
-        UserDto userDto = toDto(user);
+        com.belhard.bookstore.service.dto.UserDto userDto = toDto(user);
         log.info("Search result: {}", userDto);
         return userDto;
     }
 
     @Override
-    public UserDto getById(Long id) {
-        User user = userDao.findById(id);
+    public com.belhard.bookstore.service.dto.UserDto getById(Long id) {
+        UserDto user = userDao.findById(id);
         log.info("The UserDaoImpl class method was called to search");
         if (user == null) {
             log.warn("User with email: {} not found!", id);
             throw new NotFoundException("User with id: " + id + " not found!");
         }
-        UserDto userDto = toDto(user);
+        com.belhard.bookstore.service.dto.UserDto userDto = toDto(user);
         log.info("Search result: {}", userDto);
         return userDto;
     }
 
     @Override
-    public UserDto create(UserDto dto) {
+    public com.belhard.bookstore.service.dto.UserDto create(com.belhard.bookstore.service.dto.UserDto dto) {
         validate(dto);
-        User toCreate = toEntity(dto);
-        User created = userDao.create(toCreate);
-        UserDto userDto = toDto(created);
+        UserDto toCreate = toEntity(dto);
+        UserDto created = userDao.create(toCreate);
+        com.belhard.bookstore.service.dto.UserDto userDto = toDto(created);
         log.info("Creation result: {}", userDto);
         return userDto;
     }
 
-    private void validate (UserDto dto) {
+    private void validate (com.belhard.bookstore.service.dto.UserDto dto) {
         if (dto.getPassword().length() < 8) {
             log.error("Password shorter 8 characters");
             throw new NotUpdateException("Password cannot be shorter than 8 characters.");
@@ -74,11 +73,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto update(UserDto dto) {
+    public com.belhard.bookstore.service.dto.UserDto update(com.belhard.bookstore.service.dto.UserDto dto) {
         validate(dto);
-        User toUpdate = toEntity(dto);
-        User updated = userDao.update(toUpdate);
-        UserDto userDto = toDto(updated);
+        UserDto toUpdate = toEntity(dto);
+        UserDto updated = userDao.update(toUpdate);
+        com.belhard.bookstore.service.dto.UserDto userDto = toDto(updated);
         log.info("Update result: {}", userDto);
         return userDto;
     }
@@ -92,19 +91,19 @@ public class UserServiceImpl implements UserService {
         log.info("User with id {} deleted", id);
     }
 
-    public UserDto login(String email, String password) {
-        User user = userDao.findByEmail(email);
+    public com.belhard.bookstore.service.dto.UserDto login(String email, String password) {
+        UserDto user = userDao.findByEmail(email);
         if (user == null || !password.equals(user.getPassword())) {
             log.error("Incorrect email or password");
             throw new NotFoundException("User with email: " + email + "and with password: " + password + " not found!");
         }
-        UserDto userDto = toDto(user);
+        com.belhard.bookstore.service.dto.UserDto userDto = toDto(user);
         log.info("Login completed");
         return userDto;
     }
 
-    private UserDto toDto(User user) {
-        UserDto userDto = new UserDto();
+    private com.belhard.bookstore.service.dto.UserDto toDto(UserDto user) {
+        com.belhard.bookstore.service.dto.UserDto userDto = new com.belhard.bookstore.service.dto.UserDto();
         userDto.setId(user.getId());
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
@@ -115,8 +114,8 @@ public class UserServiceImpl implements UserService {
         return userDto;
     }
 
-    private User toEntity (UserDto dto) {
-        User user = new User();
+    private UserDto toEntity (com.belhard.bookstore.service.dto.UserDto dto) {
+        UserDto user = new UserDto();
         user.setId(dto.getId());
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());

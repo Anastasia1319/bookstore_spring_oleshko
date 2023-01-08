@@ -1,8 +1,8 @@
 package com.belhard.bookstore.data.dao;
 
-import com.belhard.bookstore.data.entity.User;
+import com.belhard.bookstore.data.dto.UserDto;
 
-public interface UserDao extends CrudDao <User, Long>{
-    User findByEmail(String email);
+public interface UserDao extends CrudDao <UserDto, Long>{
+    UserDto findByEmail(String email);
     int countAll ();
 }
