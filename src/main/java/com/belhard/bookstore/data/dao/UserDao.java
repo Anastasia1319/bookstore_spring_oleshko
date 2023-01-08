@@ -4,12 +4,7 @@ import com.belhard.bookstore.data.entity.User;
 
 import java.util.List;
 
-public interface UserDao {
-    List<User> findAll();
-    User create (User user);
-    User update (User user);
-    boolean delete (Long id);
+public interface UserDao extends CrudDao <User, Long>{
     User findByEmail(String email);
     int countAll ();
-    User findById(Long id);
 }
