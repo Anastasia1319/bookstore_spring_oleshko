@@ -78,6 +78,7 @@ public class UserDaoImpl implements UserDao {
             log.warn("Updated rows on deletion (users): 0");
             throw new NotUpdateException("Couldn't delete user with id: " + id);
         }
+        log.info("User is deleted");
         return rowsUpdated == 1;
     }
 
