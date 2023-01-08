@@ -29,19 +29,19 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findAll()
                 .stream()
                 .sorted(Comparator.comparing(Book::getId))
-                .map(this::toDto)
+                .map(converter::toBookDto)
                 .toList();
     }
 
     @Override
     public BookDto getById(Long id) {
         Book book = bookRepository.findById(id);
-        log.info("The BookDaoImpl class method was called to search");
+        log.info("The BookRepositoryImpl class method was called to search");
         if (book == null) {
             log.warn("Book with id: {} not found!", id);
             throw  new NotFoundException("Book with id: " + id + " not found!");
         }
-        BookDto bookDto = toDto(book);
+        BookDto bookDto = converter.toBookDto(book);
         log.info("Search result: {}", bookDto);
         return bookDto;
     }
@@ -51,7 +51,7 @@ public class BookServiceImpl implements BookService {
         validate(dto);
         Book toCreate = converter.toBookEntity(dto);
         Book created = bookRepository.create(toCreate);
-        BookDto bookDto = toDto(created);
+        BookDto bookDto = converter.toBookDto(created);
         log.info("Creation result: {}", bookDto);
         return bookDto;
     }
@@ -78,7 +78,7 @@ public class BookServiceImpl implements BookService {
         validate(dto);
         Book toUpdate = converter.toBookEntity(dto);
         Book updated = bookRepository.update(toUpdate);
-        BookDto bookDto = toDto(updated);
+        BookDto bookDto = converter.toBookDto(updated);
         log.info("Update result: {}", bookDto);
         return bookDto;
     }
@@ -97,20 +97,8 @@ public class BookServiceImpl implements BookService {
         log.info("Received a list of books by author from BookRepositoryImpl");
         return bookRepository.findByAuthor(author)
                 .stream()
-                .map(this::toDto)
+                .map(converter::toBookDto)
                 .toList();
-    }
-
-    private BookDto toDto(Book book) {
-        BookDto bookDto = new BookDto();
-        bookDto.setId(book.getId());
-        bookDto.setAuthor(book.getAuthor());
-        bookDto.setTitle(book.getTitle());
-        bookDto.setPublishinYear(book.getPublishinYear());
-        bookDto.setIsbn(book.getIsbn());
-        bookDto.setPrice(book.getPrice());
-        log.info("Book transformed to BookDto");
-        return bookDto;
     }
 
     public BigDecimal sumPriceByAuthor (String author) {
