@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -20,13 +21,14 @@ import java.util.List;
 public class BookServiceImpl implements BookService {
     public static final int ISBN_LENGTH = 13;
     private final BookRepository bookRepository;
-    private ConverterService converter;
+    private final ConverterService converter;
 
     @Override
     public List<BookDto> getAll() {
-        log.info("Received a list of books from BookDaoImpl");
+        log.info("Received a list of books from BookRepositoryImpl");
         return bookRepository.findAll()
                 .stream()
+                .sorted(Comparator.comparing(Book::getId))
                 .map(this::toDto)
                 .toList();
     }
@@ -92,7 +94,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookDto> getByAuthor(String author) {
-        log.info("Received a list of books by author from BookDaoImpl");
+        log.info("Received a list of books by author from BookRepositoryImpl");
         return bookRepository.findByAuthor(author)
                 .stream()
                 .map(this::toDto)

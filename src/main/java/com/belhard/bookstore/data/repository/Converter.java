@@ -19,4 +19,16 @@ public class Converter {
         log.info("BookDto transformed to Book");
         return book;
     }
+
+    public BookDto toDto(Book book) {
+        BookDto bookDto = new BookDto();
+        bookDto.setId(book.getId());
+        bookDto.setAuthor(book.getAuthor());
+        bookDto.setTitle(book.getTitle());
+        bookDto.setPublishinYear(book.getPublishinYear());
+        bookDto.setIsbn(book.getIsbn());
+        bookDto.setPrice(book.getPrice());
+        log.info("Book transformed to BookDto");
+        return bookDto;
+    }
 }
