@@ -5,15 +5,13 @@ import com.belhard.bookstore.data.entity.Role;
 import com.belhard.bookstore.service.UserService;
 import com.belhard.bookstore.service.dto.UserDto;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 
 @Controller("edit_user")
+@RequiredArgsConstructor
 public class EditUserCommand implements Command {
     private final UserService userService;
-
-    public EditUserCommand(UserService userService) {
-        this.userService = userService;
-    }
 
     @Override
     public String execute(HttpServletRequest req) {

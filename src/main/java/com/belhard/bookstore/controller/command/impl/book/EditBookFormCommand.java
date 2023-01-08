@@ -5,15 +5,13 @@ import com.belhard.bookstore.exceptions.ApplicationException;
 import com.belhard.bookstore.service.BookService;
 import com.belhard.bookstore.service.dto.BookDto;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 
 @Controller("edit_book_form")
+@RequiredArgsConstructor
 public class EditBookFormCommand implements Command {
     private final BookService bookService;
-
-    public EditBookFormCommand(BookService bookService) {
-        this.bookService = bookService;
-    }
 
     @Override
     public String execute(HttpServletRequest req) {

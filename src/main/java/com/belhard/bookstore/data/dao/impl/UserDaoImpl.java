@@ -3,9 +3,8 @@ package com.belhard.bookstore.data.dao.impl;
 import com.belhard.bookstore.data.dao.UserDao;
 import com.belhard.bookstore.data.entity.User;
 import com.belhard.bookstore.exceptions.NotUpdateException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -16,6 +15,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@Log4j2
+@RequiredArgsConstructor
 public class UserDaoImpl implements UserDao {
     private static final String SELECT_ALL = "SELECT u.user_id, u.first_name, u.last_name, u.email, u.password, r.name_role " +
             "FROM users u JOIN role r ON u.role_id = r.role_id;";
@@ -31,14 +32,6 @@ public class UserDaoImpl implements UserDao {
     private static final String COUNT_ALL = "SELECT COUNT(*) FROM users";
     private final JdbcTemplate jdbcTemplate;
     private final UserRowMapper rowMapper;
-    private static final Logger log = LogManager.getLogger(UserDaoImpl.class);
-
-    @Autowired
-    public UserDaoImpl(JdbcTemplate jdbcTemplate, UserRowMapper rowMapper) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.rowMapper = rowMapper;
-    }
-
 
     @Override
     public List<User> findAll() {

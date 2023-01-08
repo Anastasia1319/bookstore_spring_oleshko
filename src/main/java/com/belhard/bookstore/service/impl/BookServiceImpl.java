@@ -6,8 +6,8 @@ import com.belhard.bookstore.exceptions.NotFoundException;
 import com.belhard.bookstore.exceptions.NotUpdateException;
 import com.belhard.bookstore.service.BookService;
 import com.belhard.bookstore.service.dto.BookDto;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -15,14 +15,11 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
+@Log4j2
+@RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
     public static final int ISBN_LENGTH = 13;
     private final BookDao bookDao;
-    private static final Logger log = LogManager.getLogger(BookServiceImpl.class);
-
-    public BookServiceImpl(BookDao bookDao) {
-        this.bookDao = bookDao;
-    }
 
     @Override
     public List<BookDto> getAll() {

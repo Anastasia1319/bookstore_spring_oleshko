@@ -6,22 +6,18 @@ import com.belhard.bookstore.exceptions.NotFoundException;
 import com.belhard.bookstore.exceptions.NotUpdateException;
 import com.belhard.bookstore.service.UserService;
 import com.belhard.bookstore.service.dto.UserDto;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
 
 @Service
+@Log4j2
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
-    private static final Logger log = LogManager.getLogger(UserServiceImpl.class);
-
-    public UserServiceImpl(UserDao userDao) {
-        this.userDao = userDao;
-    }
-
 
     @Override
     public List<UserDto> getAll() {

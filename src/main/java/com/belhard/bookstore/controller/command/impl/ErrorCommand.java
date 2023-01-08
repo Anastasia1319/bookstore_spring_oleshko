@@ -6,8 +6,6 @@ import org.springframework.stereotype.Controller;
 
 @Controller("error")
 public class ErrorCommand implements Command {
-    public ErrorCommand() {
-    }
 
     @Override
     public String execute(HttpServletRequest req) {

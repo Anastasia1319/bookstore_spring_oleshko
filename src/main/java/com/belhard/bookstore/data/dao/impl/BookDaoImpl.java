@@ -3,9 +3,8 @@ package com.belhard.bookstore.data.dao.impl;
 import com.belhard.bookstore.data.dao.BookDao;
 import com.belhard.bookstore.data.entity.Book;
 import com.belhard.bookstore.exceptions.NotUpdateException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -16,6 +15,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@Log4j2
+@RequiredArgsConstructor
 public class BookDaoImpl implements BookDao {
     private static final String SELECT_ALL = "SELECT b.id, b.author, b.title, b.publishin_year, b.isbn, b.price FROM books b";
     private static final String FIND_BY_ID = "SELECT b.id, b.author, b.title, b.publishin_year, b.isbn, b.price FROM books b WHERE id = ?";
@@ -27,14 +28,6 @@ public class BookDaoImpl implements BookDao {
     private static final String COUNT_ALL = "SELECT COUNT(*) FROM books";
     private final JdbcTemplate jdbcTemplate;
     private final BookRowMapper rowMapper;
-    private static final Logger log = LogManager.getLogger(BookDaoImpl.class);
-
-    @Autowired
-    public BookDaoImpl(JdbcTemplate jdbcTemplate, BookRowMapper rowMapper) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.rowMapper = rowMapper;
-    }
-
 
     @Override
     public  List<Book> findAll() {
