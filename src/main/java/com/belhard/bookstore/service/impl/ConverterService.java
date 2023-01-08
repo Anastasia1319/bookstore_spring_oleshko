@@ -1,13 +1,13 @@
-package com.belhard.bookstore.data.repository;
+package com.belhard.bookstore.service.impl;
 
+import com.belhard.bookstore.service.dto.BookDto;
 import com.belhard.bookstore.data.entity.Book;
-import com.belhard.bookstore.data.dto.BookDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
 @Component
 @Log4j2
-public class Converter {
+public class ConverterService {
     public Book toBookEntity (BookDto dto) {
         Book book = new Book();
         book.setId(dto.getId());

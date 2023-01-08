@@ -1,9 +1,7 @@
 package com.belhard.bookstore.service.impl;
 
-import com.belhard.bookstore.data.dao.BookDao;
 import com.belhard.bookstore.data.entity.Book;
 import com.belhard.bookstore.data.repository.BookRepository;
-import com.belhard.bookstore.data.repository.Converter;
 import com.belhard.bookstore.exceptions.NotFoundException;
 import com.belhard.bookstore.exceptions.NotUpdateException;
 import com.belhard.bookstore.service.BookService;
@@ -22,7 +20,7 @@ import java.util.List;
 public class BookServiceImpl implements BookService {
     public static final int ISBN_LENGTH = 13;
     private final BookRepository bookRepository;
-    private Converter converter;
+    private ConverterService converter;
 
     @Override
     public List<BookDto> getAll() {
