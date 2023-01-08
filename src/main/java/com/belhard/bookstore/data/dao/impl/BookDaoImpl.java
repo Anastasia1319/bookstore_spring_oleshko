@@ -1,6 +1,7 @@
 package com.belhard.bookstore.data.dao.impl;
 
 import com.belhard.bookstore.data.dao.BookDao;
+import com.belhard.bookstore.data.dao.dto.BookDto;
 import com.belhard.bookstore.data.entity.Book;
 import com.belhard.bookstore.exceptions.NotUpdateException;
 import lombok.RequiredArgsConstructor;
@@ -30,24 +31,24 @@ public class BookDaoImpl implements BookDao {
     private final BookRowMapper rowMapper;
 
     @Override
-    public  List<Book> findAll() {
+    public  List<BookDto> findAll() {
         log.info("Created a list of books matching the search criteria");
         return jdbcTemplate.query(SELECT_ALL, rowMapper);
     }
 
     @Override
-    public Book findById(Long id) {
+    public BookDto findById(Long id) {
         log.info("Book with id {} found", id);
         return jdbcTemplate.queryForObject(FIND_BY_ID, rowMapper, id);
     }
 
     @Override
-    public Book create(Book book) {
+    public BookDto create(BookDto bookDto) {
         log.info("Object creation method called");
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement statement = connection.prepareStatement(CREATE, new String[]{"id"});
-            mapBookToStatementData(book, statement);
+            mapBookToStatementData(bookDto, statement);
             return statement;
         }, keyHolder);
         return Optional.ofNullable(keyHolder.getKey())
@@ -56,14 +57,14 @@ public class BookDaoImpl implements BookDao {
                 .orElseThrow();
     }
     @Override
-    public Book update(Book book) {
+    public BookDto update(BookDto bookDto) {
         log.info("Trying to update a row with a book in the database");
-        int rowsUpdated = jdbcTemplate.update(UPDATE, book.getAuthor(), book.getTitle(), book.getPublishinYear(), book.getIsbn(), book.getPrice(), book.getId());
+        int rowsUpdated = jdbcTemplate.update(UPDATE, bookDto.getAuthor(), bookDto.getTitle(), bookDto.getPublishinYear(), bookDto.getIsbn(), bookDto.getPrice(), bookDto.getId());
         if (rowsUpdated == 0) {
             log.warn("Updated rows (books): 0");
-            throw new NotUpdateException("Couldn't update book: {}" + book);
+            throw new NotUpdateException("Couldn't update book: {}" + bookDto);
         }
-        return findById(book.getId());
+        return findById(bookDto.getId());
     }
 
     @Override
@@ -78,13 +79,13 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Book findByIsbn(String isbn) {
+    public BookDto findByIsbn(String isbn) {
         log.info("Book with isbn {} found", isbn);
         return jdbcTemplate.queryForObject(FIND_BY_ISBN, rowMapper,isbn);
     }
 
     @Override
-    public List<Book> findByAuthor(String author) {
+    public List<BookDto> findByAuthor(String author) {
         log.info("Created a list of books matching the search criteria");
         return jdbcTemplate.query(FIND_BY_AUTHOR, rowMapper, author);
     }
@@ -95,12 +96,12 @@ public class BookDaoImpl implements BookDao {
         return jdbcTemplate.queryForObject(COUNT_ALL, Integer.class);
     }
 
-    private void mapBookToStatementData (Book book, PreparedStatement statement) throws SQLException {
-        statement.setString(1, book.getAuthor());
-        statement.setString(2, book.getTitle());
-        statement.setInt(3, book.getPublishinYear());
-        statement.setString(4, book.getIsbn());
-        statement.setBigDecimal(5, book.getPrice());
+    private void mapBookToStatementData (BookDto bookDto, PreparedStatement statement) throws SQLException {
+        statement.setString(1, bookDto.getAuthor());
+        statement.setString(2, bookDto.getTitle());
+        statement.setInt(3, bookDto.getPublishinYear());
+        statement.setString(4, bookDto.getIsbn());
+        statement.setBigDecimal(5, bookDto.getPrice());
         log.info("Object prepared for transfer to the database");
     }
 }
