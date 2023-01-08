@@ -1,7 +1,7 @@
 package com.belhard.bookstore.data.dao.impl;
 
 import com.belhard.bookstore.data.entity.Role;
-import com.belhard.bookstore.data.entity.UserDto;
+import com.belhard.bookstore.data.dto.UserDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
