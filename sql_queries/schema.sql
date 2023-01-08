@@ -27,3 +27,25 @@ CREATE TABLE IF NOT EXIST users (
 	role_id INT NOT NULL,
 	FOREIGN KEY (role_id) REFERENCES "role" (role_id)
 );
+
+CREATE TABLE IF NOT EXIST statuses (
+    "id" BIGSERIAL PRIMARY KEY,
+    status_name VARCHAR (50)
+);
+
+CREATE TABLE IF NOT EXIST orders (
+    "id" BIGSERIAL PRIMARY KEY,
+    user_id INT8 NOT NULL,
+    status_id INT8 NOT NULL,
+    FOREIGN KEY (status_id) REFERENCES statuses ("id"),
+    FOREIGN KEY (user_id) REFERENCES users (user_id)
+);
+
+CREATE TABLE IF NOT EXIST order_items (
+    book_id INT8 NOT NULL,
+    quantity INT4 NOT NULL,
+    price NUMERIC(9,2) NOT NULL,
+    order_id INT8 NOT NULL,
+    FOREIGN KEY (book_id) REFERENCES books ("id"),
+    FOREIGN KEY (order_id) REFERENCES orders ("id")
+);
