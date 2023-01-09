@@ -60,10 +60,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public boolean delete(Long key) {
-        Order order = findById(key);
-        order.setStatus(CANCELED);
-
-        return false;
+        return orderDao.delete(key);
     }
 
     private Order getOrder(OrderDto orderDto) {
