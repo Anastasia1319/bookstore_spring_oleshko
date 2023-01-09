@@ -19,6 +19,8 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.belhard.bookstore.data.entity.Order.Status.CANCELED;
+
 @Repository
 @RequiredArgsConstructor
 @Log4j2
@@ -36,27 +38,6 @@ public class OrderRepositoryImpl implements OrderRepository {
         Order order = getOrder(orderDto);
         return order;
     }
-
-    private Order getOrder(OrderDto orderDto) {
-        Order order = new Order();
-        order.setId(orderDto.getId());
-        order.setStatus(Order.Status.valueOf(orderDto.getStatus().toString()));
-        order.setTotalCost(orderDto.getTotalCost());
-        Long userId = orderDto.getUserId();
-        UserDto userDto = userDao.findById(userId);
-        log.info("UserDto is fond");
-        User user = converter.toUserEntity(userDto);
-        order.setUser(user);
-        List <OrderItemDto> orderItemsDto = orderItemDao.findByOrderId(order.getId());
-        log.info("Find OrderItemDto list");
-        List<OrderItem> items = new ArrayList<>();
-        for(OrderItemDto item : orderItemsDto) {
-            items.add(converter.toOrderItemEntity(item, bookDao));
-        }
-        log.info("Created order");
-        return order;
-    }
-
 
     @Override
     public List<Order> findAll() {
@@ -79,6 +60,29 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public boolean delete(Long key) {
+        Order order = findById(key);
+        order.setStatus(CANCELED);
+
         return false;
+    }
+
+    private Order getOrder(OrderDto orderDto) {
+        Order order = new Order();
+        order.setId(orderDto.getId());
+        order.setStatus(Order.Status.valueOf(orderDto.getStatus().toString()));
+        order.setTotalCost(orderDto.getTotalCost());
+        Long userId = orderDto.getUserId();
+        UserDto userDto = userDao.findById(userId);
+        log.info("UserDto is fond");
+        User user = converter.toUserEntity(userDto);
+        order.setUser(user);
+        List <OrderItemDto> orderItemsDto = orderItemDao.findByOrderId(order.getId());
+        log.info("Find OrderItemDto list");
+        List<OrderItem> items = new ArrayList<>();
+        for(OrderItemDto item : orderItemsDto) {
+            items.add(converter.toOrderItemEntity(item, bookDao));
+        }
+        log.info("Created order");
+        return order;
     }
 }

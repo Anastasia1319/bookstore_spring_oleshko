@@ -28,7 +28,8 @@ public class OrderDaoImpl implements OrderDao {
             "WHERE s.status_name = ?))";
     private static final String UPDATE = "UPDATE orders SET user_id = ?, status_id = (SELECT s.id FROM statuses s " +
             "WHERE s.status_name = ?) WHERE id = ?";
-    private static final String DELETE_BY_ID = "DELETE FROM orders WHERE id = ?";
+//    private static final String DELETE_BY_ID = "DELETE FROM orders WHERE id = ?";
+    private static final String DELETE_BY_ID = "UPDATE orders SET status_id = (SELECT s.id FROM statuses s WHERE s.status_name = 'CANCELED') WHERE id = ?";
     private final JdbcTemplate jdbcTemplate;
 
     private final OrderRowMapper rowMapper;
@@ -70,6 +71,18 @@ public class OrderDaoImpl implements OrderDao {
         log.info("Order is updated");
         return findById(entity.getId());
     }
+
+//    @Override
+//    public boolean delete(Long key) {
+//        log.info("Trying to delete a row with a order in the database");
+//        int rowsUpdated = jdbcTemplate.update(DELETE_BY_ID, key);
+//        if (rowsUpdated == 0) {
+//            log.warn("Updated rows on deletion (orders): 0");
+//            throw new NotUpdateException("Couldn't delete order with id: " + key);
+//        }
+//        log.info("Order is deleted");
+//        return rowsUpdated == 1;
+//    }
 
     @Override
     public boolean delete(Long key) {
