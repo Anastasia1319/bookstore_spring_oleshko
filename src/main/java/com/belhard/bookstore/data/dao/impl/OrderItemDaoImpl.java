@@ -3,11 +3,13 @@ package com.belhard.bookstore.data.dao.impl;
 import com.belhard.bookstore.data.dao.OrderItemDao;
 import com.belhard.bookstore.data.dao.impl.mapper.OrderItemRowMapper;
 import com.belhard.bookstore.data.dto.OrderItemDto;
+import com.belhard.bookstore.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -22,6 +24,7 @@ public class OrderItemDaoImpl implements OrderItemDao {
     private static final String CREATE = "INSERT INTO order_items SET book_id = ?, quantity = ?, price = ?, order_id = ?";
     private static final String UPDATE = "UPDATE order_items SET quantity = ?, price = ? WHERE order_id = ? AND book_id = ?";
     private static final String DELETE_BY_ID = "DELETE FROM order_items WHERE order_id = ?";
+    private static final String COUNT_TOTAL_COST = "SELECT SUM(oi.quantity*oi.price) FROM order_items oi WHERE oi.order_id = ?";
     private final JdbcTemplate jdbcTemplate;
     private final OrderItemRowMapper rowMapper;
 
@@ -56,5 +59,17 @@ public class OrderItemDaoImpl implements OrderItemDao {
     public List<OrderItemDto> findByOrderId(Long orderId) {
         log.info("Find list orderItems by order id");
         return jdbcTemplate.query(FIND_BY_ORDER_ID, rowMapper, orderId);
+    }
+
+    @Override
+    public BigDecimal totalCost(Long orderId) {
+        log.info("Trying find order total cost");
+        BigDecimal totalCost =  jdbcTemplate.queryForObject(COUNT_TOTAL_COST, BigDecimal.class);
+        if (totalCost != null) {
+            return totalCost;
+        } else {
+            log.warn("Returned null from totalCost SQL query");
+            throw new NotFoundException("Unable to calculate order amount");
+        }
     }
 }
