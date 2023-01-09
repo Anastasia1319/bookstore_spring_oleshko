@@ -64,7 +64,7 @@ public class OrderItemDaoImpl implements OrderItemDao {
     @Override
     public BigDecimal totalCost(Long orderId) {
         log.info("Trying find order total cost");
-        BigDecimal totalCost =  jdbcTemplate.queryForObject(COUNT_TOTAL_COST, BigDecimal.class);
+        BigDecimal totalCost =  jdbcTemplate.queryForObject(COUNT_TOTAL_COST, BigDecimal.class, orderId);
         if (totalCost != null) {
             return totalCost;
         } else {
