@@ -58,7 +58,11 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public Order update(Order entity) {
-        return null;
+        OrderDto toUpdate = getOrderDto(entity);
+        OrderDto updated = orderDao.update(toUpdate);
+        Order order = getOrder(updated);
+        log.info("Update result: {}", order);
+        return order;
     }
 
     @Override
