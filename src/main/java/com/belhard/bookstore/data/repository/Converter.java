@@ -1,7 +1,6 @@
 package com.belhard.bookstore.data.repository;
 
 import com.belhard.bookstore.data.dao.BookDao;
-import com.belhard.bookstore.data.dao.impl.BookDaoImpl;
 import com.belhard.bookstore.data.dto.OrderItemDto;
 import com.belhard.bookstore.data.dto.UserDto;
 import com.belhard.bookstore.data.entity.Book;

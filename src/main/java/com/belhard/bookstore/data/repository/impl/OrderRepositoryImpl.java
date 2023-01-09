@@ -19,7 +19,6 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.belhard.bookstore.data.entity.Order.Status.CANCELED;
 
 @Repository
 @RequiredArgsConstructor
@@ -50,7 +49,11 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public Order create(Order entity) {
-        return null;
+        OrderDto toCreat = getOrderDto(entity);
+        OrderDto created = orderDao.create(toCreat);
+        Order order = getOrder(created);
+        log.info("Creation result: {}", order);
+        return order;
     }
 
     @Override
@@ -81,5 +84,16 @@ public class OrderRepositoryImpl implements OrderRepository {
         }
         log.info("Created order");
         return order;
+    }
+
+    private OrderDto getOrderDto (Order order) {
+        OrderDto orderDto = new OrderDto();
+        orderDto.setId(order.getId());
+        orderDto.setStatus(OrderDto.Status.valueOf(order.getStatus().toString()));
+        orderDto.setTotalCost(order.getTotalCost());
+        User user = order.getUser();
+        Long userId = user.getId();
+        orderDto.setUserId(userId);
+        return orderDto;
     }
 }
