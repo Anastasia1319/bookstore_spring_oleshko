@@ -1,8 +1,12 @@
 package com.belhard.bookstore.data.repository;
 
+import com.belhard.bookstore.data.dao.BookDao;
+import com.belhard.bookstore.data.dao.impl.BookDaoImpl;
+import com.belhard.bookstore.data.dto.OrderItemDto;
 import com.belhard.bookstore.data.dto.UserDto;
 import com.belhard.bookstore.data.entity.Book;
 import com.belhard.bookstore.data.dto.BookDto;
+import com.belhard.bookstore.data.entity.OrderItem;
 import com.belhard.bookstore.data.entity.User;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
@@ -56,5 +60,16 @@ public class Converter {
         user.setRole(dto.getRole());
         log.info("UserDto transformed to User");
         return user;
+    }
+
+    public OrderItem toOrderItemEntity (OrderItemDto dto, BookDao bookDao) {
+        OrderItem orderItem = new OrderItem();
+        Book book = toBookEntity(bookDao.findById(dto.getBookId()));
+        orderItem.setBook(book);
+        orderItem.setQuantity(dto.getQuantity());
+        orderItem.setPrice(dto.getPrice());
+        orderItem.setOrderId(dto.getOrderId());
+        log.info("OrderItemDto transformed to OrderItem");
+        return orderItem;
     }
 }
