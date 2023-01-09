@@ -33,6 +33,11 @@ public class OrderRepositoryImpl implements OrderRepository {
         log.info("Trying find order by id");
         OrderDto orderDto = orderDao.findById(key);
         log.info("OrderDto is fond");
+        Order order = getOrder(orderDto);
+        return order;
+    }
+
+    private Order getOrder(OrderDto orderDto) {
         Order order = new Order();
         order.setId(orderDto.getId());
         order.setStatus(Order.Status.valueOf(orderDto.getStatus().toString()));
@@ -55,7 +60,11 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public List<Order> findAll() {
-        return null;
+        log.info("Received a list of orders from OrderDaoImpl");
+        return orderDao.findAll()
+                .stream()
+                .map(this::getOrder)
+                .toList();
     }
 
     @Override
