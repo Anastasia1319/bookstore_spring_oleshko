@@ -17,6 +17,8 @@ public class OrderItemDaoImpl implements OrderItemDao {
     private static final String SELECT_ALL = "SELECT oi.book_id, oi.quantity, oi.price, oi.order_id FROM order_items oi";
     private static final String FIND_BY_ID = "SELECT oi.book_id, oi.quantity, oi.price, oi.order_id FROM order_items oi " +
             "WHERE oi.order_id = ? AND book_id = ?";
+    private static final String FIND_BY_ORDER_ID = "SELECT oi.book_id, oi.quantity, oi.price, oi.order_id FROM order_items oi " +
+            "WHERE oi.order_id = ?";
     private static final String CREATE = "INSERT INTO order_items SET book_id = ?, quantity = ?, price = ?, order_id = ?";
     private static final String UPDATE = "UPDATE order_items SET quantity = ?, price = ? WHERE order_id = ? AND book_id = ?";
     private static final String DELETE_BY_ID = "DELETE FROM order_items WHERE order_id = ?";
@@ -52,6 +54,7 @@ public class OrderItemDaoImpl implements OrderItemDao {
 
     @Override
     public List<OrderItemDto> findByOrderId(Long orderId) {
-        return null;
+        log.info("Find list orderItems by order id");
+        return jdbcTemplate.query(FIND_BY_ORDER_ID, rowMapper, orderId);
     }
 }
