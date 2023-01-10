@@ -14,10 +14,8 @@ public class OrderDto {
     private User user;
     private BigDecimal totalCost;
     private Status status;
-    private Book book;
     private List<OrderItem> items;
-    private Integer quantity;
-    private BigDecimal price;
+
 
     public enum Status {
         PENDING, PAID, DELIVERED, CANCELED

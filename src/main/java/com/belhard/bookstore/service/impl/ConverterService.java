@@ -1,8 +1,10 @@
 package com.belhard.bookstore.service.impl;
 
+import com.belhard.bookstore.data.entity.Order;
 import com.belhard.bookstore.data.entity.User;
 import com.belhard.bookstore.service.dto.BookDto;
 import com.belhard.bookstore.data.entity.Book;
+import com.belhard.bookstore.service.dto.OrderDto;
 import com.belhard.bookstore.service.dto.UserDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
@@ -56,5 +58,15 @@ public class ConverterService {
         user.setRole(dto.getRole());
         log.info("UserDto transformed to User");
         return user;
+    }
+
+    public OrderDto toOrderDto (Order order) {
+        OrderDto orderDto = new OrderDto();
+        orderDto.setId(order.getId());
+        orderDto.setUser(order.getUser());
+        orderDto.setStatus(OrderDto.Status.valueOf(order.getStatus().toString()));
+        orderDto.setTotalCost(order.getTotalCost());
+        orderDto.setItems(order.getItems());
+        return orderDto;
     }
 }
