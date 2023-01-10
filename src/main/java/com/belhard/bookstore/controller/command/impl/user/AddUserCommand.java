@@ -3,7 +3,7 @@ package com.belhard.bookstore.controller.command.impl.user;
 import com.belhard.bookstore.controller.command.Command;
 import com.belhard.bookstore.data.entity.Role;
 import com.belhard.bookstore.service.UserService;
-import com.belhard.bookstore.service.dto.UserDto;
+import com.belhard.bookstore.service.dto.UserServiceDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -15,19 +15,19 @@ public class AddUserCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest req) {
-        UserDto toCreate = processRequest(req);
-        UserDto created = userService.create(toCreate);
+        UserServiceDto toCreate = processRequest(req);
+        UserServiceDto created = userService.create(toCreate);
         req.setAttribute("user", created);
         return "jsp/user.jsp";
     }
 
-    private static UserDto processRequest(HttpServletRequest req) {
+    private static UserServiceDto processRequest(HttpServletRequest req) {
         String firstName = req.getParameter("first_name");
         String lastName = req.getParameter("last_name");
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         Role role = Role.valueOf(req.getParameter("role"));
-        UserDto toCreate = new UserDto();
+        UserServiceDto toCreate = new UserServiceDto();
         toCreate.setFirstName(firstName);
         toCreate.setLastName(lastName);
         toCreate.setEmail(email);

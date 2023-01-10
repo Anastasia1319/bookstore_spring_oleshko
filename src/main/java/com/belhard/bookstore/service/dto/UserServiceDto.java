@@ -4,7 +4,7 @@ import com.belhard.bookstore.data.entity.Role;
 import lombok.Data;
 
 @Data
-public class UserDto {
+public class UserServiceDto {
     private Long id;
     private String firstName;
     private String lastName;

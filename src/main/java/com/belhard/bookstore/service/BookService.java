@@ -1,15 +1,15 @@
 package com.belhard.bookstore.service;
 
-import com.belhard.bookstore.service.dto.BookDto;
+import com.belhard.bookstore.service.dto.BookServiceDto;
 
 import java.util.List;
 
 public interface BookService {
 
-    List<BookDto> getAll();
-    BookDto getById (Long id);
-    BookDto create (BookDto dto);
-    BookDto update (BookDto dto);
+    List<BookServiceDto> getAll();
+    BookServiceDto getById (Long id);
+    BookServiceDto create (BookServiceDto dto);
+    BookServiceDto update (BookServiceDto dto);
     void delete(Long id);
-    List<BookDto> getByAuthor(String author);
+    List<BookServiceDto> getByAuthor(String author);
 }

@@ -1,6 +1,5 @@
 package com.belhard.bookstore.service.dto;
 
-import com.belhard.bookstore.data.entity.Book;
 import com.belhard.bookstore.data.entity.OrderItem;
 import com.belhard.bookstore.data.entity.User;
 import lombok.Data;
@@ -9,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Data
-public class OrderDto {
+public class OrderServiceDto {
     private Long id;
     private User user;
     private BigDecimal totalCost;

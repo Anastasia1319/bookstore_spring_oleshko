@@ -2,7 +2,7 @@ package com.belhard.bookstore.controller.command.impl.book;
 
 import com.belhard.bookstore.controller.command.Command;
 import com.belhard.bookstore.service.BookService;
-import com.belhard.bookstore.service.dto.BookDto;
+import com.belhard.bookstore.service.dto.BookServiceDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -17,7 +17,7 @@ public class FindBooksCommand implements Command {
     @Override
     public String execute(HttpServletRequest req) {
         String author = req.getParameter("author");
-        List<BookDto> books = bookService.getByAuthor(author);
+        List<BookServiceDto> books = bookService.getByAuthor(author);
         req.setAttribute("books", books);
         return "jsp/books.jsp";
     }

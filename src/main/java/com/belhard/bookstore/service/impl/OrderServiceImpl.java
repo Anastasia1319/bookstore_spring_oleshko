@@ -4,7 +4,7 @@ import com.belhard.bookstore.data.entity.Order;
 import com.belhard.bookstore.data.repository.OrderRepository;
 import com.belhard.bookstore.exceptions.NotFoundException;
 import com.belhard.bookstore.service.OrderService;
-import com.belhard.bookstore.service.dto.OrderDto;
+import com.belhard.bookstore.service.dto.OrderServiceDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class OrderServiceImpl implements OrderService {
     private final ConverterService converter;
 
     @Override
-    public List<OrderDto> getAll() {
+    public List<OrderServiceDto> getAll() {
         log.info("Received a list of orders from OrderRepositoryImpl");
         return orderRepository.findAll()
                 .stream()
@@ -30,15 +30,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDto getById(Long id) {
+    public OrderServiceDto getById(Long id) {
         Order order = orderRepository.findById(id);
         log.info("The OrderRepositoryImpl class method was called to search");
         if (order == null) {
             log.warn("Order with id: {} not found!", id);
             throw new NotFoundException("Order with id: " + id + " not found!");
         }
-        OrderDto orderDto = converter.toOrderDto(order);
-        log.info("Search result: {}", orderDto);
-        return orderDto;
+        OrderServiceDto orderServiceDto = converter.toOrderDto(order);
+        log.info("Search result: {}", orderServiceDto);
+        return orderServiceDto;
     }
 }

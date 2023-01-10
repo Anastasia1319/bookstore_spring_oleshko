@@ -2,7 +2,7 @@ package com.belhard.bookstore.controller.command.impl.user;
 
 import com.belhard.bookstore.controller.command.Command;
 import com.belhard.bookstore.service.UserService;
-import com.belhard.bookstore.service.dto.UserDto;
+import com.belhard.bookstore.service.dto.UserServiceDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,7 @@ public class UsersCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest req) {
-        List<UserDto> users = userService.getAll();
+        List<UserServiceDto> users = userService.getAll();
         req.setAttribute("users", users);
         return "jsp/users.jsp";
     }

@@ -3,7 +3,7 @@ package com.belhard.bookstore.controller.command.impl.book;
 import com.belhard.bookstore.controller.command.Command;
 import com.belhard.bookstore.exceptions.ApplicationException;
 import com.belhard.bookstore.service.BookService;
-import com.belhard.bookstore.service.dto.BookDto;
+import com.belhard.bookstore.service.dto.BookServiceDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -16,8 +16,8 @@ public class BookCommand implements Command {
     @Override
     public String execute(HttpServletRequest req) {
         Long id = processReq(req);
-        BookDto bookDto = bookService.getById(id);
-        req.setAttribute("book", bookDto);
+        BookServiceDto bookServiceDto = bookService.getById(id);
+        req.setAttribute("book", bookServiceDto);
         return "jsp/book.jsp";
     }
 

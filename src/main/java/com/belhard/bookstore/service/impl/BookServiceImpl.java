@@ -5,7 +5,7 @@ import com.belhard.bookstore.data.repository.BookRepository;
 import com.belhard.bookstore.exceptions.NotFoundException;
 import com.belhard.bookstore.exceptions.NotUpdateException;
 import com.belhard.bookstore.service.BookService;
-import com.belhard.bookstore.service.dto.BookDto;
+import com.belhard.bookstore.service.dto.BookServiceDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ public class BookServiceImpl implements BookService {
     private final ConverterService converter;
 
     @Override
-    public List<BookDto> getAll() {
+    public List<BookServiceDto> getAll() {
         log.info("Received a list of books from BookRepositoryImpl");
         return bookRepository.findAll()
                 .stream()
@@ -34,29 +34,29 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDto getById(Long id) {
+    public BookServiceDto getById(Long id) {
         Book book = bookRepository.findById(id);
         log.info("The BookRepositoryImpl class method was called to search");
         if (book == null) {
             log.warn("Book with id: {} not found!", id);
             throw  new NotFoundException("Book with id: " + id + " not found!");
         }
-        BookDto bookDto = converter.toBookDto(book);
-        log.info("Search result: {}", bookDto);
-        return bookDto;
+        BookServiceDto bookServiceDto = converter.toBookDto(book);
+        log.info("Search result: {}", bookServiceDto);
+        return bookServiceDto;
     }
 
     @Override
-    public BookDto create(BookDto dto) {
+    public BookServiceDto create(BookServiceDto dto) {
         validate(dto);
         Book toCreate = converter.toBookEntity(dto);
         Book created = bookRepository.create(toCreate);
-        BookDto bookDto = converter.toBookDto(created);
-        log.info("Creation result: {}", bookDto);
-        return bookDto;
+        BookServiceDto bookServiceDto = converter.toBookDto(created);
+        log.info("Creation result: {}", bookServiceDto);
+        return bookServiceDto;
     }
 
-    private void validate(BookDto dto) {
+    private void validate(BookServiceDto dto) {
         if (dto.getIsbn().length() > ISBN_LENGTH) {
             log.error("Isbn parameter value is invalid");
             throw new NotUpdateException("ISBN number cannot be longer than 13 characters.");
@@ -74,13 +74,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDto update(BookDto dto) {
+    public BookServiceDto update(BookServiceDto dto) {
         validate(dto);
         Book toUpdate = converter.toBookEntity(dto);
         Book updated = bookRepository.update(toUpdate);
-        BookDto bookDto = converter.toBookDto(updated);
-        log.info("Update result: {}", bookDto);
-        return bookDto;
+        BookServiceDto bookServiceDto = converter.toBookDto(updated);
+        log.info("Update result: {}", bookServiceDto);
+        return bookServiceDto;
     }
 
     @Override
@@ -93,7 +93,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDto> getByAuthor(String author) {
+    public List<BookServiceDto> getByAuthor(String author) {
         log.info("Received a list of books by author from BookRepositoryImpl");
         return bookRepository.findByAuthor(author)
                 .stream()

@@ -1,10 +1,10 @@
 package com.belhard.bookstore.service;
 
-import com.belhard.bookstore.service.dto.OrderDto;
+import com.belhard.bookstore.service.dto.OrderServiceDto;
 
 import java.util.List;
 
 public interface OrderService {
-    List<OrderDto> getAll();
-    OrderDto getById (Long id);
+    List<OrderServiceDto> getAll();
+    OrderServiceDto getById (Long id);
 }

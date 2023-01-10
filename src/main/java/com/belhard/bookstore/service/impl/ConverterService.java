@@ -2,17 +2,17 @@ package com.belhard.bookstore.service.impl;
 
 import com.belhard.bookstore.data.entity.Order;
 import com.belhard.bookstore.data.entity.User;
-import com.belhard.bookstore.service.dto.BookDto;
+import com.belhard.bookstore.service.dto.BookServiceDto;
 import com.belhard.bookstore.data.entity.Book;
-import com.belhard.bookstore.service.dto.OrderDto;
-import com.belhard.bookstore.service.dto.UserDto;
+import com.belhard.bookstore.service.dto.OrderServiceDto;
+import com.belhard.bookstore.service.dto.UserServiceDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
 @Component
 @Log4j2
 public class ConverterService {
-    public Book toBookEntity (BookDto dto) {
+    public Book toBookEntity (BookServiceDto dto) {
         Book book = new Book();
         book.setId(dto.getId());
         book.setAuthor(dto.getAuthor());
@@ -24,31 +24,31 @@ public class ConverterService {
         return book;
     }
 
-    public BookDto toBookDto(Book book) {
-        BookDto bookDto = new BookDto();
-        bookDto.setId(book.getId());
-        bookDto.setAuthor(book.getAuthor());
-        bookDto.setTitle(book.getTitle());
-        bookDto.setPublishinYear(book.getPublishinYear());
-        bookDto.setIsbn(book.getIsbn());
-        bookDto.setPrice(book.getPrice());
+    public BookServiceDto toBookDto(Book book) {
+        BookServiceDto bookServiceDto = new BookServiceDto();
+        bookServiceDto.setId(book.getId());
+        bookServiceDto.setAuthor(book.getAuthor());
+        bookServiceDto.setTitle(book.getTitle());
+        bookServiceDto.setPublishinYear(book.getPublishinYear());
+        bookServiceDto.setIsbn(book.getIsbn());
+        bookServiceDto.setPrice(book.getPrice());
         log.info("Book transformed to BookDto");
-        return bookDto;
+        return bookServiceDto;
     }
 
-    public UserDto toUserDto(User user) {
-        UserDto userDto = new UserDto();
-        userDto.setId(user.getId());
-        userDto.setFirstName(user.getFirstName());
-        userDto.setLastName(user.getLastName());
-        userDto.setEmail(user.getEmail());
-        userDto.setPassword(user.getPassword());
-        userDto.setRole(user.getRole());
+    public UserServiceDto toUserDto(User user) {
+        UserServiceDto userServiceDto = new UserServiceDto();
+        userServiceDto.setId(user.getId());
+        userServiceDto.setFirstName(user.getFirstName());
+        userServiceDto.setLastName(user.getLastName());
+        userServiceDto.setEmail(user.getEmail());
+        userServiceDto.setPassword(user.getPassword());
+        userServiceDto.setRole(user.getRole());
         log.info("User transformed to UserDto");
-        return userDto;
+        return userServiceDto;
     }
 
-    public User toUserEntity (UserDto dto) {
+    public User toUserEntity (UserServiceDto dto) {
         User user = new User();
         user.setId(dto.getId());
         user.setFirstName(dto.getFirstName());
@@ -60,13 +60,13 @@ public class ConverterService {
         return user;
     }
 
-    public OrderDto toOrderDto (Order order) {
-        OrderDto orderDto = new OrderDto();
-        orderDto.setId(order.getId());
-        orderDto.setUser(order.getUser());
-        orderDto.setStatus(OrderDto.Status.valueOf(order.getStatus().toString()));
-        orderDto.setTotalCost(order.getTotalCost());
-        orderDto.setItems(order.getItems());
-        return orderDto;
+    public OrderServiceDto toOrderDto (Order order) {
+        OrderServiceDto orderServiceDto = new OrderServiceDto();
+        orderServiceDto.setId(order.getId());
+        orderServiceDto.setUser(order.getUser());
+        orderServiceDto.setStatus(OrderServiceDto.Status.valueOf(order.getStatus().toString()));
+        orderServiceDto.setTotalCost(order.getTotalCost());
+        orderServiceDto.setItems(order.getItems());
+        return orderServiceDto;
     }
 }
