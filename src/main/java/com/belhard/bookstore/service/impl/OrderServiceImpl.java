@@ -2,6 +2,7 @@ package com.belhard.bookstore.service.impl;
 
 import com.belhard.bookstore.data.entity.Order;
 import com.belhard.bookstore.data.repository.OrderRepository;
+import com.belhard.bookstore.exceptions.NotFoundException;
 import com.belhard.bookstore.service.OrderService;
 import com.belhard.bookstore.service.dto.OrderDto;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto getById(Long id) {
-        return null;
+        Order order = orderRepository.findById(id);
+        log.info("The OrderRepositoryImpl class method was called to search");
+        if (order == null) {
+            log.warn("Order with id: {} not found!", id);
+            throw new NotFoundException("Order with id: " + id + " not found!");
+        }
+        OrderDto orderDto = converter.toOrderDto(order);
+        log.info("Search result: {}", orderDto);
+        return orderDto;
     }
 }
