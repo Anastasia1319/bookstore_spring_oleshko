@@ -41,4 +41,13 @@ public class OrderServiceImpl implements OrderService {
         log.info("Search result: {}", orderServiceDto);
         return orderServiceDto;
     }
+
+    @Override
+    public List<OrderServiceDto> getByUserId(Long id) {
+        log.info("Received a list of orders by userId from OrderRepositoryImpl");
+        return orderRepository.findByUserId(id)
+                .stream()
+                .map(converter::toOrderDto)
+                .toList();
+    }
 }

@@ -70,6 +70,15 @@ public class OrderRepositoryImpl implements OrderRepository {
         return orderDao.delete(key);
     }
 
+    @Override
+    public List<Order> findByUserId(Long id) {
+        log.info("Received a list of orders by userId from OrderDaoImpl");
+        return orderDao.findByUserId(id)
+                .stream()
+                .map(this::getOrder)
+                .toList();
+    }
+
     private Order getOrder(OrderDto orderDto) {
         Order order = new Order();
         order.setId(orderDto.getId());

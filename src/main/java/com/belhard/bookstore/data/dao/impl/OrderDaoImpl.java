@@ -30,6 +30,8 @@ public class OrderDaoImpl implements OrderDao {
             "WHERE s.status_name = ?) WHERE id = ?";
 //    private static final String DELETE_BY_ID = "DELETE FROM orders WHERE id = ?";
     private static final String DELETE_BY_ID = "UPDATE orders SET status_id = (SELECT s.id FROM statuses s WHERE s.status_name = 'CANCELED') WHERE id = ?";
+    private static final String FIND_BY_USER_ID = "SELECT o.id, o.user_id, s.status_name FROM orders o JOIN statuses s " +
+            "ON o.status_id = s.id WHERE O.user_id = ?";
     private final JdbcTemplate jdbcTemplate;
 
     private final OrderRowMapper rowMapper;
@@ -99,5 +101,11 @@ public class OrderDaoImpl implements OrderDao {
     private void mapOrderToStatementData (OrderDto orderDto, PreparedStatement statement) throws SQLException {
         statement.setLong(1, orderDto.getUserId());
         statement.setString(2, orderDto.getStatus().toString());
+    }
+
+    @Override
+    public List<OrderDto> findByUserId(Long id) {
+        log.info("Creating a list of orders matching the search criteria");
+        return jdbcTemplate.query(FIND_BY_USER_ID, rowMapper, id);
     }
 }

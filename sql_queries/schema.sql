@@ -36,17 +36,16 @@ CREATE TABLE IF NOT EXIST statuses (
     status_name VARCHAR (50)
 );
 
-CREATE TABLE order_items (
+CREATE TABLE IF NOT EXIST orders (
     "id" BIGSERIAL PRIMARY KEY,
-    book_id INT8 NOT NULL,
-    quantity INT4 NOT NULL,
-    price NUMERIC(9,2) NOT NULL,
-    order_id INT8 NOT NULL,
-    FOREIGN KEY (book_id) REFERENCES books ("id"),
-    FOREIGN KEY (order_id) REFERENCES orders ("id")
-);
+    user_id INT8 NOT NULL,
+    status_id INT8 NOT NULL,
+    FOREIGN KEY (status_id) REFERENCES statuses ("id"),
+    FOREIGN KEY (user_id) REFERENCES users (user_id)
+    );
 
 CREATE TABLE IF NOT EXIST order_items (
+    "id" BIGSERIAL PRIMARY KEY,
     book_id INT8 NOT NULL,
     quantity INT4 NOT NULL,
     price NUMERIC(9,2) NOT NULL,

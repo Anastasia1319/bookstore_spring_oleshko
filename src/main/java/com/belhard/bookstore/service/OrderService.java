@@ -7,4 +7,5 @@ import java.util.List;
 public interface OrderService {
     List<OrderServiceDto> getAll();
     OrderServiceDto getById (Long id);
+    List<OrderServiceDto> getByUserId (Long id);
 }
