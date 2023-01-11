@@ -3,23 +3,21 @@ package com.belhard.bookstore.controller.command.impl.user;
 import com.belhard.bookstore.controller.command.Command;
 import com.belhard.bookstore.exceptions.ApplicationException;
 import com.belhard.bookstore.service.UserService;
-import com.belhard.bookstore.service.dto.UserDto;
+import com.belhard.bookstore.service.dto.UserServiceDto;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 
 @Controller("edit_user_form")
+@RequiredArgsConstructor
 public class EditUserFormCommand implements Command {
     private final UserService userService;
-
-    public EditUserFormCommand(UserService userService) {
-        this.userService = userService;
-    }
 
     @Override
     public String execute(HttpServletRequest req) {
         Long id = processReq(req);
-        UserDto userDto = userService.getById(id);
-        req.setAttribute("user", userDto);
+        UserServiceDto userServiceDto = userService.getById(id);
+        req.setAttribute("user", userServiceDto);
         return "jsp/edit_user.jsp";
     }
 

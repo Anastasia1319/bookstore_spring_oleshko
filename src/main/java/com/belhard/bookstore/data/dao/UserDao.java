@@ -1,15 +1,8 @@
 package com.belhard.bookstore.data.dao;
 
-import com.belhard.bookstore.data.entity.User;
+import com.belhard.bookstore.data.dto.UserDto;
 
-import java.util.List;
-
-public interface UserDao {
-    List<User> findAll();
-    User create (User user);
-    User update (User user);
-    boolean delete (Long id);
-    User findByEmail(String email);
+public interface UserDao extends CrudDao <UserDto, Long>{
+    UserDto findByEmail(String email);
     int countAll ();
-    User findById(Long id);
 }

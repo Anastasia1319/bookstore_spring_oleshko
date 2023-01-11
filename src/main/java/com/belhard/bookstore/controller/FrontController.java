@@ -10,15 +10,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import java.io.IOException;
 
 @WebServlet("/controller")
+@Log4j2
 public class FrontController extends HttpServlet {
     private AnnotationConfigApplicationContext context;
-    private static final Logger log = LogManager.getLogger(FrontController.class);
 
     @Override
     public void init() {

@@ -25,7 +25,7 @@
             <tr>
                 <td>${user.id}</td>
               <td>
-                <a href="controller?command=user&id=${user.id}">${user.userName}</a>
+                <a href="controller?command=user&id=${user.id}">${user.firstName} ${user.lastName}</a>
               </td>
               <td>${user.email}</td>
               <td>${user.role}</td>

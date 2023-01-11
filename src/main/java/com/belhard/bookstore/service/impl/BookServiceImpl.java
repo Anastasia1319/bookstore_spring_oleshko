@@ -1,62 +1,62 @@
 package com.belhard.bookstore.service.impl;
 
-import com.belhard.bookstore.data.dao.BookDao;
 import com.belhard.bookstore.data.entity.Book;
+import com.belhard.bookstore.data.repository.BookRepository;
 import com.belhard.bookstore.exceptions.NotFoundException;
 import com.belhard.bookstore.exceptions.NotUpdateException;
 import com.belhard.bookstore.service.BookService;
-import com.belhard.bookstore.service.dto.BookDto;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.belhard.bookstore.service.dto.BookServiceDto;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
+@Log4j2
+@RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
     public static final int ISBN_LENGTH = 13;
-    private final BookDao bookDao;
-    private static final Logger log = LogManager.getLogger(BookServiceImpl.class);
-
-    public BookServiceImpl(BookDao bookDao) {
-        this.bookDao = bookDao;
-    }
+    private final BookRepository bookRepository;
+    private final ConverterService converter;
 
     @Override
-    public List<BookDto> getAll() {
-        log.info("Received a list of books from BookDaoImpl");
-        return bookDao.findAll()
+    public List<BookServiceDto> getAll() {
+        log.info("Received a list of books from BookRepositoryImpl");
+        return bookRepository.findAll()
                 .stream()
-                .map(this::toDto)
+                .sorted(Comparator.comparing(Book::getId))
+                .map(converter::toBookDto)
                 .toList();
     }
 
     @Override
-    public BookDto getById(Long id) {
-        Book book = bookDao.findById(id);
-        log.info("The BookDaoImpl class method was called to search");
+    public BookServiceDto getById(Long id) {
+        Book book = bookRepository.findById(id);
+        log.info("The BookRepositoryImpl class method was called to search");
         if (book == null) {
             log.warn("Book with id: {} not found!", id);
             throw  new NotFoundException("Book with id: " + id + " not found!");
         }
-        BookDto bookDto = toDto(book);
-        log.info("Search result: {}", bookDto);
-        return bookDto;
+        BookServiceDto bookServiceDto = converter.toBookDto(book);
+        log.info("Search result: {}", bookServiceDto);
+        return bookServiceDto;
     }
 
     @Override
-    public BookDto create(BookDto dto) {
+    public BookServiceDto create(BookServiceDto dto) {
         validate(dto);
-        Book toCreate = toEntity(dto);
-        Book created = bookDao.create(toCreate);
-        BookDto bookDto = toDto(created);
-        log.info("Creation result: {}", bookDto);
-        return bookDto;
+        Book toCreate = converter.toBookEntity(dto);
+        Book created = bookRepository.create(toCreate);
+        BookServiceDto bookServiceDto = converter.toBookDto(created);
+        log.info("Creation result: {}", bookServiceDto);
+        return bookServiceDto;
     }
 
-    private void validate(BookDto dto) {
+    private void validate(BookServiceDto dto) {
         if (dto.getIsbn().length() > ISBN_LENGTH) {
             log.error("Isbn parameter value is invalid");
             throw new NotUpdateException("ISBN number cannot be longer than 13 characters.");
@@ -74,18 +74,18 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDto update(BookDto dto) {
+    public BookServiceDto update(BookServiceDto dto) {
         validate(dto);
-        Book toUpdate = toEntity(dto);
-        Book updated = bookDao.update(toUpdate);
-        BookDto bookDto = toDto(updated);
-        log.info("Update result: {}", bookDto);
-        return bookDto;
+        Book toUpdate = converter.toBookEntity(dto);
+        Book updated = bookRepository.update(toUpdate);
+        BookServiceDto bookServiceDto = converter.toBookDto(updated);
+        log.info("Update result: {}", bookServiceDto);
+        return bookServiceDto;
     }
 
     @Override
     public void delete(Long id) {
-        if (!bookDao.delete(id)) {
+        if (!bookRepository.delete(id)) {
             log.error("Book with id {} not deleted", id);
             throw new NotFoundException("Couldn't delete book with id: " + id + "!");
         }
@@ -93,41 +93,17 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDto> getByAuthor(String author) {
-        log.info("Received a list of books by author from BookDaoImpl");
-        return bookDao.findByAuthor(author)
+    public List<BookServiceDto> getByAuthor(String author) {
+        log.info("Received a list of books by author from BookRepositoryImpl");
+        return bookRepository.findByAuthor(author)
                 .stream()
-                .map(this::toDto)
+                .map(converter::toBookDto)
                 .toList();
-    }
-
-    private BookDto toDto(Book book) {
-        BookDto bookDto = new BookDto();
-        bookDto.setId(book.getId());
-        bookDto.setAuthor(book.getAuthor());
-        bookDto.setTitle(book.getTitle());
-        bookDto.setPublishinYear(book.getPublishinYear());
-        bookDto.setIsbn(book.getIsbn());
-        bookDto.setPrice(book.getPrice());
-        log.info("Book transformed to BookDto");
-        return bookDto;
-    }
-
-    private Book toEntity (BookDto dto) {
-        Book book = new Book();
-        book.setId(dto.getId());
-        book.setAuthor(dto.getAuthor());
-        book.setTitle(dto.getTitle());
-        book.setPublishinYear(dto.getPublishinYear());
-        book.setIsbn(dto.getIsbn());
-        book.setPrice(dto.getPrice());
-        log.info("BookDto transformed to Book");
-        return book;
     }
 
     public BigDecimal sumPriceByAuthor (String author) {
         log.info("Calculation of the cost of all books of the author");
-        return bookDao.findByAuthor(author)
+        return bookRepository.findByAuthor(author)
                 .stream()
                 .map(Book::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
