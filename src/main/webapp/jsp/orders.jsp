@@ -24,8 +24,8 @@
         <tr>
           <td>
             <a href="controller?command=order&id=${order.id}">${order.id}</a>
-         </td>
-          <a>
+          </td>
+          <td>
             <a href="controller?command=user_orders&id=${order.user.id}">${order.user.firstName} ${order.user.lastName}</a>
           </td>
           <td>${order.totalCost}</td>

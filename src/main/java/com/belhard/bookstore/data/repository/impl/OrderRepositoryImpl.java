@@ -83,7 +83,7 @@ public class OrderRepositoryImpl implements OrderRepository {
         Order order = new Order();
         order.setId(orderDto.getId());
         order.setStatus(Order.Status.valueOf(orderDto.getStatus().toString()));
-        order.setTotalCost(orderDto.getTotalCost());
+        order.setTotalCost(orderItemDao.findTotalCost(orderDto.getId()));
         Long userId = orderDto.getUserId();
         UserDto userDto = userDao.findById(userId);
         log.info("UserDto is fond");
@@ -103,7 +103,6 @@ public class OrderRepositoryImpl implements OrderRepository {
         OrderDto orderDto = new OrderDto();
         orderDto.setId(order.getId());
         orderDto.setStatus(OrderDto.Status.valueOf(order.getStatus().toString()));
-        orderDto.setTotalCost(order.getTotalCost());
         User user = order.getUser();
         Long userId = user.getId();
         orderDto.setUserId(userId);

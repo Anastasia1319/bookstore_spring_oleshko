@@ -63,6 +63,7 @@ public class Converter {
 
     public OrderItem toOrderItemEntity (OrderItemDto dto, BookDao bookDao) {
         OrderItem orderItem = new OrderItem();
+        orderItem.setId(dto.getId());
         Book book = toBookEntity(bookDao.findById(dto.getBookId()));
         orderItem.setBook(book);
         orderItem.setQuantity(dto.getQuantity());

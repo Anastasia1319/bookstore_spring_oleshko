@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 public class OrderDto {
     private Long id;
     private Long userId;
-    private BigDecimal totalCost;
     private Status status;
 
     public enum Status {

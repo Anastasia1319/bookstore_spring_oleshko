@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface OrderItemDao extends CrudDao<OrderItemDto, Long>{
     List<OrderItemDto> findByOrderId (Long orderId);
-    BigDecimal totalCost(Long orderId);
+    BigDecimal findTotalCost(Long orderId);
 }

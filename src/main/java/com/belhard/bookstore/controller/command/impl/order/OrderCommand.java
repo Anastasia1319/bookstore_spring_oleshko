@@ -16,8 +16,8 @@ public class OrderCommand implements Command {
     @Override
     public String execute(HttpServletRequest req) {
         Long id = processReq(req);
-        OrderServiceDto orderServiceDto = orderService.getById(id);
-        req.setAttribute("order", orderServiceDto);
+        OrderServiceDto order = orderService.getById(id);
+        req.setAttribute("order", order);
         return "jsp/order.jsp";
     }
 

@@ -15,15 +15,15 @@
     <h2>Id</h2>
     <p>${requestScope.order.id}</p>
     <h2>Customer</h2>
-    <p>${requestScope.order.user}</p>
+    <p>${requestScope.order.user.firstName} ${requestScope.order.user.lastName}</p>
     <h2>Your order:</h2>
     <p>Status: ${requestScope.order.status}</p>
     <table>
         <thead>
-        <th>Title</th>
-        <th>Author</th>
-        <th>Price</th>
-        <th>Quantity</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Price</th>
+            <th>Quantity</th>
         </thead>
         <tbody>
         <c:forEach var="item" items="${requestScope.order.items}">
