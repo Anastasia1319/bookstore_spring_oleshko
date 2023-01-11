@@ -4,13 +4,19 @@ import com.belhard.bookstore.data.dao.OrderItemDao;
 import com.belhard.bookstore.data.dao.impl.mapper.OrderItemRowMapper;
 import com.belhard.bookstore.data.dto.OrderItemDto;
 import com.belhard.bookstore.exceptions.NotFoundException;
+import com.belhard.bookstore.exceptions.NotUpdateException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Log4j2
@@ -43,7 +49,16 @@ public class OrderItemDaoImpl implements OrderItemDao {
     @Override
     public OrderItemDto create(OrderItemDto entity) {
         log.info("Object creation method called");
-        return null;
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(connection -> {
+            PreparedStatement statement = connection.prepareStatement(CREATE, new String[]{"id"});
+            mapOrderItemToStatementData(entity, statement);
+            return statement;
+        }, keyHolder);
+        return Optional.ofNullable(keyHolder.getKey())
+                .map(Number::longValue)
+                .map(this::findById)
+                .orElseThrow();
     }
 
     @Override
@@ -72,5 +87,12 @@ public class OrderItemDaoImpl implements OrderItemDao {
             log.warn("Returned null from totalCost SQL query");
             throw new NotFoundException("Unable to calculate order amount");
         }
+    }
+
+    private void mapOrderItemToStatementData (OrderItemDto orderItemDto, PreparedStatement statement) throws SQLException {
+        statement.setLong(1, orderItemDto.getBookId());
+        statement.setInt(2, orderItemDto.getQuantity());
+        statement.setBigDecimal(3, orderItemDto.getPrice());
+        statement.setLong(4, orderItemDto.getOrderId());
     }
 }
