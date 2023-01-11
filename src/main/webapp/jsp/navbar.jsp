@@ -3,6 +3,7 @@
     <li class="header">BookStore-Oleshko</li>
     <li><a href="controller?command=books">All Books</a></li>
     <li><a href="controller?command=users">All Users</a></li>
+    <li><a href="controller?command=orders">All Orders</a></li>
     <form action="controller" method="get">
         <label for="book">Find book by author: </label>
         <input type="hidden" name="command" value="find_books"/>
