@@ -17,6 +17,7 @@
     <h2>Customer</h2>
     <p>${requestScope.order.user}</p>
     <h2>Your order:</h2>
+    <p>Status: ${requestScope.order.status}</p>
     <table>
         <thead>
         <th>Title</th>
@@ -25,15 +26,15 @@
         <th>Quantity</th>
         </thead>
         <tbody>
-        <c:forEach var="items" items="${requestScope.order.items}">
+        <c:forEach var="item" items="${requestScope.order.items}">
             <tr>
                 <td>
-                    <a href="controller?command=book&id=${items.book.id}">${items.book.title}</a>
+                    <a href="controller?command=book&id=${item.book.id}">${item.book.title}</a>
                 </td>
-                <td>${items.book.author}</td>
-                <td>${items.book.price}</td>
-                <td>${items.price}</td>
-                <td>${items.quantity}</td>
+                <td>${item.book.author}</td>
+                <td>${item.book.price}</td>
+                <td>${item.price}</td>
+                <td>${item.quantity}</td>
             </tr>
         </c:forEach>
         </tbody>
