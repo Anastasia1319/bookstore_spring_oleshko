@@ -76,7 +76,14 @@ public class OrderItemDaoImpl implements OrderItemDao {
 
     @Override
     public boolean delete(Long key) {
-        return false;
+        log.info("Trying to delete a row with a orderItem in the database");
+        int rowsUpdated = jdbcTemplate.update(DELETE_BY_ID, key);
+        if (rowsUpdated == 0) {
+            log.warn("Updated rows (orderItem): 0");
+            throw  new NotUpdateException("Couldn't delete orderItem with id: {}" + key);
+        }
+        log.info("OrderItem is deleted");
+        return rowsUpdated == 1;
     }
 
     @Override

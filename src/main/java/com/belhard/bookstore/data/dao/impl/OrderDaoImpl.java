@@ -89,7 +89,7 @@ public class OrderDaoImpl implements OrderDao {
         log.info("Trying to delete a row with a order in the database");
         int rowsUpdated = jdbcTemplate.update(DELETE_BY_ID, key);
         if (rowsUpdated == 0) {
-            log.warn("Updated rows on deletion (orders): 0");
+            log.warn("Updated rows on deletion (order): 0");
             throw new NotUpdateException("Couldn't delete order with id: " + key);
         }
         log.info("Order is deleted");
