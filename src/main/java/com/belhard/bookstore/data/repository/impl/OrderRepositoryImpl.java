@@ -95,6 +95,7 @@ public class OrderRepositoryImpl implements OrderRepository {
         for(OrderItemDto item : orderItemsDto) {
             items.add(converter.toOrderItemEntity(item, bookDao));
         }
+        order.setItems(items);
         log.info("Created order");
         return order;
     }
