@@ -33,7 +33,6 @@
                 </td>
                 <td>${item.book.author}</td>
                 <td>${item.book.price}</td>
-                <td>${item.price}</td>
                 <td>${item.quantity}</td>
             </tr>
         </c:forEach>
