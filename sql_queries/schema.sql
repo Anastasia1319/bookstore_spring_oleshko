@@ -1,4 +1,7 @@
 /*
+DELETE IF EXISTS TABLE order_items;
+DELETE IF EXISTS TABLE orders;
+DELETE IF EXISTS TABLE statuses;
 DELETE IF EXISTS TABLE users;
 DELETE IF EXISTS TABLE roles;
 DELETE IF EXISTS TABLE books;
@@ -33,12 +36,14 @@ CREATE TABLE IF NOT EXIST statuses (
     status_name VARCHAR (50)
 );
 
-CREATE TABLE IF NOT EXIST orders (
+CREATE TABLE order_items (
     "id" BIGSERIAL PRIMARY KEY,
-    user_id INT8 NOT NULL,
-    status_id INT8 NOT NULL,
-    FOREIGN KEY (status_id) REFERENCES statuses ("id"),
-    FOREIGN KEY (user_id) REFERENCES users (user_id)
+    book_id INT8 NOT NULL,
+    quantity INT4 NOT NULL,
+    price NUMERIC(9,2) NOT NULL,
+    order_id INT8 NOT NULL,
+    FOREIGN KEY (book_id) REFERENCES books ("id"),
+    FOREIGN KEY (order_id) REFERENCES orders ("id")
 );
 
 CREATE TABLE IF NOT EXIST order_items (

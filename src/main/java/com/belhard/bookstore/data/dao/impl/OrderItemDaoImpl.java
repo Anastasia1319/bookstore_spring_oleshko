@@ -16,21 +16,22 @@ import java.util.List;
 @Log4j2
 @RequiredArgsConstructor
 public class OrderItemDaoImpl implements OrderItemDao {
-    private static final String SELECT_ALL = "SELECT oi.book_id, oi.quantity, oi.price, oi.order_id FROM order_items oi";
-    private static final String FIND_BY_ID = "SELECT oi.book_id, oi.quantity, oi.price, oi.order_id FROM order_items oi " +
-            "WHERE oi.order_id = ? AND book_id = ?";
-    private static final String FIND_BY_ORDER_ID = "SELECT oi.book_id, oi.quantity, oi.price, oi.order_id FROM order_items oi " +
-            "WHERE oi.order_id = ?";
+    private static final String SELECT_ALL = "SELECT oi.id, oi.book_id, oi.quantity, oi.price, oi.order_id FROM order_items oi";
+    private static final String FIND_BY_ID = "SELECT oi.id, oi.book_id, oi.quantity, oi.price, oi.order_id FROM order_items oi " +
+            "WHERE oi.id = ?";
+    private static final String FIND_BY_ORDER_ID = "SELECT oi.id, oi.book_id, oi.quantity, oi.price, oi.order_id " +
+            "FROM order_items oi WHERE oi.order_id = ?";
     private static final String CREATE = "INSERT INTO order_items SET book_id = ?, quantity = ?, price = ?, order_id = ?";
-    private static final String UPDATE = "UPDATE order_items SET quantity = ?, price = ? WHERE order_id = ? AND book_id = ?";
-    private static final String DELETE_BY_ID = "DELETE FROM order_items WHERE order_id = ?";
+    private static final String UPDATE = "UPDATE order_items SET book_id = ?, quantity = ?, price = ?, order_id = ? WHERE id =?";
+    private static final String DELETE_BY_ID = "DELETE FROM order_items WHERE id = ?";
     private static final String COUNT_TOTAL_COST = "SELECT SUM(oi.quantity*oi.price) FROM order_items oi WHERE oi.order_id = ?";
     private final JdbcTemplate jdbcTemplate;
     private final OrderItemRowMapper rowMapper;
 
     @Override
     public OrderItemDto findById(Long key) {
-        return null;
+        log.info("OrderItem with id {} found", key);
+        return jdbcTemplate.queryForObject(FIND_BY_ID, rowMapper, key);
     }
 
     @Override
