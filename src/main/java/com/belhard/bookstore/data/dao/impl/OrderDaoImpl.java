@@ -65,7 +65,7 @@ public class OrderDaoImpl implements OrderDao {
         log.info("Trying to update a row with a order in the database");
         int rowsUpdated = jdbcTemplate.update(UPDATE, entity.getUserId(), entity.getStatus().toString(), entity.getId());
         if (rowsUpdated == 0) {
-            log.warn("Updated rows (orders): 0");
+            log.warn("Updated rows (order): 0");
             throw new NotUpdateException("Couldn't update order: {}" + entity);
         }
         log.info("Order is updated");

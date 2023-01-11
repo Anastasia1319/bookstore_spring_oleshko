@@ -63,7 +63,15 @@ public class OrderItemDaoImpl implements OrderItemDao {
 
     @Override
     public OrderItemDto update(OrderItemDto entity) {
-        return null;
+        log.info("Trying to update a row with a orderItem in the database");
+        int rowsUpdated = jdbcTemplate.update(UPDATE, entity.getBookId(), entity.getQuantity(), entity.getPrice(),
+                entity.getOrderId(), entity.getId());
+        if (rowsUpdated == 0) {
+            log.warn("Updated rows (orderItem): 0");
+            throw  new NotUpdateException("Couldn't update orderItem: {}" + entity);
+        }
+        log.info("OrderItem is updated");
+        return findById(entity.getId());
     }
 
     @Override
