@@ -12,4 +12,5 @@ public interface UserService {
     UserServiceDto update (UserServiceDto dto);
     void delete(Long id);
     UserServiceDto login(String email, String password);
+    List<UserServiceDto> getAllWithNotActive();
 }

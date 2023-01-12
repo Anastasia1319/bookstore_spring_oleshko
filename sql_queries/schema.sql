@@ -13,7 +13,8 @@ CREATE TABLE IF NOT EXISTS books (
 	title VARCHAR(100),
 	publishin_year CHAR(4),
 	isbn CHAR(13) UNIQUE NOT NULL,
-	price DECIMAL(8, 2)
+	price DECIMAL(8, 2),
+    deleted BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE IF NOT EXIST "roles" (
@@ -25,10 +26,11 @@ CREATE TABLE IF NOT EXIST users (
 	user_id BIGSERIAL PRIMARY KEY,
 	first_name VARCHAR(50) NOT NULL,
 	last_name VARCHAR(50),
-	email VARCHAR(50) NOT NULL,
+	email VARCHAR(50) NOT NULL UNIQUE,
 	"password" CHAR(8) NOT NULL,
 	role_id INT NOT NULL,
-	FOREIGN KEY (role_id) REFERENCES "role" (role_id)
+    is_active BOOLEAN DEFAULT TRUE,
+	FOREIGN KEY (role_id) REFERENCES "roles" (role_id)
 );
 
 CREATE TABLE IF NOT EXIST statuses (

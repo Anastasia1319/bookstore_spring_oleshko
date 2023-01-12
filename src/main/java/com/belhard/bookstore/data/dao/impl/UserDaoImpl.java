@@ -19,25 +19,27 @@ import java.util.Optional;
 @Log4j2
 @RequiredArgsConstructor
 public class UserDaoImpl implements UserDao {
+    private static final String SELECT_ALL_ACTIVE = "SELECT u.user_id, u.first_name, u.last_name, u.email, u.password, r.name_role " +
+            "FROM users u JOIN roles r ON u.role_id = r.role_id WHERE u.is_active = TRUE";
     private static final String SELECT_ALL = "SELECT u.user_id, u.first_name, u.last_name, u.email, u.password, r.name_role " +
-            "FROM users u JOIN role r ON u.role_id = r.role_id;";
+            "FROM users u JOIN roles r ON u.role_id = r.role_id";
     private static final String FIND_BY_EMAIL = "SELECT u.user_id, u.first_name, u.last_name, u.email, u.password, " +
-            "r.name_role FROM users u JOIN role r ON u.role_id = r.role_id WHERE u.email = ?";
+            "r.name_role FROM users u JOIN roles r ON u.role_id = r.role_id WHERE u.email = ? AND u.is_active = TRUE";
     private static final String FIND_BY_ID = "SELECT u.user_id, u.first_name, u.last_name, u.email, u.password, " +
-            "r.name_role FROM users u JOIN role r ON u.role_id = r.role_id WHERE u.user_id = ?";
+            "r.name_role FROM users u JOIN roles r ON u.role_id = r.role_id WHERE u.user_id = ? AND u.is_active = TRUE";
     private static final String CREATE = "INSERT INTO users (first_name, last_name, email, password, role_id) " +
-            "VALUES (?, ?, ?, ?, (SELECT r.role_id FROM role r WHERE r.name_role = ?))";
-    private static final String UPDATE = "UPDATE users SET first_name = ?, last_name = ?, email = ?, password = ?, role_id = (SELECT r.role_id FROM role r WHERE r.name_role = ?)" +
-            " WHERE user_id = ?";
-    private static final String DELETE_BY_ID = "DELETE FROM users WHERE user_id = ?";
-    private static final String COUNT_ALL = "SELECT COUNT(*) FROM users";
+            "VALUES (?, ?, ?, ?, (SELECT r.role_id FROM roles r WHERE r.name_role = ?))";
+    private static final String UPDATE = "UPDATE users SET first_name = ?, last_name = ?, email = ?, password = ?, " +
+            "role_id = (SELECT r.role_id FROM roles r WHERE r.name_role = ?) WHERE user_id = ? AND is_active = TRUE";
+    private static final String DELETE_BY_ID = "UPDATE users SET is_active = FALSE WHERE user_id = ?";
+//    private static final String COUNT_ALL = "SELECT COUNT(*) FROM users WHERE is_active = TRUE";
     private final JdbcTemplate jdbcTemplate;
     private final UserRowMapper rowMapper;
 
     @Override
     public List<UserDto> findAll() {
         log.info("Created a list of users matching the search criteria");
-        return jdbcTemplate.query(SELECT_ALL, rowMapper);
+        return jdbcTemplate.query(SELECT_ALL_ACTIVE, rowMapper);
     }
 
     @Override
@@ -94,6 +96,13 @@ public class UserDaoImpl implements UserDao {
         log.info("Created a database call - counting the number of rows");
         return jdbcTemplate.getFetchSize();
     }
+
+    @Override
+    public List<UserDto> findAllWithNotActive() {
+        log.info("Created a list of all users (active and not-active) matching the search criteria");
+        return jdbcTemplate.query(SELECT_ALL, rowMapper);
+    }
+
     private void mapUserToStatementData (UserDto userDto, PreparedStatement statement) throws SQLException {
         statement.setString(1, userDto.getFirstName());
         statement.setString(2, userDto.getLastName());
