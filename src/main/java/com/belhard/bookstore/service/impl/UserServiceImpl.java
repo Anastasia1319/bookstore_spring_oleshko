@@ -113,4 +113,14 @@ public class UserServiceImpl implements UserService {
         log.info("Login completed");
         return userServiceDto;
     }
+
+    @Override
+    public List<UserServiceDto> getAllWithNotActive() {
+        log.info("Received a list of all users (active and not-active) from UserDaoImpl");
+        return userRepository.findAllWithNotActive()
+                .stream()
+                .sorted(Comparator.comparing(User::getId))
+                .map(converter::toUserDto)
+                .toList();
+    }
 }

@@ -69,4 +69,13 @@ public class UserRepositoryImpl implements UserRepository {
     public int countAll() {
         return userDao.countAll();
     }
+
+    @Override
+    public List<User> findAllWithNotActive() {
+        log.info("Received a list of all users (active and not-active) from UserDaoImpl");
+        return userDao.findAllWithNotActive()
+                .stream()
+                .map(converter::toUserEntity)
+                .toList();
+    }
 }
