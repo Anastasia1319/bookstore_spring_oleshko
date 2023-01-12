@@ -52,7 +52,7 @@ public class BookServiceImpl implements BookService {
         BookServiceDto existing = converter.toBookDto(bookRepository.findByIsbn(dto.getIsbn()));
         if (existing != null) {
             log.error("A book with this ISBN already exists in the database");
-            throw new NotUpdateException("A book with this ISBN already exists in the database");
+            throw new NotUpdateException("Can't create: a book with this ISBN already exists in the database");
         }
         Book toCreate = converter.toBookEntity(dto);
         Book created = bookRepository.create(toCreate);
@@ -84,7 +84,7 @@ public class BookServiceImpl implements BookService {
         BookServiceDto existing = converter.toBookDto(bookRepository.findByIsbn(dto.getIsbn()));
         if (existing != null && existing.getId() != dto.getId()) {
             log.error("A book with this ISBN already exists in the database");
-            throw new NotUpdateException("A book with this ISBN already exists in the database");
+            throw new NotUpdateException("Can't update: a book with this ISBN already exists in the database");
         }
         Book toUpdate = converter.toBookEntity(dto);
         Book updated = bookRepository.update(toUpdate);

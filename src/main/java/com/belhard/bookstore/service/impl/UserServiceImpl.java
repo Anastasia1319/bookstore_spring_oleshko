@@ -59,6 +59,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserServiceDto create(UserServiceDto dto) {
         validate(dto);
+        UserServiceDto existing = converter.toUserDto(userRepository.findByEmail(dto.getEmail()));
+        if (existing != null) {
+            log.error("A user with this email already exists in the database");
+            throw new NotUpdateException("Can't create: a user with this email already exists in the database");
+        }
         User toCreate = converter.toUserEntity(dto);
         User created = userRepository.create(toCreate);
         UserServiceDto userServiceDto = converter.toUserDto(created);
@@ -77,6 +82,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserServiceDto update(UserServiceDto dto) {
         validate(dto);
+        UserServiceDto existing = converter.toUserDto(userRepository.findByEmail(dto.getEmail()));
+        if (existing != null && existing.getId() != dto.getId()) {
+            log.error("A user with this email already exists in the database");
+            throw new NotUpdateException("Can't update: a user with this email already exists in the database");
+        }
         User toUpdate = converter.toUserEntity(dto);
         User updated = userRepository.update(toUpdate);
         UserServiceDto userServiceDto = converter.toUserDto(updated);
