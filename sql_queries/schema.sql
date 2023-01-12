@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXIST users (
 	email VARCHAR(50) NOT NULL,
 	"password" CHAR(8) NOT NULL,
 	role_id INT NOT NULL,
+    is_active BOOLEAN DEFAULT TRUE,
 	FOREIGN KEY (role_id) REFERENCES "role" (role_id)
 );
 
