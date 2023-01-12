@@ -21,7 +21,14 @@ VALUES ('Oscar Wilde', 'The Picture of Dorian Grey', 2019, '5-17-099056-6', 9.86
 		('Brothers Grimm', 'True Tales of the Brothers Grimm', 2018, '5-906979-68-1', 75.35),
 		('Michael Bulgakov', 'Heart of dog', 2013, '5-389-06294-8', 10.69),
 		('Aldous Huxley', 'Oh brave new world', 2013, '5-17-062823-0', 18.69),
-		('Franz Kafka', 'Process', 2015, '5-17-089289-1', 10.33);
+		('Franz Kafka', 'Process', 2015, '5-17-089289-1', 10.33),
+        ('Jerome David Salinger', 'The Catcher in the Rye', 2022, '5-04-113242-2', 25.32),
+        ('Harper Lee', 'To Kill a Mockingbird', 2021, '5-17-090411-2', 16.03),
+        ('Jack London', 'The Little Lady of the Big House', 2016, '5-17-100401-9', 10.33),
+        ('Lewis Carroll', 'Alice in Wonderland', 2015, '5-17-103240-1', 16.33),
+        ('Emily Jane Bronte', 'Wuthering Heights', 2022, '5-389-01323-0', 9.19),
+        ('Colleen McCullough', 'Singing in the thorns', 2022, '5-17-147429-4', 29.17);
+
 
 INSERT INTO roles (name_role)
 VALUES ('ADMIN'),
