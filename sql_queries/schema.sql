@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXIST users (
 	"password" CHAR(8) NOT NULL,
 	role_id INT NOT NULL,
     is_active BOOLEAN DEFAULT TRUE,
-	FOREIGN KEY (role_id) REFERENCES "role" (role_id)
+	FOREIGN KEY (role_id) REFERENCES "roles" (role_id)
 );
 
 CREATE TABLE IF NOT EXIST statuses (

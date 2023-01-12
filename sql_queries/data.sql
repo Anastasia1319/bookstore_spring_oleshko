@@ -58,7 +58,10 @@ VALUES ('Oliver', 'Phelps', 'oliver4444@jmail.com', '15975328', (SELECT role_id 
     	('Isabella', 'Garrett', 'isabella@jmail.com', '13141583', (SELECT role_id FROM roles WHERE name_role = 'ADMIN')),
     	('Susanna ', 'Watts', 'susy@jmail.com', '45494863', (SELECT role_id FROM roles WHERE name_role = 'MANAGER')),
     	('Basil', 'Rodgers', 'basil@jmail.com', '35762524', (SELECT role_id FROM roles WHERE name_role = 'CUSTOMER')),
-    	('Michael', 'Mosley', 'micky@jmail.com', '25289113', (SELECT role_id FROM roles WHERE name_role = 'CUSTOMER'));
+    	('Michael', 'Mosley', 'micky@jmail.com', '25289113', (SELECT role_id FROM roles WHERE name_role = 'CUSTOMER')),
+        ('Virginia', 'McGee', 'vivi@jmail.com', '17181920', (SELECT role_id FROM roles WHERE name_role = 'CUSTOMER')),
+        ('Cameron', 'Wilkinson', 'wilkinson@jmail.com', 'awdszeyt', (SELECT role_id FROM roles WHERE name_role = 'MANAGER')),
+        ('Lilian', 'Payne', 'lili@jmail.com', 'lol77lol', (SELECT role_id FROM roles WHERE name_role = 'CUSTOMER'));
 
 INSERT INTO statuses (status_name)
 VALUES ('PENDING'),
