@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXIST users (
 	user_id BIGSERIAL PRIMARY KEY,
 	first_name VARCHAR(50) NOT NULL,
 	last_name VARCHAR(50),
-	email VARCHAR(50) NOT NULL,
+	email VARCHAR(50) NOT NULL UNIQUE,
 	"password" CHAR(8) NOT NULL,
 	role_id INT NOT NULL,
     is_active BOOLEAN DEFAULT TRUE,
