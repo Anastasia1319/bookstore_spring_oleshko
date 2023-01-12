@@ -13,7 +13,8 @@ CREATE TABLE IF NOT EXISTS books (
 	title VARCHAR(100),
 	publishin_year CHAR(4),
 	isbn CHAR(13) UNIQUE NOT NULL,
-	price DECIMAL(8, 2)
+	price DECIMAL(8, 2),
+    deleted BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE IF NOT EXIST "roles" (
