@@ -52,7 +52,6 @@
             <version>${log4j.version}</version>
         </dependency>
 
-
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
