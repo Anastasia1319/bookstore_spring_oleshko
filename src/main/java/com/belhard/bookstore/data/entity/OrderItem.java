@@ -31,5 +31,5 @@ public class OrderItem {
                     CascadeType.MERGE,
                     CascadeType.REFRESH})
     @JoinColumn(name = "order_id")
-    private Long orderId;
+    private Order orderId;
 }
