@@ -1,9 +1,9 @@
 package com.belhard.bookstore.data.repository.impl;
 
-import com.belhard.bookstore.data.dao.BookDao;
-import com.belhard.bookstore.data.dao.OrderDao;
-import com.belhard.bookstore.data.dao.OrderItemDao;
-import com.belhard.bookstore.data.dao.UserDao;
+import com.belhard.bookstore.data.dao.BookRepository;
+import com.belhard.bookstore.data.dao.OrderItemRepository;
+import com.belhard.bookstore.data.dao.OrderRepository;
+import com.belhard.bookstore.data.dao.UserRepository;
 import com.belhard.bookstore.data.dto.OrderDto;
 import com.belhard.bookstore.data.dto.OrderItemDto;
 import com.belhard.bookstore.data.dto.UserDto;
@@ -11,7 +11,6 @@ import com.belhard.bookstore.data.entity.Order;
 import com.belhard.bookstore.data.entity.OrderItem;
 import com.belhard.bookstore.data.entity.User;
 import com.belhard.bookstore.data.repository.Converter;
-import com.belhard.bookstore.data.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Repository;
@@ -23,11 +22,11 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor
 @Log4j2
-public class OrderRepositoryImpl implements OrderRepository {
-    private final OrderDao orderDao;
-    private final OrderItemDao orderItemDao;
-    private final UserDao userDao;
-    private final BookDao bookDao;
+public class OrderRepositoryImpl implements com.belhard.bookstore.data.repository.OrderRepository {
+    private final OrderRepository orderDao;
+    private final OrderItemRepository orderItemDao;
+    private final UserRepository userDao;
+    private final BookRepository bookDao;
     private final Converter converter;
     @Override
     public Order findById(Long key) {

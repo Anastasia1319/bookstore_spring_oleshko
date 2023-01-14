@@ -1,6 +1,6 @@
 package com.belhard.bookstore.data.dao.impl;
 
-import com.belhard.bookstore.data.dao.OrderItemDao;
+import com.belhard.bookstore.data.dao.OrderItemRepository;
 import com.belhard.bookstore.data.dao.impl.mapper.OrderItemRowMapper;
 import com.belhard.bookstore.data.dto.OrderItemDto;
 import com.belhard.bookstore.exceptions.NotFoundException;
@@ -21,7 +21,7 @@ import java.util.Optional;
 @Repository
 @Log4j2
 @RequiredArgsConstructor
-public class OrderItemDaoImpl implements OrderItemDao {
+public class OrderItemRepositoryImpl implements OrderItemRepository {
     private static final String SELECT_ALL = "SELECT oi.id, oi.book_id, oi.quantity, oi.price, oi.order_id FROM order_items oi";
     private static final String FIND_BY_ID = "SELECT oi.id, oi.book_id, oi.quantity, oi.price, oi.order_id FROM order_items oi " +
             "WHERE oi.id = ?";

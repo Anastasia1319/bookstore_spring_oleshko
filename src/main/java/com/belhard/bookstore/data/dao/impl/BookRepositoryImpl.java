@@ -1,6 +1,6 @@
 package com.belhard.bookstore.data.dao.impl;
 
-import com.belhard.bookstore.data.dao.BookDao;
+import com.belhard.bookstore.data.dao.BookRepository;
 import com.belhard.bookstore.data.dao.impl.mapper.BookRowMapper;
 import com.belhard.bookstore.data.dto.BookDto;
 import com.belhard.bookstore.exceptions.NotUpdateException;
@@ -18,7 +18,7 @@ import java.util.Optional;
 @Repository
 @Log4j2
 @RequiredArgsConstructor
-public class BookDaoImpl implements BookDao {
+public class BookRepositoryImpl implements BookRepository {
     private static final String SELECT_ALL = "SELECT b.id, b.author, b.title, b.publishin_year, b.isbn, b.price " +
             "FROM books b WHERE b.deleted = FALSE";
     private static final String FIND_BY_ID = "SELECT b.id, b.author, b.title, b.publishin_year, b.isbn, b.price " +

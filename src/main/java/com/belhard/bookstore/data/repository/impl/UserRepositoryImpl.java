@@ -1,10 +1,9 @@
 package com.belhard.bookstore.data.repository.impl;
 
-import com.belhard.bookstore.data.dao.UserDao;
+import com.belhard.bookstore.data.dao.UserRepository;
 import com.belhard.bookstore.data.dto.UserDto;
 import com.belhard.bookstore.data.entity.User;
 import com.belhard.bookstore.data.repository.Converter;
-import com.belhard.bookstore.data.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Repository;
@@ -14,8 +13,8 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor
 @Log4j2
-public class UserRepositoryImpl implements UserRepository {
-    private final UserDao userDao;
+public class UserRepositoryImpl implements com.belhard.bookstore.data.repository.UserRepository {
+    private final UserRepository userDao;
     private final Converter converter;
     @Override
     public User findById(Long key) {

@@ -1,9 +1,8 @@
 package com.belhard.bookstore.data.repository.impl;
 
-import com.belhard.bookstore.data.dao.BookDao;
+import com.belhard.bookstore.data.dao.BookRepository;
 import com.belhard.bookstore.data.dto.BookDto;
 import com.belhard.bookstore.data.entity.Book;
-import com.belhard.bookstore.data.repository.BookRepository;
 import com.belhard.bookstore.data.repository.Converter;;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -14,8 +13,8 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor
 @Log4j2
-public class BookRepositoryImpl implements BookRepository {
-    private final BookDao bookDao;
+public class BookRepositoryImpl implements com.belhard.bookstore.data.repository.BookRepository {
+    private final BookRepository bookDao;
     private final Converter converter;
     @Override
     public Book findById(Long key) {

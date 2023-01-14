@@ -1,6 +1,6 @@
 package com.belhard.bookstore.data.dao.impl;
 
-import com.belhard.bookstore.data.dao.OrderDao;
+import com.belhard.bookstore.data.dao.OrderRepository;
 import com.belhard.bookstore.data.dao.impl.mapper.OrderRowMapper;
 import com.belhard.bookstore.data.dto.OrderDto;
 import com.belhard.bookstore.exceptions.NotUpdateException;
@@ -19,7 +19,7 @@ import java.util.Optional;
 @Repository
 @Log4j2
 @RequiredArgsConstructor
-public class OrderDaoImpl implements OrderDao {
+public class OrderRepositoryImpl implements OrderRepository {
     private static final String SELECT_ALL = "SELECT o.id, o.user_id, s.status_name FROM orders o JOIN statuses s " +
             "ON s.id = o.status_id";
     private static final String FIND_BY_ID = "SELECT o.id, o.user_id, s.status_name FROM orders o JOIN statuses s " +

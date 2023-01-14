@@ -4,7 +4,7 @@ import com.belhard.bookstore.data.dto.UserDto;
 
 import java.util.List;
 
-public interface UserDao extends CrudDao <UserDto, Long>{
+public interface UserRepository extends CrudRepository<UserDto, Long> {
     UserDto findByEmail(String email);
     int countAll ();
     List<UserDto> findAllWithNotActive();

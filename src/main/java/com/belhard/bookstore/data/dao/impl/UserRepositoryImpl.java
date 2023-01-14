@@ -1,6 +1,6 @@
 package com.belhard.bookstore.data.dao.impl;
 
-import com.belhard.bookstore.data.dao.UserDao;
+import com.belhard.bookstore.data.dao.UserRepository;
 import com.belhard.bookstore.data.dao.impl.mapper.UserRowMapper;
 import com.belhard.bookstore.data.dto.UserDto;
 import com.belhard.bookstore.exceptions.NotUpdateException;
@@ -18,7 +18,7 @@ import java.util.Optional;
 @Repository
 @Log4j2
 @RequiredArgsConstructor
-public class UserDaoImpl implements UserDao {
+public class UserRepositoryImpl implements UserRepository {
     private static final String SELECT_ALL_ACTIVE = "SELECT u.user_id, u.first_name, u.last_name, u.email, u.password, r.name_role " +
             "FROM users u JOIN roles r ON u.role_id = r.role_id WHERE u.is_active = TRUE";
     private static final String SELECT_ALL = "SELECT u.user_id, u.first_name, u.last_name, u.email, u.password, r.name_role " +

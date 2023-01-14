@@ -1,6 +1,6 @@
 package com.belhard.bookstore.data.repository;
 
-import com.belhard.bookstore.data.dao.BookDao;
+import com.belhard.bookstore.data.dao.BookRepository;
 import com.belhard.bookstore.data.dto.OrderItemDto;
 import com.belhard.bookstore.data.dto.UserDto;
 import com.belhard.bookstore.data.entity.Book;
@@ -61,7 +61,7 @@ public class Converter {
         return user;
     }
 
-    public OrderItem toOrderItemEntity (OrderItemDto dto, BookDao bookDao) {
+    public OrderItem toOrderItemEntity (OrderItemDto dto, BookRepository bookDao) {
         OrderItem orderItem = new OrderItem();
         orderItem.setId(dto.getId());
         Book book = toBookEntity(bookDao.findById(dto.getBookId()));

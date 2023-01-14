@@ -4,6 +4,6 @@ import com.belhard.bookstore.data.dto.OrderDto;
 
 import java.util.List;
 
-public interface OrderDao extends CrudDao<OrderDto, Long>{
+public interface OrderRepository extends CrudRepository<OrderDto, Long> {
     List<OrderDto> findByUserId(Long id);
 }
