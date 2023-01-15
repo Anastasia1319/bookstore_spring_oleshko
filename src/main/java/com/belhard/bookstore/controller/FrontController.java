@@ -1,6 +1,6 @@
 package com.belhard.bookstore.controller;
 
-import com.belhard.bookstore.AppConfig;
+import com.belhard.bookstore.ApplicationConfig;
 import com.belhard.bookstore.controller.command.Command;
 import com.belhard.bookstore.exceptions.ApplicationException;
 import com.belhard.bookstore.exceptions.NotFoundException;
@@ -21,7 +21,7 @@ public class FrontController extends HttpServlet {
 
     @Override
     public void init() {
-        context = new AnnotationConfigApplicationContext(AppConfig.class);
+        context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
     }
     @Override
     public void destroy() {

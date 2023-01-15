@@ -1,9 +1,10 @@
-package com.belhard.bookstore.data.repository;
+package com.belhard.bookstore.data.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CrudRepository<T, K>{
-    T findById (K key);
+    Optional<T> findById (K key);
     List<T> findAll();
     void save (T entity);
     boolean delete (K key);
