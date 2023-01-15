@@ -1,9 +1,12 @@
 package com.belhard.bookstore.data.dao;
 
 import com.belhard.bookstore.data.entity.Order;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface OrderRepository extends CrudRepository<Order, Long> {
-    List<Order> findByUserId(Long id);
+public interface OrderRepository extends JpaRepository<Order, Long> {
+    @Query("from Order where user = :userId")
+    List<Order> findByUserId(Long userId);
 }
