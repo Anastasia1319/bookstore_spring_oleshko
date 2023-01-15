@@ -29,8 +29,7 @@ public class UserRepositoryImpl implements UserRepository {
     public List<User> findAll() {
         log.info("Created a list of users matching the search criteria");
         TypedQuery<User> query = manager.createQuery(FIND_ALL_ACTIVE, User.class);
-        List<User> users = query.getResultList();
-        return users;
+        return query.getResultList();
     }
 
     @Override
@@ -38,8 +37,7 @@ public class UserRepositoryImpl implements UserRepository {
         log.info("User with id {} found", id);
         TypedQuery<User> query = manager.createQuery(FIND_BY_ID, User.class);
         query.setParameter("id", id);
-        Optional<User> user = Optional.ofNullable(query.getSingleResult());
-        return user;
+        return Optional.ofNullable(query.getSingleResult());
     }
 
     @Override
@@ -55,7 +53,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean delete(Long id) {
         log.info("Trying to delete a row with a user in the database");
-        User user = findById(id).get();
+        User user = manager.createQuery(FIND_BY_ID, User.class).setParameter("id", id).getSingleResult();
         if (user == null) {
             log.warn("User with id {} not found amount active users", id);
             return false;
@@ -67,12 +65,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User findByEmail(String email) {
+    public Optional<User> findByEmail(String email) {
         log.info("User with email {} found", email);
         TypedQuery<User> query = manager.createQuery(FIND_BY_EMAIL, User.class);
         query.setParameter("email", email);
-        User user = query.getSingleResult();
-        return user;
+        return Optional.ofNullable(query.getSingleResult());
     }
 
     @Override
