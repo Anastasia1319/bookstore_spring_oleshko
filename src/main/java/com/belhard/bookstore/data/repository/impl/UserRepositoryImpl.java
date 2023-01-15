@@ -31,8 +31,8 @@ public class UserRepositoryImpl implements com.belhard.bookstore.data.repository
 
     @Override
     public void save (User entity) {
-        log.info("Update result: {}", entity);
         userRepository.save(entity);
+        log.info("Save result: {}", entity);
     }
 
     @Override
