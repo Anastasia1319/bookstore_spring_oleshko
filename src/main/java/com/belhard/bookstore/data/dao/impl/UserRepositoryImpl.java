@@ -33,6 +33,7 @@ public class UserRepositoryImpl implements UserRepository {
         return users;
     }
 
+    @Override
     public Optional<User> findById(Long id) {
         log.info("User with id {} found", id);
         TypedQuery<User> query = manager.createQuery(FIND_BY_ID, User.class);
