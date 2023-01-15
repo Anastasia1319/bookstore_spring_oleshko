@@ -11,6 +11,6 @@ public class LoggingAspect {
 
     @Before()
     public void adviceBefore() {
-        
+
     }
 }
