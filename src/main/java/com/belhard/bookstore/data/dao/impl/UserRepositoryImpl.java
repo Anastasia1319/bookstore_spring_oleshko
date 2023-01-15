@@ -44,8 +44,10 @@ public class UserRepositoryImpl implements UserRepository {
     public void save (User entity) {
         log.info("Trying to update a row with a user in the database");
         if (entity.getId() != null) {
+            log.info("Updated the user");
             manager.merge(entity);
         } else {
+            log.info("Creat the user");
             manager.persist(entity);
         }
     }
