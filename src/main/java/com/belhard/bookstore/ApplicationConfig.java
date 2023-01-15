@@ -3,6 +3,7 @@ package com.belhard.bookstore;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -13,6 +14,7 @@ import javax.persistence.Persistence;
 @Configuration
 @ComponentScan
 @EnableTransactionManagement
+@EnableAspectJAutoProxy
 public class ApplicationConfig {
 
     @Bean
