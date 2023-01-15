@@ -46,7 +46,7 @@ public class BookRepositoryImpl implements BookRepository {
             log.info("Update the book");
             manager.merge(entity);
         } else {
-            log.info("Creat the book");
+            log.info("Create the book");
             manager.persist(entity);
         }
     }
