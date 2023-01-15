@@ -1,6 +1,5 @@
 package com.belhard.bookstore.data.repository;
 
-import com.belhard.bookstore.data.dto.UserDto;
 import com.belhard.bookstore.data.entity.User;
 
 import java.util.List;
