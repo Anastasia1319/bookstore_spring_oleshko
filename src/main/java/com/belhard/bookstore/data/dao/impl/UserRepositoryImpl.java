@@ -1,114 +1,88 @@
 package com.belhard.bookstore.data.dao.impl;
 
 import com.belhard.bookstore.data.dao.UserRepository;
-import com.belhard.bookstore.data.dao.impl.mapper.UserRowMapper;
-import com.belhard.bookstore.data.dto.UserDto;
-import com.belhard.bookstore.exceptions.NotUpdateException;
-import lombok.RequiredArgsConstructor;
+import com.belhard.bookstore.data.entity.User;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.*;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 @Log4j2
-@RequiredArgsConstructor
+@Transactional
 public class UserRepositoryImpl implements UserRepository {
-    private static final String SELECT_ALL_ACTIVE = "SELECT u.user_id, u.first_name, u.last_name, u.email, u.password, r.name_role " +
-            "FROM users u JOIN roles r ON u.role_id = r.role_id WHERE u.is_active = TRUE";
-    private static final String SELECT_ALL = "SELECT u.user_id, u.first_name, u.last_name, u.email, u.password, r.name_role " +
-            "FROM users u JOIN roles r ON u.role_id = r.role_id";
-    private static final String FIND_BY_EMAIL = "SELECT u.user_id, u.first_name, u.last_name, u.email, u.password, " +
-            "r.name_role FROM users u JOIN roles r ON u.role_id = r.role_id WHERE u.email = ? AND u.is_active = TRUE";
-    private static final String FIND_BY_ID = "SELECT u.user_id, u.first_name, u.last_name, u.email, u.password, " +
-            "r.name_role FROM users u JOIN roles r ON u.role_id = r.role_id WHERE u.user_id = ? AND u.is_active = TRUE";
-    private static final String CREATE = "INSERT INTO users (first_name, last_name, email, password, role_id) " +
-            "VALUES (?, ?, ?, ?, (SELECT r.role_id FROM roles r WHERE r.name_role = ?))";
-    private static final String UPDATE = "UPDATE users SET first_name = ?, last_name = ?, email = ?, password = ?, " +
-            "role_id = (SELECT r.role_id FROM roles r WHERE r.name_role = ?) WHERE user_id = ? AND is_active = TRUE";
-    private static final String DELETE_BY_ID = "UPDATE users SET is_active = FALSE WHERE user_id = ?";
-//    private static final String COUNT_ALL = "SELECT COUNT(*) FROM users WHERE is_active = TRUE";
-    private final JdbcTemplate jdbcTemplate;
-    private final UserRowMapper rowMapper;
+    private static final String FIND_ALL_ACTIVE = "from User where isActive = true";
+    private static final String FIND_BY_EMAIL = "from User where email = :email AND isActive = true";
+    private static final String FIND_BY_ID = "from User where id = :id and isActive = true";
+    public static final String FIND_ALL = "from User";
+
+    @PersistenceContext
+    private EntityManager manager;
+
 
     @Override
-    public List<UserDto> findAll() {
+    public List<User> findAll() {
         log.info("Created a list of users matching the search criteria");
-        return jdbcTemplate.query(SELECT_ALL_ACTIVE, rowMapper);
+        TypedQuery<User> query = manager.createQuery(FIND_ALL_ACTIVE, User.class);
+        List<User> users = query.getResultList();
+        return users;
     }
 
-    @Override
-    public UserDto create(UserDto userDto) {
-        log.info("Object creation method called");
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(connection -> {
-            PreparedStatement statement = connection.prepareStatement(CREATE, new String[]{"user_id"});
-            mapUserToStatementData(userDto, statement);
-            return statement;
-        }, keyHolder);
-        return Optional.ofNullable(keyHolder.getKey())
-                .map(Number::longValue)
-                .map(this::findById)
-                .orElseThrow();
-    }
-    public UserDto findById(Long id) {
+    public Optional<User> findById(Long id) {
         log.info("User with id {} found", id);
-        return jdbcTemplate.queryForObject(FIND_BY_ID, rowMapper, id);
+        TypedQuery<User> query = manager.createQuery(FIND_BY_ID, User.class);
+        query.setParameter("id", id);
+        Optional<User> user = Optional.ofNullable(query.getSingleResult());
+        return user;
     }
 
     @Override
-    public UserDto update(UserDto userDto) {
+    public void save (User entity) {
         log.info("Trying to update a row with a user in the database");
-        int rowsUpdated = jdbcTemplate.update(UPDATE, userDto.getFirstName(), userDto.getLastName(), userDto.getEmail(),
-                userDto.getPassword(), userDto.getRole().name(), userDto.getId());
-        if (rowsUpdated == 0) {
-            log.warn("Updated rows (users): 0");
-            throw new NotUpdateException("Couldn't update user: {}" + userDto);
+        if (entity.getId() != null) {
+            manager.merge(entity);
+        } else {
+            manager.persist(entity);
         }
-        return findById(userDto.getId());
     }
 
     @Override
     public boolean delete(Long id) {
         log.info("Trying to delete a row with a user in the database");
-        int rowsUpdated = jdbcTemplate.update(DELETE_BY_ID, id);
-        if (rowsUpdated == 0) {
-            log.warn("Updated rows on deletion (users): 0");
-            throw new NotUpdateException("Couldn't delete user with id: " + id);
+        User user = findById(id).get();
+        if (user == null) {
+            log.warn("User with id {} not found amount active users", id);
+            return false;
         }
+        user.setActive(false);
+        manager.merge(user);
         log.info("User is deleted");
-        return rowsUpdated == 1;
+        return true;
     }
 
     @Override
-    public UserDto findByEmail(String email) {
+    public User findByEmail(String email) {
         log.info("User with email {} found", email);
-        return jdbcTemplate.queryForObject(FIND_BY_EMAIL, rowMapper, email);
+        TypedQuery<User> query = manager.createQuery(FIND_BY_EMAIL, User.class);
+        query.setParameter("email", email);
+        User user = query.getSingleResult();
+        return user;
     }
 
     @Override
     public int countAll() {
         log.info("Created a database call - counting the number of rows");
-        return jdbcTemplate.getFetchSize();
+        return findAll().size();
     }
 
     @Override
-    public List<UserDto> findAllWithNotActive() {
+    public List<User> findAllWithNotActive() {
         log.info("Created a list of all users (active and not-active) matching the search criteria");
-        return jdbcTemplate.query(SELECT_ALL, rowMapper);
-    }
-
-    private void mapUserToStatementData (UserDto userDto, PreparedStatement statement) throws SQLException {
-        statement.setString(1, userDto.getFirstName());
-        statement.setString(2, userDto.getLastName());
-        statement.setString(3, userDto.getEmail());
-        statement.setString(4, userDto.getPassword());
-        statement.setString(5, (userDto.getRole()).name());
-        log.info("Object prepared for transfer to the database");
+        return manager.createQuery(FIND_ALL, User.class).getResultList();
     }
 }
