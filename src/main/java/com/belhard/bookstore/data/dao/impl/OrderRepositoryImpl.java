@@ -1,24 +1,14 @@
 package com.belhard.bookstore.data.dao.impl;
 
 import com.belhard.bookstore.data.dao.OrderRepository;
-import com.belhard.bookstore.data.dao.impl.mapper.OrderRowMapper;
-import com.belhard.bookstore.data.dto.OrderDto;
 import com.belhard.bookstore.data.entity.Order;
-import com.belhard.bookstore.exceptions.NotUpdateException;
-import com.oracle.wls.shaded.org.apache.xpath.operations.Or;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
