@@ -3,7 +3,9 @@ package com.belhard.bookstore.data.dao.impl;
 import com.belhard.bookstore.data.dao.OrderRepository;
 import com.belhard.bookstore.data.dao.impl.mapper.OrderRowMapper;
 import com.belhard.bookstore.data.dto.OrderDto;
+import com.belhard.bookstore.data.entity.Order;
 import com.belhard.bookstore.exceptions.NotUpdateException;
+import com.oracle.wls.shaded.org.apache.xpath.operations.Or;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,101 +13,74 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+import static com.belhard.bookstore.data.entity.Order.Status.CANCELED;
+
 @Repository
 @Log4j2
-@RequiredArgsConstructor
+@Transactional
 public class OrderRepositoryImpl implements OrderRepository {
-    private static final String SELECT_ALL = "SELECT o.id, o.user_id, s.status_name FROM orders o JOIN statuses s " +
-            "ON s.id = o.status_id";
-    private static final String FIND_BY_ID = "SELECT o.id, o.user_id, s.status_name FROM orders o JOIN statuses s " +
-            "ON s.id = o.status_id WHERE o.id = ?";
-    private static final String CREATE = "INSERT INTO orders (user_id, status_id) VALUES (?, (SELECT s.id FROM statuses s " +
-            "WHERE s.status_name = ?))";
-    private static final String UPDATE = "UPDATE orders SET user_id = ?, status_id = (SELECT s.id FROM statuses s " +
-            "WHERE s.status_name = ?) WHERE id = ?";
-//    private static final String DELETE_BY_ID = "DELETE FROM orders WHERE id = ?";
-    private static final String DELETE_BY_ID = "UPDATE orders SET status_id = (SELECT s.id FROM statuses s WHERE s.status_name = 'CANCELED') WHERE id = ?";
-    private static final String FIND_BY_USER_ID = "SELECT o.id, o.user_id, s.status_name FROM orders o JOIN statuses s " +
-            "ON o.status_id = s.id WHERE O.user_id = ?";
-    private final JdbcTemplate jdbcTemplate;
+    private static final String FIND_ALL = "from Order";
+    private static final String FIND_BY_ID = "from Order where id = :id";
+    private static final String FIND_BY_USER_ID = "from Order where user = :userId";
 
-    private final OrderRowMapper rowMapper;
+    @PersistenceContext
+    private EntityManager manager;
+
     @Override
-    public OrderDto findById(Long key) {
+    public Optional<Order> findById(Long key) {
         log.info("Order with id {} found", key);
-        return jdbcTemplate.queryForObject(FIND_BY_ID, rowMapper, key);
+        TypedQuery<Order> query = manager.createQuery(FIND_BY_ID, Order.class);
+        query.setParameter("id", key);
+        return Optional.ofNullable(query.getSingleResult());
     }
 
     @Override
-    public List<OrderDto> findAll() {
+    public List<Order> findAll() {
         log.info("Created a list of orders matching the search criteria");
-        return jdbcTemplate.query(SELECT_ALL, rowMapper);
+        TypedQuery<Order> query = manager.createQuery(FIND_ALL, Order.class);
+        return query.getResultList();
     }
 
     @Override
-    public OrderDto create(OrderDto entity) {
-        log.info("Object creation method called");
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(connection -> {
-            PreparedStatement statement = connection.prepareStatement(CREATE, new String[]{"id"});
-            mapOrderToStatementData(entity, statement);
-            return statement;
-        }, keyHolder);
-        return Optional.ofNullable(keyHolder.getKey())
-                .map(Number::longValue)
-                .map(this::findById)
-                .orElseThrow();
-    }
-
-    @Override
-    public OrderDto update(OrderDto entity) {
+    public void save(Order entity) {
         log.info("Trying to update a row with a order in the database");
-        int rowsUpdated = jdbcTemplate.update(UPDATE, entity.getUserId(), entity.getStatus().toString(), entity.getId());
-        if (rowsUpdated == 0) {
-            log.warn("Updated rows (order): 0");
-            throw new NotUpdateException("Couldn't update order: {}" + entity);
+        if (entity.getId() != null) {
+            log.info("Updated the order");
+            manager.merge(entity);
+        } else {
+            log.info("Created the order");
+            manager.persist(entity);
         }
-        log.info("Order is updated");
-        return findById(entity.getId());
     }
-
-//    @Override
-//    public boolean delete(Long key) {
-//        log.info("Trying to delete a row with a order in the database");
-//        int rowsUpdated = jdbcTemplate.update(DELETE_BY_ID, key);
-//        if (rowsUpdated == 0) {
-//            log.warn("Updated rows on deletion (orders): 0");
-//            throw new NotUpdateException("Couldn't delete order with id: " + key);
-//        }
-//        log.info("Order is deleted");
-//        return rowsUpdated == 1;
-//    }
 
     @Override
     public boolean delete(Long key) {
         log.info("Trying to delete a row with a order in the database");
-        int rowsUpdated = jdbcTemplate.update(DELETE_BY_ID, key);
-        if (rowsUpdated == 0) {
-            log.warn("Updated rows on deletion (order): 0");
-            throw new NotUpdateException("Couldn't delete order with id: " + key);
+        Order order = manager.createQuery(FIND_BY_ID, Order.class).setParameter("id", key).getSingleResult();
+        if (order == null) {
+            log.warn("Order with id {} not found", key);
+            return false;
         }
+        order.setStatus(CANCELED);
+        manager.merge(order);
         log.info("Order is deleted");
-        return rowsUpdated == 1;
-    }
-
-    private void mapOrderToStatementData (OrderDto orderDto, PreparedStatement statement) throws SQLException {
-        statement.setLong(1, orderDto.getUserId());
-        statement.setString(2, orderDto.getStatus().toString());
+        return true;
     }
 
     @Override
-    public List<OrderDto> findByUserId(Long id) {
+    public List<Order> findByUserId(Long id) {
         log.info("Creating a list of orders matching the search criteria");
-        return jdbcTemplate.query(FIND_BY_USER_ID, rowMapper, id);
+        TypedQuery<Order> query = manager.createQuery(FIND_BY_USER_ID, Order.class);
+        query.setParameter("userId", id);
+        return query.getResultList();
     }
 }

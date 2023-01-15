@@ -1,9 +1,9 @@
 package com.belhard.bookstore.data.dao;
 
-import com.belhard.bookstore.data.dto.OrderDto;
+import com.belhard.bookstore.data.entity.Order;
 
 import java.util.List;
 
-public interface OrderRepository extends CrudRepository<OrderDto, Long> {
-    List<OrderDto> findByUserId(Long id);
+public interface OrderRepository extends CrudRepository<Order, Long> {
+    List<Order> findByUserId(Long id);
 }
