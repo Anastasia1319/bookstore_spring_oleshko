@@ -5,6 +5,7 @@ import com.belhard.bookstore.data.entity.Book;
 import com.belhard.bookstore.exceptions.NotFoundException;
 import com.belhard.bookstore.exceptions.NotUpdateException;
 import com.belhard.bookstore.service.BookService;
+import com.belhard.bookstore.service.dto.BookServiceDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -20,21 +21,24 @@ import java.util.List;
 public class BookServiceImpl implements BookService {
     public static final int ISBN_LENGTH = 13;
     private final BookRepository bookRepository;
+    private final ConverterService converter;
 
     @Override
-    public List<Book> getAll() {
+    public List<BookServiceDto> getAll() {
         log.info("Received a list of books from BookRepository");
         return bookRepository.findAllAvailable()
                 .stream()
                 .sorted(Comparator.comparing(Book::getId))
+                .map(converter::toBookDto)
                 .toList();
     }
 
     @Override
-    public Book getById(Long id) {
+    public BookServiceDto getById(Long id) {
         log.info("The BookRepository interface method was called to search");
-        return bookRepository.findAvailableById(id)
+        Book book = bookRepository.findAvailableById(id)
                 .orElseThrow(() -> new NotFoundException("Book with id " + id + " not found"));
+        return converter.toBookDto(book);
     }
 
     private void validate(Book book) {
@@ -70,10 +74,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> getByAuthor(String author) {
+    public List<BookServiceDto> getByAuthor(String author) {
         log.info("Received a list of books by author from BookRepository");
         return bookRepository.findByAuthor(author)
                 .stream()
+                .map(converter::toBookDto)
                 .toList();
     }
 
