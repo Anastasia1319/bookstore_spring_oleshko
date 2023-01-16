@@ -41,7 +41,7 @@ public class BookServiceImpl implements BookService {
         return converter.toBookDto(book);
     }
 
-    private void validate(Book book) {
+    private void validate(BookServiceDto book) {
         if (book.getIsbn().length() > ISBN_LENGTH) {
             log.error("Isbn parameter value is invalid");
             throw new NotUpdateException("ISBN number cannot be longer than 13 characters.");
@@ -59,9 +59,9 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void save(Book book) {
+    public void save(BookServiceDto book) {
         validate(book);
-        bookRepository.save(book);
+        bookRepository.save(converter.toBookEntity(book));
     }
 
     @Override
@@ -80,6 +80,14 @@ public class BookServiceImpl implements BookService {
                 .stream()
                 .map(converter::toBookDto)
                 .toList();
+    }
+
+    @Override
+    public BookServiceDto getByIsbn(String isbn) {
+        log.info("The BookRepository method was called to search by ISBN");
+        Book book = bookRepository.findByIsbn(isbn)
+                .orElseThrow(() -> new NotFoundException("Book with ISBN " + isbn + " not found"));
+        return converter.toBookDto(book);
     }
 
     public BigDecimal sumPriceByAuthor (String author) {
