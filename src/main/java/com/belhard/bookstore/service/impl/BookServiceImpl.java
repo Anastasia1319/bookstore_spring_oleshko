@@ -1,11 +1,10 @@
 package com.belhard.bookstore.service.impl;
 
+import com.belhard.bookstore.data.dao.BookRepository;
 import com.belhard.bookstore.data.entity.Book;
-import com.belhard.bookstore.data.repository.BookRepository;
 import com.belhard.bookstore.exceptions.NotFoundException;
 import com.belhard.bookstore.exceptions.NotUpdateException;
 import com.belhard.bookstore.service.BookService;
-import com.belhard.bookstore.service.dto.BookServiceDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -21,57 +20,34 @@ import java.util.List;
 public class BookServiceImpl implements BookService {
     public static final int ISBN_LENGTH = 13;
     private final BookRepository bookRepository;
-    private final ConverterService converter;
 
     @Override
-    public List<BookServiceDto> getAll() {
-        log.info("Received a list of books from BookRepositoryImpl");
-        return bookRepository.findAll()
+    public List<Book> getAll() {
+        log.info("Received a list of books from BookRepository");
+        return bookRepository.findAllAvailable()
                 .stream()
                 .sorted(Comparator.comparing(Book::getId))
-                .map(converter::toBookDto)
                 .toList();
     }
 
     @Override
-    public BookServiceDto getById(Long id) {
-        Book book = bookRepository.findById(id);
-        log.info("The BookRepositoryImpl class method was called to search");
-        if (book == null) {
-            log.warn("Book with id: {} not found!", id);
-            throw  new NotFoundException("Book with id: " + id + " not found!");
-        }
-        BookServiceDto bookServiceDto = converter.toBookDto(book);
-        log.info("Search result: {}", bookServiceDto);
-        return bookServiceDto;
+    public Book getById(Long id) {
+        log.info("The BookRepository interface method was called to search");
+        return bookRepository.findAvailableById(id)
+                .orElseThrow(() -> new NotFoundException("Book with id " + id + " not found"));
     }
 
-    @Override
-    public BookServiceDto create(BookServiceDto dto) {
-        validate(dto);
-        BookServiceDto existing = converter.toBookDto(bookRepository.findByIsbn(dto.getIsbn()));
-        if (existing != null) {
-            log.error("A book with this ISBN already exists in the database");
-            throw new NotUpdateException("Can't create: a book with this ISBN already exists in the database");
-        }
-        Book toCreate = converter.toBookEntity(dto);
-        Book created = bookRepository.create(toCreate);
-        BookServiceDto bookServiceDto = converter.toBookDto(created);
-        log.info("Creation result: {}", bookServiceDto);
-        return bookServiceDto;
-    }
-
-    private void validate(BookServiceDto dto) {
-        if (dto.getIsbn().length() > ISBN_LENGTH) {
+    private void validate(Book book) {
+        if (book.getIsbn().length() > ISBN_LENGTH) {
             log.error("Isbn parameter value is invalid");
             throw new NotUpdateException("ISBN number cannot be longer than 13 characters.");
         }
         LocalDate date = LocalDate.now();
-        if (dto.getPublishinYear() < 0 || dto.getPublishinYear() > date.getYear()) {
+        if (book.getPublishinYear() < 0 || book.getPublishinYear() > date.getYear()) {
             log.error("Invalid publication year value");
             throw new NotUpdateException("Incorrect year of publication of the book entered.");
         }
-        if (dto.getPrice().signum() <= 0) {
+        if (book.getPrice().signum() <= 0) {
             log.error("Invalid price value");
             throw new NotUpdateException("Incorrect price of the book entered.");
         }
@@ -79,35 +55,25 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookServiceDto update(BookServiceDto dto) {
-        validate(dto);
-        BookServiceDto existing = converter.toBookDto(bookRepository.findByIsbn(dto.getIsbn()));
-        if (existing != null && existing.getId() != dto.getId()) {
-            log.error("A book with this ISBN already exists in the database");
-            throw new NotUpdateException("Can't update: a book with this ISBN already exists in the database");
-        }
-        Book toUpdate = converter.toBookEntity(dto);
-        Book updated = bookRepository.update(toUpdate);
-        BookServiceDto bookServiceDto = converter.toBookDto(updated);
-        log.info("Update result: {}", bookServiceDto);
-        return bookServiceDto;
+    public void save(Book book) {
+        validate(book);
+        bookRepository.save(book);
     }
 
     @Override
     public void delete(Long id) {
-        if (!bookRepository.delete(id)) {
-            log.error("Book with id {} not deleted", id);
-            throw new NotFoundException("Couldn't delete book with id: " + id + "!");
-        }
+        Book book = bookRepository.findAvailableById(id)
+                .orElseThrow(() -> new NotFoundException("Book with id " + id + " not found"));
+        book.setDeleted(true);
+        bookRepository.save(book);
         log.info("Book with id {} deleted", id);
     }
 
     @Override
-    public List<BookServiceDto> getByAuthor(String author) {
-        log.info("Received a list of books by author from BookRepositoryImpl");
+    public List<Book> getByAuthor(String author) {
+        log.info("Received a list of books by author from BookRepository");
         return bookRepository.findByAuthor(author)
                 .stream()
-                .map(converter::toBookDto)
                 .toList();
     }
 
