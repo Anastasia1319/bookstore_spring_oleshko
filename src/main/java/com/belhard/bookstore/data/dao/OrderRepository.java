@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    @Query("from Order where user = :userId")
+    @Query("from Order o where o.user = :userId")
     List<Order> findByUserId(Long userId);
 }
