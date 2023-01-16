@@ -8,6 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
+
+    @Query("from User u where u.isActive = true and u.id = :id")
+    Optional<User> findActiveById(String id);
+
+    @Query("from User u where u.isActive = true and u.email = :email")
     Optional<User> findByEmail(String email);
 
     @Query("from User u where u.isActive = true")
