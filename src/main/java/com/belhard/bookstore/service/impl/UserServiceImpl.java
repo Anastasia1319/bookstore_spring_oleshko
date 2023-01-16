@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
         return converter.toUserDto(user);
     }
 
-    private void validate (User user) {
+    private void validate (UserServiceDto user) {
         if (user.getPassword().length() < 8) {
             log.error("Password shorter 8 characters");
             throw new NotUpdateException("Password cannot be shorter than 8 characters.");
@@ -56,9 +56,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(User user) {
+    public void save(UserServiceDto user) {
         validate(user);
-        userRepository.save(user);
+        userRepository.save(converter.toUserEntity(user));
     }
 
     @Override

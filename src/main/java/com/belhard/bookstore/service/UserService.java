@@ -9,7 +9,7 @@ public interface UserService {
     List<UserServiceDto> getAll();
     UserServiceDto getByEmail (String email);
     UserServiceDto getById (Long id);
-    void save (User user);
+    void save (UserServiceDto user);
     void delete(Long id);
     UserServiceDto login(String email, String password);
     List<UserServiceDto> getAllWithNotActive();
