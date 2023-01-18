@@ -60,6 +60,7 @@ public class ConverterService {
         user.setEmail(dto.getEmail());
         user.setPassword(dto.getPassword());
         user.setRole(dto.getRole());
+        user.setActive(dto.isActive());
         log.info("UserDto transformed to User");
         return user;
     }

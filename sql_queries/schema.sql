@@ -17,20 +17,14 @@ CREATE TABLE IF NOT EXISTS books (
     deleted BOOLEAN DEFAULT FALSE
 );
 
-CREATE TABLE IF NOT EXIST "roles" (
-	role_id BIGSERIAL PRIMARY KEY,
-	name_role VARCHAR(50)
-);
-
 CREATE TABLE IF NOT EXIST users (
 	user_id BIGSERIAL PRIMARY KEY,
 	first_name VARCHAR(50) NOT NULL,
 	last_name VARCHAR(50),
 	email VARCHAR(50) NOT NULL UNIQUE,
 	"password" CHAR(8) NOT NULL,
-	role_id INT NOT NULL,
-    is_active BOOLEAN DEFAULT TRUE,
-	FOREIGN KEY (role_id) REFERENCES "roles" (role_id)
+	role VARCHAR(50) NOT NULL,
+    is_active BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE IF NOT EXIST statuses (

@@ -30,38 +30,33 @@ VALUES ('Oscar Wilde', 'The Picture of Dorian Grey', 2019, '5-17-099056-6', 9.86
         ('Colleen McCullough', 'Singing in the thorns', 2022, '5-17-147429-4', 29.17);
 
 
-INSERT INTO roles (name_role)
-VALUES ('ADMIN'),
-	('MANAGER'),
-	('CUSTOMER');
-
-INSERT INTO users (first_name, last_name, email, "password", role_id)
-VALUES ('Oliver', 'Phelps', 'oliver4444@jmail.com', '15975328', (SELECT role_id FROM roles WHERE name_role = 'ADMIN')),
-    	('Jack', 'Black', 'jack13@jmail.com', '11111111', (SELECT role_id FROM roles WHERE name_role = 'CUSTOMER')),
-    	('Teresa', 'Gilmore', 'teresa@jmail.com', '24863157', (SELECT role_id FROM roles WHERE name_role = 'MANAGER')),
-    	('Harry', 'Floyd', 'harry@jmail.com', '12131516', (SELECT role_id FROM roles WHERE name_role = 'CUSTOMER')),
-    	('Willis', 'Scott', 'will@jmail.com', '75315982', (SELECT role_id FROM roles WHERE name_role = 'MANAGER')),
-    	('Pauline', 'Patrick', 'pauline@jmail.com', '99999999', (SELECT role_id FROM roles WHERE name_role = 'CUSTOMER')),
-    	('Fay', 'Warren', 'fay777@jmail.com', '55557777', (SELECT role_id FROM roles WHERE name_role = 'CUSTOMER')),
-    	('Laurel', 'Murphy', 'laurel@jmail.com', '13151719', (SELECT role_id FROM roles WHERE name_role = 'ADMIN')),
-    	('Candice', 'Mosley', 'candy@jmail.com', '45454545', (SELECT role_id FROM roles WHERE name_role = 'CUSTOMER')),
-    	('Victoria', 'Holmes', 'viki@jmail.com', '7595ai23', (SELECT role_id FROM roles WHERE name_role = 'MANAGER')),
-    	('Ronald', 'Fox', 'fox@jmail.com', '75315384', (SELECT role_id FROM roles WHERE name_role = 'CUSTOMER')),
-    	('Piers', 'Wilkerson', 'piers@jmail.com', '24936578', (SELECT role_id FROM roles WHERE name_role = 'MANAGER')),
-    	('Hector', 'Goodwin', 'goodwin@jmail.com', '55555555', (SELECT role_id FROM roles WHERE name_role = 'CUSTOMER')),
-    	('Dominick', 'Robbins', 'dom@jmail.com', '15171819', (SELECT role_id FROM roles WHERE name_role = 'CUSTOMER')),
-    	('Patricia', 'Henry', 'henry@jmail.com', '10000001', (SELECT role_id FROM roles WHERE name_role = 'CUSTOMER')),
-    	('Margaret', 'Marshall', 'maggy@jmail.com', '5657aaoi', (SELECT role_id FROM roles WHERE name_role = 'CUSTOMER')),
-    	('Meryl', 'Osborne', 'meryl@jmail.com', 'mosborne', (SELECT role_id FROM roles WHERE name_role = 'CUSTOMER')),
-    	('Colin', 'Wood', 'wood@jmail.com', 'wood1313', (SELECT role_id FROM roles WHERE name_role = 'CUSTOMER')),
-    	('Rudolph', 'Gilbert ', 'rudy@jmail.com', '1213aaaa', (SELECT role_id FROM roles WHERE name_role = 'CUSTOMER')),
-    	('Isabella', 'Garrett', 'isabella@jmail.com', '13141583', (SELECT role_id FROM roles WHERE name_role = 'ADMIN')),
-    	('Susanna ', 'Watts', 'susy@jmail.com', '45494863', (SELECT role_id FROM roles WHERE name_role = 'MANAGER')),
-    	('Basil', 'Rodgers', 'basil@jmail.com', '35762524', (SELECT role_id FROM roles WHERE name_role = 'CUSTOMER')),
-    	('Michael', 'Mosley', 'micky@jmail.com', '25289113', (SELECT role_id FROM roles WHERE name_role = 'CUSTOMER')),
-        ('Virginia', 'McGee', 'vivi@jmail.com', '17181920', (SELECT role_id FROM roles WHERE name_role = 'CUSTOMER')),
-        ('Cameron', 'Wilkinson', 'wilkinson@jmail.com', 'awdszeyt', (SELECT role_id FROM roles WHERE name_role = 'MANAGER')),
-        ('Lilian', 'Payne', 'lili@jmail.com', 'lol77lol', (SELECT role_id FROM roles WHERE name_role = 'CUSTOMER'));
+INSERT INTO users (first_name, last_name, email, "password", role)
+VALUES ('Oliver', 'Phelps', 'oliver4444@jmail.com', '15975328', 'ADMIN'),
+    	('Jack', 'Black', 'jack13@jmail.com', '11111111', 'CUSTOMER'),
+    	('Teresa', 'Gilmore', 'teresa@jmail.com', '24863157', 'MANAGER'),
+    	('Harry', 'Floyd', 'harry@jmail.com', '12131516', 'CUSTOMER'),
+    	('Willis', 'Scott', 'will@jmail.com', '75315982', 'MANAGER'),
+    	('Pauline', 'Patrick', 'pauline@jmail.com', '99999999', 'CUSTOMER'),
+    	('Fay', 'Warren', 'fay777@jmail.com', '55557777', 'CUSTOMER'),
+    	('Laurel', 'Murphy', 'laurel@jmail.com', '13151719', 'ADMIN'),
+    	('Candice', 'Mosley', 'candy@jmail.com', '45454545', 'CUSTOMER'),
+    	('Victoria', 'Holmes', 'viki@jmail.com', '7595ai23', 'MANAGER'),
+    	('Ronald', 'Fox', 'fox@jmail.com', '75315384', 'CUSTOMER'),
+    	('Piers', 'Wilkerson', 'piers@jmail.com', '24936578', 'MANAGER'),
+    	('Hector', 'Goodwin', 'goodwin@jmail.com', '55555555', 'CUSTOMER'),
+    	('Dominick', 'Robbins', 'dom@jmail.com', '15171819', 'CUSTOMER'),
+    	('Patricia', 'Henry', 'henry@jmail.com', '10000001', 'CUSTOMER'),
+    	('Margaret', 'Marshall', 'maggy@jmail.com', '5657aaoi', 'CUSTOMER'),
+    	('Meryl', 'Osborne', 'meryl@jmail.com', 'mosborne', 'CUSTOMER'),
+    	('Colin', 'Wood', 'wood@jmail.com', 'wood1313', 'CUSTOMER'),
+    	('Rudolph', 'Gilbert ', 'rudy@jmail.com', '1213aaaa', 'CUSTOMER'),
+    	('Isabella', 'Garrett', 'isabella@jmail.com', '13141583', 'ADMIN'),
+    	('Susanna ', 'Watts', 'susy@jmail.com', '45494863', 'MANAGER'),
+    	('Basil', 'Rodgers', 'basil@jmail.com', '35762524', 'CUSTOMER'),
+    	('Michael', 'Mosley', 'micky@jmail.com', '25289113', 'CUSTOMER'),
+        ('Virginia', 'McGee', 'vivi@jmail.com', '17181920', 'CUSTOMER'),
+        ('Cameron', 'Wilkinson', 'wilkinson@jmail.com', 'awdszeyt', 'MANAGER'),
+        ('Lilian', 'Payne', 'lili@jmail.com', 'lol77lol', 'CUSTOMER');
 
 INSERT INTO statuses (status_name)
 VALUES ('PENDING'),

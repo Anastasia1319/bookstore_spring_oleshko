@@ -9,10 +9,10 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    @Query("from User u where u.isActive = true and u.id = :id")
+    @Query("from User u where u.isActive = true and u.id = ?1")
     Optional<User> findActiveById(String id);
 
-    @Query("from User u where u.isActive = true and u.email = :email")
+    @Query("from User u where u.isActive = true and u.email = ?1")
     Optional<User> findByEmail(String email);
 
     @Query("from User u where u.isActive = true")

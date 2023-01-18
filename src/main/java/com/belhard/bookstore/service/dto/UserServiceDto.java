@@ -11,4 +11,5 @@ public class UserServiceDto {
     private String email;
     private String password;
     private Role role;
+    private boolean isActive;
 }

@@ -26,8 +26,8 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "role_id")
-    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @Column(name = "is_active", columnDefinition = "TRUE")

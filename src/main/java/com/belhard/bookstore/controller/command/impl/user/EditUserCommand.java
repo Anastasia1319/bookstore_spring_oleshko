@@ -30,11 +30,13 @@ public class EditUserCommand implements Command {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         Role role = Role.valueOf(req.getParameter("role"));
+        boolean isActive = true;
         toEdit.setFirstName(firstName);
         toEdit.setLastName(lastName);
         toEdit.setEmail(email);
         toEdit.setPassword(password);
         toEdit.setRole(role);
+        toEdit.setActive(isActive);
         return toEdit;
     }
 }

@@ -34,6 +34,7 @@ public class AddUserCommand implements Command {
         toCreate.setEmail(email);
         toCreate.setPassword(password);
         toCreate.setRole(role);
+        toCreate.setActive(true);
         return toCreate;
     }
 }
