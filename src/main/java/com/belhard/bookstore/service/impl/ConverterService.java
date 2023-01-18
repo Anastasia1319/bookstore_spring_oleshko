@@ -72,6 +72,7 @@ public class ConverterService {
         orderServiceDto.setStatus(OrderServiceDto.Status.valueOf(order.getStatus().toString()));
         orderServiceDto.setTotalCost(orderItemRepository.findTotalCost(order.getId()));
         orderServiceDto.setItems(order.getItems());
+        log.info("Order transformed to OrderServiceDto");
         return orderServiceDto;
     }
 }

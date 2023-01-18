@@ -27,16 +27,11 @@ CREATE TABLE IF NOT EXIST users (
     is_active BOOLEAN DEFAULT TRUE
 );
 
-CREATE TABLE IF NOT EXIST statuses (
-    "id" BIGSERIAL PRIMARY KEY,
-    status_name VARCHAR (50)
-);
 
 CREATE TABLE IF NOT EXIST orders (
     "id" BIGSERIAL PRIMARY KEY,
     user_id INT8 NOT NULL,
-    status_id INT8 NOT NULL,
-    FOREIGN KEY (status_id) REFERENCES statuses ("id"),
+    status VARCHAR(50) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (user_id)
     );
 
