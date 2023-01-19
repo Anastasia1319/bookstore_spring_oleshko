@@ -5,6 +5,9 @@ import com.belhard.bookstore.service.BookService;
 import com.belhard.bookstore.service.dto.BookServiceDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
@@ -16,8 +19,15 @@ public class BooksCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest req) {
-        List<BookServiceDto> books = bookService.getAll();
+        int page = Integer.valueOf(req.getParameter("page"));
+        Sort sort = Sort.by(Sort.Direction.ASC, "id");
+        int pageSize = 5;
+        Pageable pageable = PageRequest.of(page, pageSize, sort);
+        List<BookServiceDto> books = bookService.getAll(pageable);
+        Integer totalPages = bookService.totalPages(pageSize);
         req.setAttribute("books", books);
+        req.setAttribute("totalPages", totalPages);
+        req.setAttribute("page", page);
         return "jsp/books.jsp";
     }
 }

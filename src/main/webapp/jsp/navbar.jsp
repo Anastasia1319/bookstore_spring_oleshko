@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <ul class="nav">
     <li class="header">BookStore-Oleshko</li>
-    <li><a href="controller?command=books">All Books</a></li>
+    <li><a href="controller?command=books&page=0">All Books</a></li>
     <li><a href="controller?command=users">All Users</a></li>
     <li><a href="controller?command=orders">All Orders</a></li>
     <form action="controller" method="get">

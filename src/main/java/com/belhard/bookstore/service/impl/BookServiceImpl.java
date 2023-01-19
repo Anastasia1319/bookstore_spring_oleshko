@@ -8,6 +8,7 @@ import com.belhard.bookstore.service.BookService;
 import com.belhard.bookstore.service.dto.BookServiceDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -24,9 +25,9 @@ public class BookServiceImpl implements BookService {
     private final ConverterService converter;
 
     @Override
-    public List<BookServiceDto> getAll() {
+    public List<BookServiceDto> getAll(Pageable pageable) {
         log.info("Received a list of books from BookRepository");
-        return bookRepository.findAllAvailable()
+        return bookRepository.findAllAvailable(pageable)
                 .stream()
                 .sorted(Comparator.comparing(Book::getId))
                 .map(converter::toBookDto)
@@ -74,9 +75,9 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookServiceDto> getByAuthor(String author) {
+    public List<BookServiceDto> getByAuthor(String author, Pageable pageable) {
         log.info("Received a list of books by author from BookRepository");
-        return bookRepository.findByAuthor(author)
+        return bookRepository.findByAuthor(author, pageable)
                 .stream()
                 .map(converter::toBookDto)
                 .toList();
@@ -90,11 +91,21 @@ public class BookServiceImpl implements BookService {
         return converter.toBookDto(book);
     }
 
-    public BigDecimal sumPriceByAuthor (String author) {
+    public BigDecimal sumPriceByAuthor (String author, Pageable pageable) {
         log.info("Calculation of the cost of all books of the author");
-        return bookRepository.findByAuthor(author)
+        return bookRepository.findByAuthor(author, pageable)
                 .stream()
                 .map(Book::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public Integer totalPages (Integer pageSize) {
+        log.info("The method for calculating the number of pages is called");
+        return bookRepository.countAllByDeletedFalse() / pageSize;
+    }
+
+    public Integer totalPagesAuthor (Integer pageSize, String author) {
+        log.info("The method for calculating the number of pages is called");
+        return bookRepository.countByAuthor(author) / pageSize;
     }
 }
