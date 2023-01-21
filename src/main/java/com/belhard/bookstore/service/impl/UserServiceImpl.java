@@ -9,9 +9,9 @@ import com.belhard.bookstore.service.UserService;
 import com.belhard.bookstore.service.dto.UserServiceDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -22,11 +22,10 @@ public class UserServiceImpl implements UserService {
     private final ConverterService converter;
 
     @Override
-    public List<UserServiceDto> getAll() {
+    public List<UserServiceDto> getAll(Pageable pageable) {
         log.info("Received a list of users from UserDaoImpl");
-        return userRepository.findAllActiveUsers()
+        return userRepository.findAllActiveUsers(pageable)
                 .stream()
-                .sorted(Comparator.comparing(User::getId))
                 .map(converter::toUserDto)
                 .toList();
     }
@@ -78,12 +77,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserServiceDto> getAllWithNotActive() {
+    public List<UserServiceDto> getAllWithNotActive(Pageable pageable) {
         log.info("Received a list of all users (active and not-active) from UserDaoImpl");
-        return userRepository.findAll()
+        return userRepository.findAll(pageable)
                 .stream()
-                .sorted(Comparator.comparing(User::getId))
                 .map(converter::toUserDto)
                 .toList();
+    }
+
+    @Override
+    public Long totalPages(Integer pageSize) {
+        log.info("The method for calculating the number of pages is called");
+        return userRepository.count() / pageSize;
+    }
+
+    @Override
+    public Long totalPagesActive(Integer pageSize) {
+        log.info("The method for calculating the number of pages with active users is called");
+        return (long) (userRepository.countByIsActiveIsTrue() / pageSize);
     }
 }
