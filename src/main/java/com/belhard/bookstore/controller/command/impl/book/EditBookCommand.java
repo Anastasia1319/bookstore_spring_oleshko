@@ -16,7 +16,8 @@ public class EditBookCommand implements Command {
     @Override
     public String execute(HttpServletRequest req) {
         BookServiceDto toEdit = processRequest(req);
-        BookServiceDto edited = bookService.update(toEdit);
+        bookService.save(toEdit);
+        BookServiceDto edited = bookService.getById(toEdit.getId());
         req.setAttribute("book", edited);
         return "jsp/book.jsp";
     }

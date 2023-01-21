@@ -47,18 +47,10 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookServiceDto create(BookServiceDto dto) {
-        validate(dto);
-        BookServiceDto existing = converter.toBookDto(bookRepository.findByIsbn(dto.getIsbn()));
-        if (existing != null) {
-            log.error("A book with this ISBN already exists in the database");
-            throw new NotUpdateException("Can't create: a book with this ISBN already exists in the database");
-        }
-        Book toCreate = converter.toBookEntity(dto);
-        Book created = bookRepository.create(toCreate);
-        BookServiceDto bookServiceDto = converter.toBookDto(created);
-        log.info("Creation result: {}", bookServiceDto);
-        return bookServiceDto;
+    public void save (BookServiceDto book) {
+        validate(book);
+        bookRepository.save(converter.toBookEntity(book));
+        log.info("Book {} is save", book);
     }
 
     private void validate(BookServiceDto dto) {
@@ -79,21 +71,6 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookServiceDto update(BookServiceDto dto) {
-        validate(dto);
-        BookServiceDto existing = converter.toBookDto(bookRepository.findByIsbn(dto.getIsbn()));
-        if (existing != null && existing.getId() != dto.getId()) {
-            log.error("A book with this ISBN already exists in the database");
-            throw new NotUpdateException("Can't update: a book with this ISBN already exists in the database");
-        }
-        Book toUpdate = converter.toBookEntity(dto);
-        Book updated = bookRepository.update(toUpdate);
-        BookServiceDto bookServiceDto = converter.toBookDto(updated);
-        log.info("Update result: {}", bookServiceDto);
-        return bookServiceDto;
-    }
-
-    @Override
     public void delete(Long id) {
         if (!bookRepository.delete(id)) {
             log.error("Book with id {} not deleted", id);
@@ -109,6 +86,17 @@ public class BookServiceImpl implements BookService {
                 .stream()
                 .map(converter::toBookDto)
                 .toList();
+    }
+
+    @Override
+    public BookServiceDto getByIsbn(String isbn) {
+        log.info("The BookRepository method was called to search by ISBN");
+        Book book = bookRepository.findByIsbn(isbn);
+        if (book == null) {
+            throw new NotFoundException("Book with ISBN " + isbn + " not found");
+        } else {
+            return converter.toBookDto(book);
+        }
     }
 
     public BigDecimal sumPriceByAuthor (String author) {

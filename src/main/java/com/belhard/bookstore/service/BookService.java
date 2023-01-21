@@ -8,8 +8,8 @@ public interface BookService {
 
     List<BookServiceDto> getAll();
     BookServiceDto getById (Long id);
-    BookServiceDto create (BookServiceDto dto);
-    BookServiceDto update (BookServiceDto dto);
+    void save (BookServiceDto dto);
     void delete(Long id);
     List<BookServiceDto> getByAuthor(String author);
+    BookServiceDto getByIsbn (String isbn);
 }
