@@ -7,6 +7,7 @@ import com.belhard.bookstore.service.OrderService;
 import com.belhard.bookstore.service.dto.OrderServiceDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -20,11 +21,10 @@ public class OrderServiceImpl implements OrderService {
     private final ConverterService converter;
 
     @Override
-    public List<OrderServiceDto> getAll() {
+    public List<OrderServiceDto> getAll(Pageable pageable) {
         log.info("Received a list of orders from OrderRepositoryImpl");
-        return orderRepository.findAll()
+        return orderRepository.findAll(pageable)
                 .stream()
-                .sorted(Comparator.comparing(Order::getId))
                 .map(converter::toOrderDto)
                 .toList();
     }
@@ -38,11 +38,16 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderServiceDto> getByUserId(Long id) {
+    public List<OrderServiceDto> getByUserId(Long id, Pageable pageable) {
         log.info("Received a list of orders by userId from OrderRepositoryImpl");
-        return orderRepository.findByUserId(id)
+        return orderRepository.findByUserId(id, pageable)
                 .stream()
                 .map(converter::toOrderDto)
                 .toList();
+    }
+
+    public Long totalPages (Integer pageSize) {
+        log.info("The method for calculating the number of pages is called");
+        return orderRepository.count() / pageSize;
     }
 }

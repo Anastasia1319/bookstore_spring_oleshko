@@ -34,6 +34,7 @@
       </c:forEach>
       </tbody>
     </table>
+    <jsp:include page="paginator.jsp"/>
   </div>
 </body>
 </html>
