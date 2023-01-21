@@ -16,7 +16,8 @@ public class EditUserCommand implements Command {
     @Override
     public String execute(HttpServletRequest req) {
         UserServiceDto toEdit = processRequest(req);
-        UserServiceDto edited = userService.update(toEdit);
+        userService.save(toEdit);
+        UserServiceDto edited = userService.getById(toEdit.getId());
         req.setAttribute("user", edited);
         return "jsp/user.jsp";
     }
