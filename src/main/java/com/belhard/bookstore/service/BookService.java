@@ -15,6 +15,6 @@ public interface BookService {
     List<BookServiceDto> getByAuthor(String author, Pageable pageable);
     BookServiceDto getByIsbn(String isbn);
     BigDecimal sumPriceByAuthor (String author, Pageable pageable);
-    Integer totalPages (Integer pageSize);
-    Integer totalPagesAuthor (Integer pageSize, String author);
+    Long totalPages (Integer pageSize);
+    Long totalPagesAuthor (Integer pageSize, String author);
 }

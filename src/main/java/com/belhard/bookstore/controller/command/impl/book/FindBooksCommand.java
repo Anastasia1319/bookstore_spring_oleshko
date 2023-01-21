@@ -25,10 +25,12 @@ public class FindBooksCommand implements Command {
         int pageSize = 5;
         Pageable pageable = PageRequest.of(page, pageSize, sort);
         List<BookServiceDto> books = bookService.getByAuthor(author, pageable);
-        Integer totalPages = bookService.totalPagesAuthor(pageSize, author);
+        Long totalPages = bookService.totalPagesAuthor(pageSize, author);
+        String command = "books";
         req.setAttribute("books", books);
         req.setAttribute("totalPages", totalPages);
         req.setAttribute("page", page);
+        req.setAttribute("command", command);
         return "jsp/books.jsp";
     }
 }

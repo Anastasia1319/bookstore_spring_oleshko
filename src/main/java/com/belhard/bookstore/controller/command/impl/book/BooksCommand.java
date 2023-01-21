@@ -19,15 +19,17 @@ public class BooksCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest req) {
-        int page = Integer.valueOf(req.getParameter("page"));
+        int page = Integer.parseInt(req.getParameter("page"));
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
         int pageSize = 5;
         Pageable pageable = PageRequest.of(page, pageSize, sort);
         List<BookServiceDto> books = bookService.getAll(pageable);
-        Integer totalPages = bookService.totalPages(pageSize);
+        Long totalPages = bookService.totalPages(pageSize);
+        String command = "books";
         req.setAttribute("books", books);
         req.setAttribute("totalPages", totalPages);
         req.setAttribute("page", page);
+        req.setAttribute("command", command);
         return "jsp/books.jsp";
     }
 }

@@ -34,11 +34,7 @@
         </c:forEach>
         </tbody>
       </table>
-        <div class="pagination">
-            <a href="controller?command=books&page=${requestScope.page > 1 ? requestScope.page - 1 : 0}">Previous page</a>
-            <a href="controller?command=books&page=${requestScope.page}" class="active">${requestScope.page + 1}</a>
-            <a href="controller?command=books&page=${requestScope.page < (requestScope.totalPages - 1) ? requestScope.page + 1 : requestScope.totalPages - 1}">Next page</a>
-        </div>
+        <jsp:include page="paginator.jsp"/>
     </div>
   </body>
 </html>

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -29,7 +28,6 @@ public class BookServiceImpl implements BookService {
         log.info("Received a list of books from BookRepository");
         return bookRepository.findAllAvailable(pageable)
                 .stream()
-                .sorted(Comparator.comparing(Book::getId))
                 .map(converter::toBookDto)
                 .toList();
     }
@@ -99,13 +97,13 @@ public class BookServiceImpl implements BookService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public Integer totalPages (Integer pageSize) {
+    public Long totalPages (Integer pageSize) {
         log.info("The method for calculating the number of pages is called");
-        return bookRepository.countAllByDeletedFalse() / pageSize;
+        return (long) (bookRepository.countAllByDeletedFalse() / pageSize);
     }
 
-    public Integer totalPagesAuthor (Integer pageSize, String author) {
+    public Long totalPagesAuthor (Integer pageSize, String author) {
         log.info("The method for calculating the number of pages is called");
-        return bookRepository.countByAuthor(author) / pageSize;
+        return (long) (bookRepository.countByAuthor(author) / pageSize);
     }
 }
