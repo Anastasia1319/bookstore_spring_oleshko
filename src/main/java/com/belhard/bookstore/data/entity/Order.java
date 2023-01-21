@@ -21,7 +21,7 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "orderId", cascade = CascadeType.REFRESH)
+    @OneToMany(mappedBy = "orderId", cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private List<OrderItem> items;
 
     @Column(name = "status_id", nullable = false)
