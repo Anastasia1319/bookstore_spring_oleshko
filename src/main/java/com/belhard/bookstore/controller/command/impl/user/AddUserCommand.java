@@ -16,7 +16,8 @@ public class AddUserCommand implements Command {
     @Override
     public String execute(HttpServletRequest req) {
         UserServiceDto toCreate = processRequest(req);
-        UserServiceDto created = userService.create(toCreate);
+        userService.save(toCreate);
+        UserServiceDto created = userService.getByEmail(toCreate.getEmail());
         req.setAttribute("user", created);
         return "jsp/user.jsp";
     }
@@ -33,6 +34,7 @@ public class AddUserCommand implements Command {
         toCreate.setEmail(email);
         toCreate.setPassword(password);
         toCreate.setRole(role);
+        toCreate.setActive(true);
         return toCreate;
     }
 }

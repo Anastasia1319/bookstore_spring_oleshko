@@ -17,7 +17,8 @@ public class AddBookCommand implements Command {
     @Override
     public String execute(HttpServletRequest req) {
         BookServiceDto toCreate = processRequest(req);
-        BookServiceDto created = bookService.create(toCreate);
+        bookService.save(toCreate);
+        BookServiceDto created = bookService.getByIsbn(toCreate.getIsbn());
         req.setAttribute("book", created);
         return "jsp/book.jsp";
     }

@@ -16,7 +16,8 @@ public class EditUserCommand implements Command {
     @Override
     public String execute(HttpServletRequest req) {
         UserServiceDto toEdit = processRequest(req);
-        UserServiceDto edited = userService.update(toEdit);
+        userService.save(toEdit);
+        UserServiceDto edited = userService.getById(toEdit.getId());
         req.setAttribute("user", edited);
         return "jsp/user.jsp";
     }
@@ -29,11 +30,13 @@ public class EditUserCommand implements Command {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         Role role = Role.valueOf(req.getParameter("role"));
+        boolean isActive = true;
         toEdit.setFirstName(firstName);
         toEdit.setLastName(lastName);
         toEdit.setEmail(email);
         toEdit.setPassword(password);
         toEdit.setRole(role);
+        toEdit.setActive(isActive);
         return toEdit;
     }
 }

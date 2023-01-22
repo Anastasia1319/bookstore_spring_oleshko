@@ -9,7 +9,7 @@
     <body>
         <div class="center">
             <jsp:include page="jsp/navbar.jsp"/>
-            <img src="jpg/welcome.jpg" alt="Welkome" />
+            <img src="jpg/welcome.jpg" alt="Welcome" />
             <h1>Hello!</h1>
             <p>We are glad to welcome you to our bookstore!</p>
         </div>

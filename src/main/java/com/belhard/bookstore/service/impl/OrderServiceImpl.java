@@ -1,12 +1,13 @@
 package com.belhard.bookstore.service.impl;
 
+import com.belhard.bookstore.data.dao.OrderRepository;
 import com.belhard.bookstore.data.entity.Order;
-import com.belhard.bookstore.data.repository.OrderRepository;
 import com.belhard.bookstore.exceptions.NotFoundException;
 import com.belhard.bookstore.service.OrderService;
 import com.belhard.bookstore.service.dto.OrderServiceDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -20,34 +21,33 @@ public class OrderServiceImpl implements OrderService {
     private final ConverterService converter;
 
     @Override
-    public List<OrderServiceDto> getAll() {
+    public List<OrderServiceDto> getAll(Pageable pageable) {
         log.info("Received a list of orders from OrderRepositoryImpl");
-        return orderRepository.findAll()
+        return orderRepository.findAll(pageable)
                 .stream()
-                .sorted(Comparator.comparing(Order::getId))
                 .map(converter::toOrderDto)
                 .toList();
     }
 
     @Override
     public OrderServiceDto getById(Long id) {
-        Order order = orderRepository.findById(id);
-        log.info("The OrderRepositoryImpl class method was called to search");
-        if (order == null) {
-            log.warn("Order with id: {} not found!", id);
-            throw new NotFoundException("Order with id: " + id + " not found!");
-        }
-        OrderServiceDto orderServiceDto = converter.toOrderDto(order);
-        log.info("Search result: {}", orderServiceDto);
-        return orderServiceDto;
+        log.info("The OrderRepository method was called to search by id");
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Order with id " + id + " not found"));
+        return converter.toOrderDto(order);
     }
 
     @Override
-    public List<OrderServiceDto> getByUserId(Long id) {
+    public List<OrderServiceDto> getByUserId(Long id, Pageable pageable) {
         log.info("Received a list of orders by userId from OrderRepositoryImpl");
-        return orderRepository.findByUserId(id)
+        return orderRepository.findByUserId(id, pageable)
                 .stream()
                 .map(converter::toOrderDto)
                 .toList();
+    }
+
+    public Long totalPages (Integer pageSize) {
+        log.info("The method for calculating the number of pages is called");
+        return orderRepository.count() / pageSize;
     }
 }
