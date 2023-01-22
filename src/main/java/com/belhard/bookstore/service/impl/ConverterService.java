@@ -7,13 +7,15 @@ import com.belhard.bookstore.service.dto.BookServiceDto;
 import com.belhard.bookstore.data.entity.Book;
 import com.belhard.bookstore.service.dto.OrderServiceDto;
 import com.belhard.bookstore.service.dto.UserServiceDto;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
 @Component
 @Log4j2
+@RequiredArgsConstructor
 public class ConverterService {
-    private OrderItemRepository orderItemRepository;
+    private final OrderItemRepository orderItemRepository;
     public Book toBookEntity (BookServiceDto dto) {
         Book book = new Book();
         book.setId(dto.getId());
@@ -67,7 +69,7 @@ public class ConverterService {
         orderServiceDto.setId(order.getId());
         orderServiceDto.setUser(order.getUser());
         orderServiceDto.setStatus(OrderServiceDto.Status.valueOf(order.getStatus().toString()));
-        orderServiceDto.setTotalCost(orderItemRepository.findTotalCost(order.getId()));
+        orderServiceDto.setTotalCost(orderItemRepository.findTotalCost(order));
         orderServiceDto.setItems(order.getItems());
         log.info("Order transformed to OrderServiceDto");
         return orderServiceDto;

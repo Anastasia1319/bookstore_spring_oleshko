@@ -1,6 +1,7 @@
 package com.belhard.bookstore.data.dao.impl;
 
 import com.belhard.bookstore.data.dao.OrderItemRepository;
+import com.belhard.bookstore.data.entity.Order;
 import com.belhard.bookstore.data.entity.OrderItem;
 import com.belhard.bookstore.exceptions.NotFoundException;
 import lombok.extern.log4j.Log4j2;
@@ -65,7 +66,7 @@ public class OrderItemRepositoryImpl implements OrderItemRepository {
     }
 
     @Override
-    public List<OrderItem> findByOrderId(Long orderId) {
+    public List<OrderItem> findByOrderId(Order order) {
         log.info("Find list orderItems by order id");
         TypedQuery<OrderItem> query = manager.createQuery(FIND_BY_ORDER_ID, OrderItem.class);
         query.setParameter("orderId", OrderItem.class);
@@ -73,10 +74,10 @@ public class OrderItemRepositoryImpl implements OrderItemRepository {
     }
 
     @Override
-    public BigDecimal findTotalCost(Long orderId) {
+    public BigDecimal findTotalCost(Order order) {
         log.info("Trying find order total cost");
         TypedQuery<BigDecimal> query = manager.createQuery(COUNT_TOTAL_COST, BigDecimal.class);
-        query.setParameter("orderId", orderId);
+        query.setParameter("orderId", order);
         BigDecimal totalCost =  query.getSingleResult();
         if (totalCost != null) {
             return totalCost;
