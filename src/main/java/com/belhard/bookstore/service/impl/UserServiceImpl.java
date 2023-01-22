@@ -1,7 +1,7 @@
 package com.belhard.bookstore.service.impl;
 
+import com.belhard.bookstore.data.dao.UserRepository;
 import com.belhard.bookstore.data.entity.User;
-import com.belhard.bookstore.data.repository.UserRepository;
 import com.belhard.bookstore.exceptions.NotFoundException;
 import com.belhard.bookstore.exceptions.NotUpdateException;
 import com.belhard.bookstore.service.UserService;
@@ -32,12 +32,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserServiceDto getByEmail(String email) {
-        User user = userRepository.findByEmail(email);
         log.info("The UserRepositoryImpl class method was called to search");
-        if (user == null) {
-            log.warn("User with email: {} not found!", email);
-            throw new NotFoundException("User with email: " + email + " not found!");
-        }
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("User with email " + email+ " not found"));
         UserServiceDto userServiceDto = converter.toUserDto(user);
         log.info("Search result: {}", userServiceDto);
         return userServiceDto;
@@ -45,12 +42,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserServiceDto getById(Long id) {
-        User user = userRepository.findById(id);
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("User with Id " + id + " not found"));
         log.info("The UserRepositoryImpl class method was called to search");
-        if (user == null) {
-            log.warn("User with email: {} not found!", id);
-            throw new NotFoundException("User with id: " + id + " not found!");
-        }
         UserServiceDto userServiceDto = converter.toUserDto(user);
         log.info("Search result: {}", userServiceDto);
         return userServiceDto;
@@ -80,10 +74,11 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserServiceDto login(String email, String password) {
-        User user = userRepository.findByEmail(email);
-        if (user == null || !password.equals(user.getPassword())) {
-            log.error("Incorrect email or password");
-            throw new NotFoundException("User with email: " + email + "and with password: " + password + " not found!");
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("User with email " + email + " not found"));
+        if (!password.equals(user.getPassword())) {
+            log.error("Incorrect password");
+            throw new NotFoundException("Incorrect password!");
         }
         UserServiceDto userServiceDto = converter.toUserDto(user);
         log.info("Login completed");
