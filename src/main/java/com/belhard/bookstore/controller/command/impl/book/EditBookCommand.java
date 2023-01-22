@@ -31,7 +31,7 @@ public class EditBookCommand implements Command {
         String isbn = req.getParameter("isbn");
         toEdit.setTitle(title);
         toEdit.setAuthor(author);
-        toEdit.setPublishinYear(publishing_year);
+        toEdit.setPublishingYear(publishing_year);
         toEdit.setIsbn(isbn);
         return toEdit;
     }

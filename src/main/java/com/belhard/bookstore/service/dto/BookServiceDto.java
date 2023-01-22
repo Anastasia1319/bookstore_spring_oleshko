@@ -8,7 +8,7 @@ public class BookServiceDto {
     private Long id;
     private String author;
     private String title;
-    private Integer publishinYear;
+    private Integer publishingYear;
     private String isbn;
     private BigDecimal price;
 }

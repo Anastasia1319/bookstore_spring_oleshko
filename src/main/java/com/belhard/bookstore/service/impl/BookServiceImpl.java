@@ -57,7 +57,7 @@ public class BookServiceImpl implements BookService {
             throw new NotUpdateException("ISBN number cannot be longer than 13 characters.");
         }
         LocalDate date = LocalDate.now();
-        if (dto.getPublishinYear() < 0 || dto.getPublishinYear() > date.getYear()) {
+        if (dto.getPublishingYear() < 0 || dto.getPublishingYear() > date.getYear()) {
             log.error("Invalid publication year value");
             throw new NotUpdateException("Incorrect year of publication of the book entered.");
         }

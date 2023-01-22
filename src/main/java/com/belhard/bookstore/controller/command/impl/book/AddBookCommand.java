@@ -26,13 +26,13 @@ public class AddBookCommand implements Command {
     private static BookServiceDto processRequest(HttpServletRequest req) {
         String title = req.getParameter("title");
         String author = req.getParameter("author");
-        Integer publishing_year = Integer.valueOf(req.getParameter("publishing_year"));
+        Integer publishingYear = Integer.valueOf(req.getParameter("publishing_year"));
         String isbn = req.getParameter("isbn");
         BigDecimal price = BigDecimal.valueOf(Double.valueOf(req.getParameter("price")));
         BookServiceDto toCreate = new BookServiceDto();
         toCreate.setTitle(title);
         toCreate.setAuthor(author);
-        toCreate.setPublishinYear(publishing_year);
+        toCreate.setPublishingYear(publishingYear);
         toCreate.setIsbn(isbn);
         toCreate.setPrice(price);
         return toCreate;
