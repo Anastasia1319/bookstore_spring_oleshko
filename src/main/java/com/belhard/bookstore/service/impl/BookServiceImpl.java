@@ -1,7 +1,8 @@
 package com.belhard.bookstore.service.impl;
 
+import com.belhard.bookstore.data.dao.BookRepository;
 import com.belhard.bookstore.data.entity.Book;
-import com.belhard.bookstore.data.repository.BookRepository;
+
 import com.belhard.bookstore.exceptions.NotFoundException;
 import com.belhard.bookstore.exceptions.NotUpdateException;
 import com.belhard.bookstore.service.BookService;
@@ -35,12 +36,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookServiceDto getById(Long id) {
-        Book book = bookRepository.findById(id);
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Book with Id " + id + " not found"));
         log.info("The BookRepositoryImpl class method was called to search");
-        if (book == null) {
-            log.warn("Book with id: {} not found!", id);
-            throw  new NotFoundException("Book with id: " + id + " not found!");
-        }
         BookServiceDto bookServiceDto = converter.toBookDto(book);
         log.info("Search result: {}", bookServiceDto);
         return bookServiceDto;
@@ -91,12 +89,9 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookServiceDto getByIsbn(String isbn) {
         log.info("The BookRepository method was called to search by ISBN");
-        Book book = bookRepository.findByIsbn(isbn);
-        if (book == null) {
-            throw new NotFoundException("Book with ISBN " + isbn + " not found");
-        } else {
-            return converter.toBookDto(book);
-        }
+        return bookRepository.findByIsbn(isbn)
+                .map(converter::toBookDto)
+                .orElseThrow(() -> new NotFoundException("Book with ISBN " + isbn + " not found"));
     }
 
     public BigDecimal sumPriceByAuthor (String author) {
