@@ -2,6 +2,7 @@ package com.belhard.bookstore.data.dao.impl;
 
 import com.belhard.bookstore.data.dao.OrderRepository;
 import com.belhard.bookstore.data.entity.Order;
+import com.belhard.bookstore.data.entity.User;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Repository;
 
@@ -67,10 +68,10 @@ public class OrderRepositoryImpl implements OrderRepository {
     }
 
     @Override
-    public List<Order> findByUserId(Long id) {
+    public List<Order> findByUserId(User user) {
         log.info("Creating a list of orders matching the search criteria");
         TypedQuery<Order> query = manager.createQuery(FIND_BY_USER_ID, Order.class);
-        query.setParameter("userId", id);
+        query.setParameter("userId", user);
         return query.getResultList();
     }
 }

@@ -6,6 +6,7 @@ import com.belhard.bookstore.data.entity.Order;
 import com.belhard.bookstore.exceptions.NotFoundException;
 import com.belhard.bookstore.service.OrderService;
 import com.belhard.bookstore.service.dto.OrderServiceDto;
+import com.belhard.bookstore.service.dto.UserServiceDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -41,9 +42,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderServiceDto> getByUserId(Long id) {
+    public List<OrderServiceDto> getByUserId(UserServiceDto userDto) {
         log.info("Received a list of orders by userId from OrderRepositoryImpl");
-        return orderRepository.findByUserId(id)
+        return orderRepository.findByUserId(converter.toUserEntity(userDto))
                 .stream()
                 .map(converter::toOrderDto)
                 .toList();
