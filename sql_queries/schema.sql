@@ -8,41 +8,30 @@ DELETE IF EXISTS TABLE books;
 */
 
 CREATE TABLE IF NOT EXISTS books (
-	"id" BIGSERIAL PRIMARY KEY,
-	author VARCHAR(50),
-	title VARCHAR(100),
-	publishin_year CHAR(4),
-	isbn CHAR(13) UNIQUE NOT NULL,
-	price DECIMAL(8, 2),
+    "id" BIGSERIAL PRIMARY KEY,
+    author VARCHAR(50),
+    title VARCHAR(100),
+    publishin_year CHAR(4),
+    isbn CHAR(13) UNIQUE NOT NULL,
+    price DECIMAL(8, 2),
     deleted BOOLEAN DEFAULT FALSE
-);
-
-CREATE TABLE IF NOT EXIST "roles" (
-	role_id BIGSERIAL PRIMARY KEY,
-	name_role VARCHAR(50)
-);
+    );
 
 CREATE TABLE IF NOT EXIST users (
-	user_id BIGSERIAL PRIMARY KEY,
-	first_name VARCHAR(50) NOT NULL,
-	last_name VARCHAR(50),
-	email VARCHAR(50) NOT NULL UNIQUE,
-	"password" CHAR(8) NOT NULL,
-	role_id INT NOT NULL,
-    is_active BOOLEAN DEFAULT TRUE,
-	FOREIGN KEY (role_id) REFERENCES "roles" (role_id)
-);
+    user_id BIGSERIAL PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50),
+    email VARCHAR(50) NOT NULL UNIQUE,
+    "password" CHAR(8) NOT NULL,
+    role VARCHAR(50) NOT NULL,
+    is_active BOOLEAN DEFAULT TRUE
+    );
 
-CREATE TABLE IF NOT EXIST statuses (
-    "id" BIGSERIAL PRIMARY KEY,
-    status_name VARCHAR (50)
-);
 
 CREATE TABLE IF NOT EXIST orders (
-    "id" BIGSERIAL PRIMARY KEY,
-    user_id INT8 NOT NULL,
-    status_id INT8 NOT NULL,
-    FOREIGN KEY (status_id) REFERENCES statuses ("id"),
+     "id" BIGSERIAL PRIMARY KEY,
+     user_id INT8 NOT NULL,
+     status VARCHAR(50) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (user_id)
     );
 
@@ -54,4 +43,4 @@ CREATE TABLE IF NOT EXIST order_items (
     order_id INT8 NOT NULL,
     FOREIGN KEY (book_id) REFERENCES books ("id"),
     FOREIGN KEY (order_id) REFERENCES orders ("id")
-);
+    );
