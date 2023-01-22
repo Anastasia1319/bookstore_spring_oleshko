@@ -24,8 +24,8 @@ public class Order {
     @OneToMany(mappedBy = "orderId", cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private List<OrderItem> items;
 
-    @Column(name = "status_id", nullable = false)
-    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     public enum Status {
