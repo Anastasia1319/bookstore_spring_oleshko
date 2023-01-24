@@ -25,7 +25,7 @@
         <lombok.version>1.18.24</lombok.version>
         <maven-comiler-plugin.version>3.10.1</maven-comiler-plugin.version>
         <spring-data-jpa.version>2.7.6</spring-data-jpa.version>
-        <javax.servlet-api.version>2.5</javax.servlet-api.version>
+        <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
     </properties>
 
     <dependencies>
@@ -136,8 +136,9 @@
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
+            <artifactId>javax.servlet-api</artifactId>
             <version>${javax.servlet-api.version}</version>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>
