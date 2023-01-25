@@ -5,7 +5,7 @@ import com.belhard.bookstore.data.entity.Order;
 import com.belhard.bookstore.data.entity.User;
 import com.belhard.bookstore.service.dto.BookServiceDto;
 import com.belhard.bookstore.data.entity.Book;
-import com.belhard.bookstore.service.dto.OrderServiceDto;
+import com.belhard.bookstore.service.dto.OrderDto;
 import com.belhard.bookstore.service.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -65,14 +65,14 @@ public class ConverterService {
         return user;
     }
 
-    public OrderServiceDto toOrderDto (Order order) {
-        OrderServiceDto orderServiceDto = new OrderServiceDto();
-        orderServiceDto.setId(order.getId());
-        orderServiceDto.setUser(order.getUser());
-        orderServiceDto.setStatus(OrderServiceDto.Status.valueOf(order.getStatus().toString()));
-        orderServiceDto.setTotalCost(orderItemRepository.findTotalCost(order.getId()));
-        orderServiceDto.setItems(order.getItems());
+    public OrderDto toOrderDto (Order order) {
+        OrderDto orderDto = new OrderDto();
+        orderDto.setId(order.getId());
+        orderDto.setUser(order.getUser());
+        orderDto.setStatus(OrderDto.Status.valueOf(order.getStatus().toString()));
+        orderDto.setTotalCost(orderItemRepository.findTotalCost(order.getId()));
+        orderDto.setItems(order.getItems());
         log.info("Order transformed to OrderServiceDto");
-        return orderServiceDto;
+        return orderDto;
     }
 }
