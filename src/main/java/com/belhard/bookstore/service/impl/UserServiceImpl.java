@@ -6,7 +6,7 @@ import com.belhard.bookstore.data.entity.User;
 import com.belhard.bookstore.exceptions.NotFoundException;
 import com.belhard.bookstore.exceptions.NotUpdateException;
 import com.belhard.bookstore.service.UserService;
-import com.belhard.bookstore.service.dto.UserServiceDto;
+import com.belhard.bookstore.service.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     private final ConverterService converter;
 
     @Override
-    public List<UserServiceDto> getAll(Pageable pageable) {
+    public List<UserDto> getAll(Pageable pageable) {
         log.info("Received a list of users from UserDaoImpl");
         return userRepository.findAllActiveUsers(pageable)
                 .stream()
@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserServiceDto getByEmail(String email) {
+    public UserDto getByEmail(String email) {
         log.info("The UserRepository method was called to search by email");
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException("User with email " + email + " not found"));
@@ -39,14 +39,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserServiceDto getById(Long id) {
+    public UserDto getById(Long id) {
         log.info("The UserRepository method was called to search by id");
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("User with id " + id + " not found"));
         return converter.toUserDto(user);
     }
 
-    private void validate (UserServiceDto user) {
+    private void validate (UserDto user) {
         if (user.getPassword().length() < 8) {
             log.error("Password shorter 8 characters");
             throw new NotUpdateException("Password cannot be shorter than 8 characters.");
@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(UserServiceDto user) {
+    public void save(UserDto user) {
         validate(user);
         userRepository.save(converter.toUserEntity(user));
     }
@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
         log.info("User with id {} deleted", id);
     }
 
-    public UserServiceDto login(String email, String password) {
+    public UserDto login(String email, String password) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException("User with email " + email + " not found"));
         log.info("Login completed");
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserServiceDto> getAllWithNotActive(Pageable pageable) {
+    public List<UserDto> getAllWithNotActive(Pageable pageable) {
         log.info("Received a list of all users (active and not-active) from UserDaoImpl");
         return userRepository.findAll(pageable)
                 .stream()

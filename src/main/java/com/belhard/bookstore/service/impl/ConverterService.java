@@ -6,7 +6,7 @@ import com.belhard.bookstore.data.entity.User;
 import com.belhard.bookstore.service.dto.BookServiceDto;
 import com.belhard.bookstore.data.entity.Book;
 import com.belhard.bookstore.service.dto.OrderServiceDto;
-import com.belhard.bookstore.service.dto.UserServiceDto;
+import com.belhard.bookstore.service.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
@@ -40,19 +40,19 @@ public class ConverterService {
         return bookServiceDto;
     }
 
-    public UserServiceDto toUserDto(User user) {
-        UserServiceDto userServiceDto = new UserServiceDto();
-        userServiceDto.setId(user.getId());
-        userServiceDto.setFirstName(user.getFirstName());
-        userServiceDto.setLastName(user.getLastName());
-        userServiceDto.setEmail(user.getEmail());
-        userServiceDto.setPassword(user.getPassword());
-        userServiceDto.setRole(user.getRole());
+    public UserDto toUserDto(User user) {
+        UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setFirstName(user.getFirstName());
+        userDto.setLastName(user.getLastName());
+        userDto.setEmail(user.getEmail());
+        userDto.setPassword(user.getPassword());
+        userDto.setRole(user.getRole());
         log.info("User transformed to UserDto");
-        return userServiceDto;
+        return userDto;
     }
 
-    public User toUserEntity (UserServiceDto dto) {
+    public User toUserEntity (UserDto dto) {
         User user = new User();
         user.setId(dto.getId());
         user.setFirstName(dto.getFirstName());
