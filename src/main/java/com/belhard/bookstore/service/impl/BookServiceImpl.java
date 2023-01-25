@@ -5,7 +5,7 @@ import com.belhard.bookstore.data.entity.Book;
 import com.belhard.bookstore.exceptions.NotFoundException;
 import com.belhard.bookstore.exceptions.NotUpdateException;
 import com.belhard.bookstore.service.BookService;
-import com.belhard.bookstore.service.dto.BookServiceDto;
+import com.belhard.bookstore.service.dto.BookDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +24,7 @@ public class BookServiceImpl implements BookService {
     private final ConverterService converter;
 
     @Override
-    public List<BookServiceDto> getAll(Pageable pageable) {
+    public List<BookDto> getAll(Pageable pageable) {
         log.info("Received a list of books from BookRepository");
         return bookRepository.findAllAvailable(pageable)
                 .stream()
@@ -33,14 +33,14 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookServiceDto getById(Long id) {
+    public BookDto getById(Long id) {
         log.info("The BookRepository interface method was called to search");
         Book book = bookRepository.findAvailableById(id)
                 .orElseThrow(() -> new NotFoundException("Book with id " + id + " not found"));
         return converter.toBookDto(book);
     }
 
-    private void validate(BookServiceDto book) {
+    private void validate(BookDto book) {
         if (book.getIsbn().length() > ISBN_LENGTH) {
             log.error("Isbn parameter value is invalid");
             throw new NotUpdateException("ISBN number cannot be longer than 13 characters.");
@@ -58,7 +58,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void save(BookServiceDto book) {
+    public void save(BookDto book) {
         validate(book);
         bookRepository.save(converter.toBookEntity(book));
     }
@@ -73,7 +73,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookServiceDto> getByAuthor(String author, Pageable pageable) {
+    public List<BookDto> getByAuthor(String author, Pageable pageable) {
         log.info("Received a list of books by author from BookRepository");
         return bookRepository.findByAuthor(author, pageable)
                 .stream()
@@ -82,7 +82,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookServiceDto getByIsbn(String isbn) {
+    public BookDto getByIsbn(String isbn) {
         log.info("The BookRepository method was called to search by ISBN");
         Book book = bookRepository.findByIsbn(isbn)
                 .orElseThrow(() -> new NotFoundException("Book with ISBN " + isbn + " not found"));

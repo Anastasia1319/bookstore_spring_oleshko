@@ -2,7 +2,7 @@ package com.belhard.bookstore.controller.command.impl.book;
 
 import com.belhard.bookstore.controller.command.Command;
 import com.belhard.bookstore.service.BookService;
-import com.belhard.bookstore.service.dto.BookServiceDto;
+import com.belhard.bookstore.service.dto.BookDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +23,7 @@ public class BooksCommand implements Command {
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
         int pageSize = 5;
         Pageable pageable = PageRequest.of(page, pageSize, sort);
-        List<BookServiceDto> books = bookService.getAll(pageable);
+        List<BookDto> books = bookService.getAll(pageable);
         Long totalPages = bookService.totalPages(pageSize);
         String command = "books";
         req.setAttribute("books", books);

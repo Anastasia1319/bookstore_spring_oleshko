@@ -3,7 +3,7 @@ package com.belhard.bookstore.service.impl;
 import com.belhard.bookstore.data.dao.OrderItemRepository;
 import com.belhard.bookstore.data.entity.Order;
 import com.belhard.bookstore.data.entity.User;
-import com.belhard.bookstore.service.dto.BookServiceDto;
+import com.belhard.bookstore.service.dto.BookDto;
 import com.belhard.bookstore.data.entity.Book;
 import com.belhard.bookstore.service.dto.OrderDto;
 import com.belhard.bookstore.service.dto.UserDto;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ConverterService {
     private final OrderItemRepository orderItemRepository;
-    public Book toBookEntity (BookServiceDto dto) {
+    public Book toBookEntity (BookDto dto) {
         Book book = new Book();
         book.setId(dto.getId());
         book.setAuthor(dto.getAuthor());
@@ -28,16 +28,16 @@ public class ConverterService {
         return book;
     }
 
-    public BookServiceDto toBookDto(Book book) {
-        BookServiceDto bookServiceDto = new BookServiceDto();
-        bookServiceDto.setId(book.getId());
-        bookServiceDto.setAuthor(book.getAuthor());
-        bookServiceDto.setTitle(book.getTitle());
-        bookServiceDto.setPublishinYear(book.getPublishinYear());
-        bookServiceDto.setIsbn(book.getIsbn());
-        bookServiceDto.setPrice(book.getPrice());
+    public BookDto toBookDto(Book book) {
+        BookDto bookDto = new BookDto();
+        bookDto.setId(book.getId());
+        bookDto.setAuthor(book.getAuthor());
+        bookDto.setTitle(book.getTitle());
+        bookDto.setPublishinYear(book.getPublishinYear());
+        bookDto.setIsbn(book.getIsbn());
+        bookDto.setPrice(book.getPrice());
         log.info("Book transformed to BookDto");
-        return bookServiceDto;
+        return bookDto;
     }
 
     public UserDto toUserDto(User user) {
