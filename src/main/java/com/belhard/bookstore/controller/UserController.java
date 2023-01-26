@@ -61,4 +61,10 @@ public class UserController {
         userService.save(user);
         return "redirect:/users/" + user.getId();
     }
+
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Long id) {
+        userService.delete(id);
+        return "redirect:/users/page=0";
+    }
 }
