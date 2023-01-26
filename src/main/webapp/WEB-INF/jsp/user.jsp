@@ -12,13 +12,13 @@
       <img src="/static/images/user.jpg" alt="User" />
       <h1>User</h1>
       <h2>Id</h2>
-      <p>${requestScope.user.id}</p>
+      <p>${user.id}</p>
       <h2>First Name</h2>
-      <p>${requestScope.user.firstName}</p>
+      <p>${user.firstName}</p>
       <h2>Last Name</h2>
-      <p>${requestScope.user.lastName}</p>
+      <p>${user.lastName}</p>
       <h2>Email</h2>
-      <p>${requestScope.user.email}</p>
+      <p>${user.email}</p>
     </div>
   </body>
 </html>
