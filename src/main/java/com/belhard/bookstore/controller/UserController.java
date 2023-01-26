@@ -67,4 +67,11 @@ public class UserController {
         userService.delete(id);
         return "redirect:/users/page=0";
     }
+
+    @GetMapping("find/{email}")
+    public String findByEmail(@PathVariable String email, Model model){
+        UserDto user = userService.getByEmail(email);
+        model.addAttribute("user", user);
+        return "user";
+    }
 }
