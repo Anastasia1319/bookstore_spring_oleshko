@@ -49,5 +49,16 @@ public class UserController {
         return "redirect:/users/" + user.getId();
     }
 
+    @GetMapping("/edit/{id}")
+    public String editUserForm(@PathVariable Long id, Model model) {
+        UserDto user = userService.getById(id);
+        model.addAttribute("user", user);
+        return "edit_user";
+    }
 
+    @PostMapping("/edit/{id}")
+    public String editUser(@ModelAttribute UserDto user) {
+        userService.save(user);
+        return "redirect:/users/" + user.getId();
+    }
 }
