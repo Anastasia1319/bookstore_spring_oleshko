@@ -4,12 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BookStore</title>
-    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/static/css/style.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
     <jsp:include page="navbar.jsp"/>
     <div class="center">
-      <img src="jpg/user.jpg" alt="User" />
+      <img src="/static/images/user.jpg" alt="User" />
       <h1>User</h1>
       <h2>Id</h2>
       <p>${requestScope.user.id}</p>
