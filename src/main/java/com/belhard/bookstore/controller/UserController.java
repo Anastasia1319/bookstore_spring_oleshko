@@ -26,7 +26,7 @@ public class UserController {
         return "user";
     }
 
-    @GetMapping("/{page}")
+    @GetMapping("/page={page}")
     public String getAll(@PathVariable Integer page, Model model) {
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
         int pageSize = 5;
@@ -48,4 +48,6 @@ public class UserController {
         userService.save(user);
         return "redirect:/users/" + user.getId();
     }
+
+
 }
