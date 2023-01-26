@@ -9,9 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,5 +36,16 @@ public class UserController {
         model.addAttribute("users", users);
         model.addAttribute("totalPages", totalPages);
         return "users";
+    }
+
+    @GetMapping("/create")
+    public String createUserForm() {
+        return "add_user";
+    }
+
+    @PostMapping("/create")
+    public String createUser(@ModelAttribute UserDto user) {
+        userService.save(user);
+        return "redirect:/users/" + user.getId();
     }
 }
