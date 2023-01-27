@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS books (
     deleted BOOLEAN DEFAULT FALSE
 );
 
-CREATE TABLE IF NOT EXIST users (
+CREATE TABLE IF NOT EXISTS users (
 	user_id BIGSERIAL PRIMARY KEY,
 	first_name VARCHAR(50) NOT NULL,
 	last_name VARCHAR(50),
@@ -28,14 +28,14 @@ CREATE TABLE IF NOT EXIST users (
 );
 
 
-CREATE TABLE IF NOT EXIST orders (
+CREATE TABLE IF NOT EXISTS orders (
     "id" BIGSERIAL PRIMARY KEY,
     user_id INT8 NOT NULL,
     status VARCHAR(50) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (user_id)
     );
 
-CREATE TABLE IF NOT EXIST order_items (
+CREATE TABLE IF NOT EXISTS order_items (
     "id" BIGSERIAL PRIMARY KEY,
     book_id INT8 NOT NULL,
     quantity INT4 NOT NULL,
