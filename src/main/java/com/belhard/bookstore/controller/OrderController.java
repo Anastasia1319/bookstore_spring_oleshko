@@ -19,6 +19,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
+    private final Sort sort = Sort.by(Sort.Direction.ASC, "id");
+    private final Integer pageSize = 5;
+    private Pageable pageable;
+    private Long totalPages;
 
     @GetMapping("/{id}")
     public String getOrder(@PathVariable Long id, Model model) {
@@ -29,13 +33,22 @@ public class OrderController {
 
     @GetMapping("/page={page}")
     public String getAll(@PathVariable Integer page, Model model) {
-        Sort sort = Sort.by(Sort.Direction.ASC, "id");
-        int pageSize = 5;
-        Pageable pageable = PageRequest.of(page, pageSize, sort);
-        Long totalPages = orderService.totalPages(pageSize);
+        pageable = PageRequest.of(page, pageSize, sort);
+        totalPages = orderService.totalPages(pageSize);
         List<OrderDto> orders = orderService.getAll(pageable);
         model.addAttribute("orders", orders);
         model.addAttribute("totalPages", totalPages);
         return "orders";
     }
+
+    @GetMapping("/find/{userId}/page={page}")
+    public String getByUserId(@PathVariable Long userId, @PathVariable Integer page, Model model) {
+        pageable = PageRequest.of(page, pageSize, sort);
+        totalPages = orderService.totalPages(pageSize);
+        List<OrderDto> orders = orderService.getByUserId(userId, pageable);
+        model.addAttribute("orders", orders);
+        model.addAttribute("totalPages", totalPages);
+        return "orders";
+    }
+
 }
