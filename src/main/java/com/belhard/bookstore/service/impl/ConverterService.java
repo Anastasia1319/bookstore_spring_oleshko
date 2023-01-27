@@ -21,7 +21,7 @@ public class ConverterService {
         book.setId(dto.getId());
         book.setAuthor(dto.getAuthor());
         book.setTitle(dto.getTitle());
-        book.setPublishinYear(dto.getPublishinYear());
+        book.setPublishingYear(dto.getPublishingYear());
         book.setIsbn(dto.getIsbn());
         book.setPrice(dto.getPrice());
         log.info("BookDto transformed to Book");
@@ -33,7 +33,7 @@ public class ConverterService {
         bookDto.setId(book.getId());
         bookDto.setAuthor(book.getAuthor());
         bookDto.setTitle(book.getTitle());
-        bookDto.setPublishinYear(book.getPublishinYear());
+        bookDto.setPublishingYear(book.getPublishingYear());
         bookDto.setIsbn(book.getIsbn());
         bookDto.setPrice(book.getPrice());
         log.info("Book transformed to BookDto");

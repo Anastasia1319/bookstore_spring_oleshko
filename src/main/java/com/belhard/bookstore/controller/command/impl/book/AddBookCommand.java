@@ -32,7 +32,7 @@ public class AddBookCommand implements Command {
         BookDto toCreate = new BookDto();
         toCreate.setTitle(title);
         toCreate.setAuthor(author);
-        toCreate.setPublishinYear(publishing_year);
+        toCreate.setPublishingYear(publishing_year);
         toCreate.setIsbn(isbn);
         toCreate.setPrice(price);
         return toCreate;

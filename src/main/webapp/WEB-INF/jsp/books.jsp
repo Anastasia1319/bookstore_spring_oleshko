@@ -32,7 +32,7 @@
                     <a href="/books/${book.id}">${book.title}</a>
                 </td>
                 <td>${book.author}</td>
-                <td>${book.publishinYear}</td>
+                <td>${book.publishingYear}</td>
                 <td>${book.price}</td>
                 <td>
                     <form action="/books/edit/${book.id}" method="get"><input type="submit" value="Edit"></form>
