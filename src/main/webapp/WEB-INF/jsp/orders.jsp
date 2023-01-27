@@ -3,14 +3,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>BookStore</title>
-  <link href="css/style.css" rel="stylesheet" type="text/css" />
+  <link href="/static/css/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
   <jsp:include page="navbar.jsp"/>
   <div class="center">
-    <img src="jpg/orders.jpg" width="700" height="550" alt="Orders" />
+    <img src="/static/images/orders.jpg" width="700" height="550" alt="Orders"/>
     <h1>Orders</h1>
     <table>
       <thead>
@@ -20,13 +20,13 @@
         <th>Status</th>
       </thead>
       <tbody>
-      <c:forEach var="order" items="${requestScope.orders}">
+      <c:forEach var="order" items="${orders}">
         <tr>
           <td>
-            <a href="controller?command=order&id=${order.id}">${order.id}</a>
+            <a href="/orders/${order.id}">${order.id}</a>
           </td>
           <td>
-            <a href="controller?command=user_orders&id=${order.user.id}">${order.user.firstName} ${order.user.lastName}</a>
+            <a href="/orders/find/${order.user.id}/page=0">${order.user.firstName} ${order.user.lastName}</a>
           </td>
           <td>${order.totalCost}</td>
           <td>${order.status}</td>
