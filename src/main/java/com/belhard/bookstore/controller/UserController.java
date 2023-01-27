@@ -68,7 +68,7 @@ public class UserController {
         return "redirect:/users/page=0";
     }
 
-    @GetMapping("find/{email}")
+    @GetMapping("/find/{email}")
     public String findByEmail(@PathVariable String email, Model model){
         UserDto user = userService.getByEmail(email);
         model.addAttribute("user", user);

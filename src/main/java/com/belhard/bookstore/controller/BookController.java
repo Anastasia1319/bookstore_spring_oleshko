@@ -17,6 +17,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookController {
     private final BookService bookService;
+    private final Sort sort = Sort.by(Sort.Direction.ASC, "id");
+    private final Integer pageSize = 5;
+    private Pageable pageable;
+    private Long totalPages;
 
     @GetMapping("/{id}")
     public String getBook(@PathVariable Long id, Model model) {
@@ -27,10 +31,8 @@ public class BookController {
 
     @GetMapping("/page={page}")
     public String getAll(@PathVariable Integer page, Model model) {
-        Sort sort = Sort.by(Sort.Direction.ASC, "id");
-        int pageSize = 5;
-        Pageable pageable = PageRequest.of(page, pageSize, sort);
-        Long totalPages = bookService.totalPages(pageSize);
+        pageable = PageRequest.of(page, pageSize, sort);
+        totalPages = bookService.totalPages(pageSize);
         List<BookDto> books = bookService.getAll(pageable);
         model.addAttribute("books", books);
         model.addAttribute("totalPages", totalPages);
@@ -65,5 +67,15 @@ public class BookController {
     public String delete(@PathVariable Long id) {
         bookService.delete(id);
         return "redirect:/books/page=0";
+    }
+
+    @GetMapping("/find/{author}/page={page}")
+    public String findByAuthor(@PathVariable String author, @PathVariable Integer page, Model model) {
+        pageable = PageRequest.of(page, pageSize, sort);
+        totalPages = bookService.totalPagesAuthor(pageSize, author);
+        List<BookDto> books = bookService.getByAuthor(author, pageable);
+        model.addAttribute("books", books);
+        model.addAttribute("totalPages", totalPages);
+        return "books";
     }
 }
