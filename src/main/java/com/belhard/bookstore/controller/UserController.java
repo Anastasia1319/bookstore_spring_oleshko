@@ -69,7 +69,7 @@ public class UserController {
     }
 
     @GetMapping("/find/{email}")
-    public String findByEmail(@PathVariable String email, Model model){
+    public String getByEmail(@PathVariable String email, Model model){
         UserDto user = userService.getByEmail(email);
         model.addAttribute("user", user);
         return "user";

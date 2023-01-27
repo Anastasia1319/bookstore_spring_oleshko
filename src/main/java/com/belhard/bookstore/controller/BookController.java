@@ -70,12 +70,19 @@ public class BookController {
     }
 
     @GetMapping("/find/{author}/page={page}")
-    public String findByAuthor(@PathVariable String author, @PathVariable Integer page, Model model) {
+    public String getByAuthor(@PathVariable String author, @PathVariable Integer page, Model model) {
         pageable = PageRequest.of(page, pageSize, sort);
         totalPages = bookService.totalPagesAuthor(pageSize, author);
         List<BookDto> books = bookService.getByAuthor(author, pageable);
         model.addAttribute("books", books);
         model.addAttribute("totalPages", totalPages);
         return "books";
+    }
+
+    @GetMapping("/find/{isbn}")
+    public String getByIsbn(@PathVariable String isbn, Model model) {
+        BookDto book = bookService.getByIsbn(isbn);
+        model.addAttribute("book", book);
+        return "book";
     }
 }
