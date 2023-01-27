@@ -33,7 +33,7 @@ public class BookController {
         Long totalPages = bookService.totalPages(pageSize);
         List<BookDto> books = bookService.getAll(pageable);
         model.addAttribute("books", books);
-        model.addAttribute("totalPages");
+        model.addAttribute("totalPages", totalPages);
         return "books";
     }
 
@@ -44,6 +44,19 @@ public class BookController {
 
     @PostMapping("/create")
     public String createBook(@ModelAttribute BookDto book) {
+        bookService.save(book);
+        return "redirect:/books/" + book.getId();
+    }
+
+    @GetMapping("/edit/{id}")
+    public  String editBookForm(@PathVariable Long id, Model model) {
+        BookDto book = bookService.getById(id);
+        model.addAttribute("book", book);
+        return "edit_book";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String editBook(@ModelAttribute BookDto book) {
         bookService.save(book);
         return "redirect:/books/" + book.getId();
     }
