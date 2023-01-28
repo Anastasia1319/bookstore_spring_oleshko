@@ -21,6 +21,7 @@ public class BookController {
     private final Integer pageSize = 5;
     private Pageable pageable;
     private Long totalPages;
+    private String command = "books";
 
     @GetMapping("/{id}")
     public String getBook(@PathVariable Long id, Model model) {
@@ -36,6 +37,7 @@ public class BookController {
         List<BookDto> books = bookService.getAll(pageable);
         model.addAttribute("books", books);
         model.addAttribute("totalPages", totalPages);
+        model.addAttribute("command", command);
         return "books";
     }
 
@@ -76,6 +78,7 @@ public class BookController {
         List<BookDto> books = bookService.getByAuthor(author, pageable);
         model.addAttribute("books", books);
         model.addAttribute("totalPages", totalPages);
+        model.addAttribute("command", command);
         return "books";
     }
 

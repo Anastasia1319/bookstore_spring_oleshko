@@ -18,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private String command = "users";
 
     @GetMapping("/{id}")
     public String getUser(@PathVariable Long id, Model model) {
@@ -35,6 +36,7 @@ public class UserController {
         List<UserDto> users = userService.getAll(pageable);
         model.addAttribute("users", users);
         model.addAttribute("totalPages", totalPages);
+        model.addAttribute("command", command);
         return "users";
     }
 

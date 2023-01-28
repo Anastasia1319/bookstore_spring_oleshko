@@ -23,6 +23,7 @@ public class OrderController {
     private final Integer pageSize = 5;
     private Pageable pageable;
     private Long totalPages;
+    private String command = "orders";
 
     @GetMapping("/{id}")
     public String getOrder(@PathVariable Long id, Model model) {
@@ -38,6 +39,7 @@ public class OrderController {
         List<OrderDto> orders = orderService.getAll(pageable);
         model.addAttribute("orders", orders);
         model.addAttribute("totalPages", totalPages);
+        model.addAttribute("command", command);
         return "orders";
     }
 
@@ -48,6 +50,7 @@ public class OrderController {
         List<OrderDto> orders = orderService.getByUserId(userId, pageable);
         model.addAttribute("orders", orders);
         model.addAttribute("totalPages", totalPages);
+        model.addAttribute("command", command);
         return "orders";
     }
 
