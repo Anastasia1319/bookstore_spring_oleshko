@@ -4,12 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BookStore</title>
-    <link href="/static/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/css/style.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
     <jsp:include page="navbar.jsp"/>
     <div class="center">
-      <img src="/static/images/book.jpg" alt="Book" />
+      <img src="/images/book.jpg" alt="Book" />
       <h1>Book</h1>
       <h2>Id</h2>
       <p>${book.id}</p>

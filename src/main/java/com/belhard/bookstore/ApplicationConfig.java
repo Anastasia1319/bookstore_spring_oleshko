@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
@@ -19,7 +21,7 @@ import javax.persistence.Persistence;
 @EnableTransactionManagement
 @EnableAspectJAutoProxy
 @EnableJpaRepositories
-public class ApplicationConfig {
+public class ApplicationConfig extends WebMvcConfigurationSupport {
 
     @Bean
     public EntityManagerFactory entityManagerFactory() {
@@ -38,5 +40,11 @@ public class ApplicationConfig {
         resolver.setSuffix(".jsp");
         resolver.setViewClass(JstlView.class);
         return resolver;
+    }
+
+    @Override
+    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("css/**", "images/**", "jsp/**")
+                .addResourceLocations("classpath:/css/", "classpath:/images/", "classpath:/jsp/");
     }
 }
