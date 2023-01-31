@@ -3,7 +3,6 @@ package com.belhard.bookstore;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.TransactionManager;
@@ -19,9 +18,24 @@ import javax.persistence.Persistence;
 @Configuration
 @ComponentScan
 @EnableTransactionManagement
-@EnableAspectJAutoProxy
 @EnableJpaRepositories
 public class ApplicationConfig extends WebMvcConfigurationSupport {
+
+    @Bean
+    public InternalResourceViewResolver viewResolver() {
+        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+        viewResolver.setPrefix("/WEB-INF/jsp/");
+        viewResolver.setSuffix(".jsp");
+
+        viewResolver.setViewClass(JstlView.class);
+        return viewResolver;
+    }
+
+//    @Override
+//    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        registry.addResourceHandler("css/**", "images/**", "js/**")
+//                .addResourceLocations("classpath:/css/", "classpath:/images/", "classpath:/js/");
+//    }
 
     @Bean
     public EntityManagerFactory entityManagerFactory() {
@@ -33,18 +47,4 @@ public class ApplicationConfig extends WebMvcConfigurationSupport {
         return new JpaTransactionManager(entityManagerFactory);
     }
 
-    @Bean
-    public InternalResourceViewResolver viewResolver() {
-        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix("/WEB-INF/jsp/");
-        resolver.setSuffix(".jsp");
-        resolver.setViewClass(JstlView.class);
-        return resolver;
-    }
-
-    @Override
-    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("css/**", "images/**", "jsp/**")
-                .addResourceLocations("classpath:/css/", "classpath:/images/", "classpath:/jsp/");
-    }
 }
