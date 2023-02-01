@@ -31,11 +31,11 @@ public class ApplicationConfig extends WebMvcConfigurationSupport {
         return viewResolver;
     }
 
-//    @Override
-//    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("css/**", "images/**", "js/**")
-//                .addResourceLocations("classpath:/css/", "classpath:/images/", "classpath:/js/");
-//    }
+    @Override
+    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("css/**", "images/**", "js/**")
+                .addResourceLocations("classpath:/css/", "classpath:/images/", "classpath:/js/");
+    }
 
     @Bean
     public EntityManagerFactory entityManagerFactory() {
