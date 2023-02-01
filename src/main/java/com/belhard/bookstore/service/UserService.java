@@ -1,5 +1,6 @@
 package com.belhard.bookstore.service;
 
+import com.belhard.bookstore.data.entity.User;
 import com.belhard.bookstore.service.dto.UserDto;
 import org.springframework.data.domain.Pageable;
 
@@ -9,7 +10,7 @@ public interface UserService {
     List<UserDto> getAll(Pageable pageable);
     UserDto getByEmail (String email);
     UserDto getById (Long id);
-    void save (UserDto user);
+    UserDto save (UserDto user);
     void delete(Long id);
     UserDto login(String email, String password);
     List<UserDto> getAllWithNotActive(Pageable pageable);

@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getById(Long id) {
         log.info("The UserRepository method was called to search by id");
-        User user = userRepository.findById(id)
+        User user = userRepository.findActiveById(id)
                 .orElseThrow(() -> new NotFoundException("User with id " + id + " not found"));
         return converter.toUserDto(user);
     }
@@ -55,9 +55,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(UserDto user) {
+    public UserDto save(UserDto user) {
         validate(user);
+        user.setActive(true);
         userRepository.save(converter.toUserEntity(user));
+        User saved = userRepository.findByEmail(user.getEmail())
+                .orElseThrow(() -> new NotUpdateException("User: " + user + " not update"));
+        log.info("User: " + user + " was save");
+        return converter.toUserDto(saved);
     }
 
     @Override
