@@ -10,7 +10,7 @@ public interface BookService {
 
     List<BookDto> getAll(Pageable pageable);
     BookDto getById (Long id);
-    void save (BookDto book);
+    BookDto save (BookDto book);
     void delete(Long id);
     List<BookDto> getByAuthor(String author, Pageable pageable);
     BookDto getByIsbn(String isbn);

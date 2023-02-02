@@ -58,9 +58,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void save(BookDto book) {
+    public BookDto save(BookDto book) {
         validate(book);
         bookRepository.save(converter.toBookEntity(book));
+        Book saved = bookRepository.findByIsbn(book.getIsbn())
+                .orElseThrow(() -> new NotUpdateException("Book: " + book + " not update"));
+        log.info("Book: " + book + " was save");
+        return converter.toBookDto(saved);
     }
 
     @Override
