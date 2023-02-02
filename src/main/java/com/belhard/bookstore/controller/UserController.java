@@ -71,4 +71,11 @@ public class UserController {
         userService.delete(id);
         return "redirect:/users/all/0";
     }
+
+    @PostMapping("/find")
+    public String getByEmail(@RequestParam String email, Model model){
+        UserDto user = userService.getByEmail(email);
+        model.addAttribute("user", user);
+        return "user";
+    }
 }

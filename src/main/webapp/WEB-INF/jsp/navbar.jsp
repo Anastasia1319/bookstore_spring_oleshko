@@ -9,14 +9,11 @@
         <form action="/books/find/${author}" method="get">
             <label for="book">Find book by author: </label>
             <input type="text" id="book" name="author" placeholder="author..." value=""/>
-            <input type="hidden" value="/0"/>
             <button type="submit"></button>
         </form>
-        <form action="/users/find/${email}" method="get">
+        <form action="/users/find" method="post">
             <label for="user">Find user by email: </label>
-            <input type="hidden" name="command" value="find_user"/>
-            <input type="text" id="user" name="email" placeholder="email..." value=""/>
-            <input type="hidden" value="/0"/>
+            <input type="email" id="user" name="email" placeholder="email..." value=""/>
             <button type="submit"></button>
         </form>
     </div>
