@@ -50,4 +50,17 @@ public class BookController {
         BookDto created = bookService.save(book);
         return "redirect:/books/" + created.getId();
     }
+
+    @GetMapping("/edit/{id}")
+    public  String editBookForm(@PathVariable Long id, Model model) {
+        BookDto book = bookService.getById(id);
+        model.addAttribute("book", book);
+        return "edit_book";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String editBook(@ModelAttribute BookDto book) {
+        bookService.save(book);
+        return "redirect:/books/" + book.getId();
+    }
 }
