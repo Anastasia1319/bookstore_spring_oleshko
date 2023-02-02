@@ -9,7 +9,7 @@
 <body>
 <jsp:include page="navbar.jsp"/>
 <div class="center">
-    <img src="/images/users.jpg" width="700" height="550" alt="Users"/>
+    <img src="/images/users.jpg" width="560" height="440" alt="Users"/>
     <h1>Users</h1>
     <form action="/users/create" method="get"><input type="submit" value="User registration"></form>
     <table>
