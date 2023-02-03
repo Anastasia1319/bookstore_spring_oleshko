@@ -101,12 +101,12 @@ public class BookServiceImpl implements BookService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public Long totalPages (Integer pageSize) {
+    public Long getTotalPages(Integer pageSize) {
         log.info("The method for calculating the number of pages is called");
         return (long) (bookRepository.countAllByDeletedFalse() / pageSize);
     }
 
-    public Long totalPagesAuthor (Integer pageSize, String author) {
+    public Long getTotalPagesAuthor(Integer pageSize, String author) {
         log.info("The method for calculating the number of pages is called");
         return (long) (bookRepository.countByAuthor(author) / pageSize);
     }

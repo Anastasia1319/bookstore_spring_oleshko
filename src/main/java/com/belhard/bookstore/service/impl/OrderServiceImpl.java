@@ -45,7 +45,7 @@ public class OrderServiceImpl implements OrderService {
                 .toList();
     }
 
-    public Long totalPages (Integer pageSize) {
+    public Long getTotalPages(Integer pageSize) {
         log.info("The method for calculating the number of pages is called");
         return orderRepository.count() / pageSize;
     }

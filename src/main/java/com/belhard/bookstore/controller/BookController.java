@@ -33,7 +33,7 @@ public class BookController {
     @GetMapping("/all/{page}")
     public String getAll(@PathVariable Integer page, Model model) {
         pageable = PageRequest.of(page, pageSize, sort);
-        totalPages = bookService.totalPages(pageSize);
+        totalPages = bookService.getTotalPages(pageSize);
         List<BookDto> books = bookService.getAll(pageable);
         model.addAttribute("books", books);
         model.addAttribute("totalPages", totalPages);
@@ -73,7 +73,7 @@ public class BookController {
     @PostMapping ("/find")
     public String getByAuthor(@RequestParam String author, @RequestParam Integer page, Model model) {
         pageable = PageRequest.of(page, pageSize, sort);
-        totalPages = bookService.totalPagesAuthor(pageSize, author);
+        totalPages = bookService.getTotalPagesAuthor(pageSize, author);
         List<BookDto> books = bookService.getByAuthor(author, pageable);
         model.addAttribute("books", books);
         model.addAttribute("totalPages", totalPages);

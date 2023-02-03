@@ -35,7 +35,7 @@ public class OrderController {
     @GetMapping("/all/{page}")
     public String getAll(@PathVariable Integer page, Model model) {
         pageable = PageRequest.of(page, pageSize, sort);
-        totalPages = orderService.totalPages(pageSize);
+        totalPages = orderService.getTotalPages(pageSize);
         List<OrderDto> orders = orderService.getAll(pageable);
         model.addAttribute("orders", orders);
         model.addAttribute("totalPages", totalPages);

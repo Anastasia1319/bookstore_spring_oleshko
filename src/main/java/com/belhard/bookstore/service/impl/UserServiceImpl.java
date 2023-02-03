@@ -91,13 +91,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Long totalPages(Integer pageSize) {
+    public Long getTotalPages(Integer pageSize) {
         log.info("The method for calculating the number of pages is called");
         return userRepository.count() / pageSize;
     }
 
     @Override
-    public Long totalPagesActive(Integer pageSize) {
+    public Long getTotalPagesActive(Integer pageSize) {
         log.info("The method for calculating the number of pages with active users is called");
         return (long) (userRepository.countByIsActiveIsTrue() / pageSize);
     }

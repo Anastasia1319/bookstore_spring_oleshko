@@ -35,7 +35,7 @@ public class UserController {
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
         int pageSize = 5;
         Pageable pageable = PageRequest.of(page, pageSize, sort);
-        Long totalPages = userService.totalPagesActive(pageSize);
+        Long totalPages = userService.getTotalPagesActive(pageSize);
         List<UserDto> users = userService.getAll(pageable);
         model.addAttribute("users", users);
         model.addAttribute("totalPages", totalPages);
