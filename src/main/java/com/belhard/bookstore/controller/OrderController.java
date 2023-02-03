@@ -41,4 +41,14 @@ public class OrderController {
         model.addAttribute("totalPages", totalPages);
         return "orders";
     }
+
+    @GetMapping("/find/{userId}/{page}")
+    public String getByUserId(@PathVariable Long userId, @PathVariable Integer page, Model model) {
+        pageable = PageRequest.of(page, pageSize, sort);
+        totalPages = orderService.getTotalPagesByUser(pageSize, userId);
+        List<OrderDto> orders = orderService.getByUserId(userId, pageable);
+        model.addAttribute("orders", orders);
+        model.addAttribute("totalPages", totalPages);
+        return "orders";
+    }
 }

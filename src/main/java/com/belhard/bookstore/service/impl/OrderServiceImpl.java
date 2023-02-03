@@ -49,4 +49,9 @@ public class OrderServiceImpl implements OrderService {
         log.info("The method for calculating the number of pages is called");
         return orderRepository.count() / pageSize;
     }
+
+    public Long getTotalPagesByUser(Integer pageSize, Long userId) {
+        log.info("The method for calculating the number of pages is called");
+        return (long) (orderRepository.countByUserId(userId) / pageSize);
+    }
 }

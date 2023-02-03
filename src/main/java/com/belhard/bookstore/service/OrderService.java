@@ -10,4 +10,5 @@ public interface OrderService {
     OrderDto getById (Long id);
     List<OrderDto> getByUserId (Long id, Pageable pageable);
     Long totalPages (Integer pageSize);
+    Long getTotalPagesByUser(Integer pageSize, Long userId);
 }
