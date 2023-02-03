@@ -69,4 +69,14 @@ public class BookController {
         bookService.delete(id);
         return "redirect:/books/all/0";
     }
+
+    @PostMapping ("/find")
+    public String getByAuthor(@RequestParam String author, @RequestParam Integer page, Model model) {
+        pageable = PageRequest.of(page, pageSize, sort);
+        totalPages = bookService.totalPagesAuthor(pageSize, author);
+        List<BookDto> books = bookService.getByAuthor(author, pageable);
+        model.addAttribute("books", books);
+        model.addAttribute("totalPages", totalPages);
+        return "books";
+    }
 }

@@ -6,9 +6,10 @@
     <li><a href="/users/all/0">All Users</a></li>
     <li><a href="/orders/all/0">All Orders</a></li>
     <div>
-        <form action="/books/find/${author}" method="get">
+        <form action="/books/find" method="post">
             <label for="book">Find book by author: </label>
             <input type="text" id="book" name="author" placeholder="author..." value=""/>
+            <input type="hidden" name="page" value="0">
             <button type="submit"></button>
         </form>
         <form action="/users/find" method="post">

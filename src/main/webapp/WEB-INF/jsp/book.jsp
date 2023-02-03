@@ -19,7 +19,7 @@
     <h2>Title</h2>
     <p>${book.title}</p>
     <h2>Author</h2>
-    <p><a href="/users/find/${book.author}/0">${book.author}</a></p>
+    <p>${book.author}</p>
     <h2>The year of publishing</h2>
     <p>${book.publishingYear}</p>
     <h2>ISBN</h2>
