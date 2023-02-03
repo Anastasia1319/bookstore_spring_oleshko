@@ -3,6 +3,7 @@ package com.belhard.bookstore.controller;
 import com.belhard.bookstore.service.OrderService;
 import com.belhard.bookstore.service.dto.OrderDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("orders")
@@ -27,5 +30,15 @@ public class OrderController {
         OrderDto order = orderService.getById(id);
         model.addAttribute("order", order);
         return "order";
+    }
+
+    @GetMapping("/all/{page}")
+    public String getAll(@PathVariable Integer page, Model model) {
+        pageable = PageRequest.of(page, pageSize, sort);
+        totalPages = orderService.totalPages(pageSize);
+        List<OrderDto> orders = orderService.getAll(pageable);
+        model.addAttribute("orders", orders);
+        model.addAttribute("totalPages", totalPages);
+        return "orders";
     }
 }
