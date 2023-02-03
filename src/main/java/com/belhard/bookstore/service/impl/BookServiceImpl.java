@@ -79,10 +79,15 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<BookDto> getByAuthor(String author, Pageable pageable) {
         log.info("Received a list of books by author from BookRepository");
-        return bookRepository.findByAuthor(author, pageable)
+        List<BookDto> books = bookRepository.findByAuthor(author, pageable)
                 .stream()
                 .map(converter::toBookDto)
                 .toList();
+        if(!books.isEmpty()) {
+            return books;
+        } else {
+            throw new NotFoundException("Books by author " + author + " not found!");
+        }
     }
 
     @Override
