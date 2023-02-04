@@ -49,7 +49,7 @@ public class UserController {
 
     @PostMapping("/create")
     public String createUser(@ModelAttribute UserDto user) {
-        UserDto created = userService.save(user);
+        UserDto created = userService.creat(user);
         return "redirect:/users/" + created.getId();
     }
 
@@ -62,7 +62,7 @@ public class UserController {
 
     @PostMapping("/edit/{id}")
     public String editUser(@ModelAttribute UserDto user) {
-        userService.save(user);
+        userService.edit(user);
         return "redirect:/users/" + user.getId();
     }
 
