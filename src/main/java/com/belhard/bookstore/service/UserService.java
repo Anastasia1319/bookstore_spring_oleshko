@@ -9,7 +9,8 @@ public interface UserService {
     List<UserDto> getAll(Pageable pageable);
     UserDto getByEmail (String email);
     UserDto getById (Long id);
-    UserDto save (UserDto user);
+    UserDto creat(UserDto user);
+    UserDto edit(UserDto user);
     void delete(Long id);
     UserDto login(String email, String password);
     List<UserDto> getAllWithNotActive(Pageable pageable);

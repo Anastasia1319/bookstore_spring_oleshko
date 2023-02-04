@@ -5,6 +5,7 @@ import com.belhard.bookstore.data.entity.User;
 
 import com.belhard.bookstore.exceptions.NotFoundException;
 import com.belhard.bookstore.exceptions.NotUpdateException;
+import com.belhard.bookstore.service.EncryptionService;
 import com.belhard.bookstore.service.UserService;
 import com.belhard.bookstore.service.dto.UserDto;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final EncryptionService encryptionService;
     private final ConverterService converter;
 
     @Override
@@ -55,14 +57,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto save(UserDto user) {
+    public UserDto creat(UserDto user) {
+        String originalPassword = user.getPassword();
+        String hashedPassword = encryptionService.digest(originalPassword);
+        user.setPassword(hashedPassword);
+        userRepository.save(converter.toUserEntity(user));
+        User created = userRepository.findByEmail(user.getEmail())
+                .orElseThrow(() -> new NotUpdateException("User: " + user + " not created"));
+        log.info("User: " + user + " was saved");
+        return converter.toUserDto(created);
+    }
+
+    @Override
+    public UserDto edit(UserDto user) {
         validate(user);
         user.setActive(true);
         userRepository.save(converter.toUserEntity(user));
-        User saved = userRepository.findByEmail(user.getEmail())
+        User edited = userRepository.findById(user.getId())
                 .orElseThrow(() -> new NotUpdateException("User: " + user + " not update"));
-        log.info("User: " + user + " was save");
-        return converter.toUserDto(saved);
+        log.info("User: " + user + " was saved");
+        return converter.toUserDto(edited);
     }
 
     @Override
