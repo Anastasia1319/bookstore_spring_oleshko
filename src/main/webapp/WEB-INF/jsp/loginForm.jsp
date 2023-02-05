@@ -10,7 +10,7 @@
 <jsp:include page="navbar.jsp"/>
 <h1>Welcome back!</h1>
 <form class="left" action="/login" method="post">
-    <label>Email: <input name="email" type="email"></label>
+    <label>Email: <input name="email" type="email"></label><br>
     <label>Password: <input name="password" type="password" minlength="8"></label>
     <button>Login</button>
 </form>
