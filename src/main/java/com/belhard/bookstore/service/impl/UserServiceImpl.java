@@ -89,6 +89,7 @@ public class UserServiceImpl implements UserService {
         log.info("User with id {} deleted", id);
     }
 
+    @Override
     public UserDto login(String email, String password) {
         String hashedPassword = encryptionService.digest(password);
         User user = userRepository.findByEmail(email)
