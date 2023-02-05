@@ -16,7 +16,7 @@
 </div>
 <ul>
     <c:if test="${sessionScope.user !=null}">
-        <p class="center">Hello, ${sessionScope.user.firstName} ${sessionScope.user.lastName}. Share your plans to take over the world!</p>
+        <p class="center">Hello, ${sessionScope.user.firstName} ${sessionScope.user.lastName}. Can you share your plans to take over the world?</p>
         <li><a href="/logout">Logout</a></li>
     </c:if>
     <c:if test="${sessionScope.user == null}">
