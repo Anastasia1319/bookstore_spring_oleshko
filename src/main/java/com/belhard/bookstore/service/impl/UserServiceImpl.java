@@ -5,6 +5,7 @@ import com.belhard.bookstore.data.entity.User;
 
 import com.belhard.bookstore.exceptions.NotFoundException;
 import com.belhard.bookstore.exceptions.NotUpdateException;
+import com.belhard.bookstore.exceptions.SecurityException;
 import com.belhard.bookstore.service.EncryptionService;
 import com.belhard.bookstore.service.UserService;
 import com.belhard.bookstore.service.dto.UserDto;
@@ -89,8 +90,12 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserDto login(String email, String password) {
+        String hashedPassword = encryptionService.digest(password);
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new NotFoundException("User with email " + email + " not found"));
+                .stream()
+                .filter(u -> u.getPassword().equals(hashedPassword))
+                .findFirst()
+                .orElseThrow(() -> new SecurityException("Wrong email or password"));
         log.info("Login completed");
         return converter.toUserDto(user);
     }
