@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/books/create", "/books/delete", "books/edit", "books/", "/orders/*", "users/*"})
+@WebFilter(filterName = "AuthorizationFilter")
 public class AuthorizationFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
