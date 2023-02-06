@@ -19,8 +19,6 @@ public class AuthenticationFilter extends HttpFilter {
         Object object = req.getSession().getAttribute("user");
         UserDto user = (UserDto) object;
         if (user.getRole() == Role.CUSTOMER) {
-//            res.setStatus(403);
-//            res.sendError(HttpServletResponse.SC_FORBIDDEN, "Not Enough Rights!");
             res.sendRedirect("/error");
             return;
         }
