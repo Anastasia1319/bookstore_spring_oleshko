@@ -1,5 +1,6 @@
 package com.belhard.bookstore;
 
+import com.belhard.bookstore.web.interceptor.LoggingInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -7,6 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -47,4 +49,14 @@ public class ApplicationConfig extends WebMvcConfigurationSupport {
         return new JpaTransactionManager(entityManagerFactory);
     }
 
+    @Bean
+    public LoggingInterceptor loggingInterceptor() {
+        return new LoggingInterceptor();
+    }
+
+    @Override
+    protected void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(loggingInterceptor())
+                .addPathPatterns("/**");
+    }
 }
