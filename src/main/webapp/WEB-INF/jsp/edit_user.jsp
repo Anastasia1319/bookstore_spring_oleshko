@@ -14,7 +14,7 @@
     <label>First name<input type="text" name="firstName" value="${user.firstName}" required></label><br/>
     <label>Last name<input type="text" name="lastName" value="${user.lastName}"></label><br/>
     <label>Email<input type="email" name="email" value="${user.email}" required></label><br/>
-    <label>Password<input type="password" name="password" value="${user.password}" minlength="8" required></label><br/>
+    <label>Password<input type="password" name="password" value="" minlength="8" required></label><br/>
     <label>Admin
         <c:choose>
             <c:when test="${user.role eq 'ADMIN'}">

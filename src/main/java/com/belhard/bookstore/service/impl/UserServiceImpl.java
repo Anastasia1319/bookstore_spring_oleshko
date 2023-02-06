@@ -72,6 +72,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto edit(UserDto user) {
         validate(user);
+        String originalPassword = user.getPassword();
+        String hashedPassword = encryptionService.digest(originalPassword);
+        user.setPassword(hashedPassword);
         user.setActive(true);
         userRepository.save(converter.toUserEntity(user));
         User edited = userRepository.findById(user.getId())
