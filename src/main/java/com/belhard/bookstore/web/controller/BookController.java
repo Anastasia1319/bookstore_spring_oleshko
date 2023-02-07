@@ -52,7 +52,7 @@ public class BookController {
     }
 
     @GetMapping("/edit/{id}")
-    public  String editBookForm(@PathVariable Long id, Model model) {
+    public String editBookForm(@PathVariable Long id, Model model) {
         BookDto book = bookService.getById(id);
         model.addAttribute("book", book);
         return "edit_book";
@@ -70,7 +70,7 @@ public class BookController {
         return "redirect:/books/all/0";
     }
 
-    @PostMapping ("/find")
+    @PostMapping("/find")
     public String getByAuthor(@RequestParam String author, @RequestParam Integer page, Model model) {
         pageable = PageRequest.of(page, pageSize, sort);
         totalPages = bookService.getTotalPagesAuthor(pageSize, author);

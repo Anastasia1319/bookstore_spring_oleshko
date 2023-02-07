@@ -8,7 +8,8 @@
 </head>
 <body>
 <div>
-    <jsp:include page="navbar.jsp"/><br>
+    <jsp:include page="navbar.jsp"/>
+    <br>
 </div>
 <div class="center">
     <img src="/images/user.jpg" alt="User"/>

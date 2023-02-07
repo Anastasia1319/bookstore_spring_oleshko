@@ -48,7 +48,7 @@ public class ErrorController {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public String applicationError (SecurityException e, Model model) {
+    public String applicationError(SecurityException e, Model model) {
         log.error(e);
         model.addAttribute("message", e.getMessage());
         return "error";

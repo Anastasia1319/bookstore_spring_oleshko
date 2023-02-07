@@ -16,8 +16,8 @@ public class OrderItem {
     private Long id;
 
     @ManyToOne(cascade = {CascadeType.PERSIST,
-                    CascadeType.MERGE,
-                    CascadeType.REFRESH})
+            CascadeType.MERGE,
+            CascadeType.REFRESH})
     @JoinColumn(name = "book_id")
     private Book book;
 
@@ -28,8 +28,8 @@ public class OrderItem {
     private BigDecimal price;
 
     @ManyToOne(cascade = {CascadeType.PERSIST,
-                    CascadeType.MERGE,
-                    CascadeType.REFRESH})
+            CascadeType.MERGE,
+            CascadeType.REFRESH})
     @JoinColumn(name = "order_id")
     private Order orderId;
 }

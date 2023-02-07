@@ -10,7 +10,7 @@ import java.util.List;
 public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
 
     @Query("from OrderItem where orderId = :orderId")
-    List<OrderItem> findByOrderId (Long orderId);
+    List<OrderItem> findByOrderId(Long orderId);
 
     @Query(value = "SELECT SUM(oi.quantity * oi.price) from order_items oi where oi.order_id = ?", nativeQuery = true)
     BigDecimal findTotalCost(Long orderId);

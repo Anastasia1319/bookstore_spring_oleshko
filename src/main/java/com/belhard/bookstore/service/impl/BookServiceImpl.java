@@ -80,7 +80,7 @@ public class BookServiceImpl implements BookService {
                 .stream()
                 .map(converter::toBookDto)
                 .toList();
-        if(!books.isEmpty()) {
+        if (!books.isEmpty()) {
             return books;
         } else {
             throw new NotFoundException("Books by author " + author + " not found!");
@@ -95,7 +95,7 @@ public class BookServiceImpl implements BookService {
         return converter.toBookDto(book);
     }
 
-    public BigDecimal sumPriceByAuthor (String author, Pageable pageable) {
+    public BigDecimal sumPriceByAuthor(String author, Pageable pageable) {
         log.info("Calculation of the cost of all books of the author");
         return bookRepository.findByAuthor(author, pageable)
                 .stream()

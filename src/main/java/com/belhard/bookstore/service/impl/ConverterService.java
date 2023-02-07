@@ -17,7 +17,8 @@ import org.springframework.stereotype.Component;
 public class ConverterService {
     private final OrderItemRepository orderItemRepository;
     private final RoleBiMapMapper roleBiMapMapper;
-    public Book toBookEntity (BookDto dto) {
+
+    public Book toBookEntity(BookDto dto) {
         Book book = new Book();
         book.setId(dto.getId());
         book.setAuthor(dto.getAuthor());
@@ -53,7 +54,7 @@ public class ConverterService {
         return userDto;
     }
 
-    public User toUserEntity (UserDto dto) {
+    public User toUserEntity(UserDto dto) {
         User user = new User();
         user.setId(dto.getId());
         user.setFirstName(dto.getFirstName());
@@ -66,7 +67,7 @@ public class ConverterService {
         return user;
     }
 
-    public OrderDto toOrderDto (Order order) {
+    public OrderDto toOrderDto(Order order) {
         OrderDto orderDto = new OrderDto();
         orderDto.setId(order.getId());
         orderDto.setUser(order.getUser());

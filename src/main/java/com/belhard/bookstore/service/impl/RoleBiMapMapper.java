@@ -17,12 +17,12 @@ public class RoleBiMapMapper {
         roleEnumBiMap.put(Role.CUSTOMER, RoleDto.CUSTOMER);
     }
 
-    public RoleDto toRoleDto (Role role) {
+    public RoleDto toRoleDto(Role role) {
         log.info("Transform from Role to RoleDto");
         return roleEnumBiMap.get(role);
     }
 
-    public Role toRole (RoleDto roleDto) {
+    public Role toRole(RoleDto roleDto) {
         log.info("Transform from RoleDto to Role");
         return roleEnumBiMap.inverse().get(roleDto);
     }

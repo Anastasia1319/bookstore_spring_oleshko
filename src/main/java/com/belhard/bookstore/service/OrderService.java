@@ -7,8 +7,12 @@ import java.util.List;
 
 public interface OrderService {
     List<OrderDto> getAll(Pageable pageable);
-    OrderDto getById (Long id);
-    List<OrderDto> getByUserId (Long id, Pageable pageable);
+
+    OrderDto getById(Long id);
+
+    List<OrderDto> getByUserId(Long id, Pageable pageable);
+
     Long getTotalPages(Integer pageSize);
+
     Long getTotalPagesByUser(Integer pageSize, Long userId);
 }

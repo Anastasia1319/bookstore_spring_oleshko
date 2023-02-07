@@ -73,7 +73,7 @@ public class UserController {
     }
 
     @PostMapping("/find")
-    public String getByEmail(@RequestParam String email, Model model){
+    public String getByEmail(@RequestParam String email, Model model) {
         UserDto user = userService.getByEmail(email);
         model.addAttribute("user", user);
         return "user";

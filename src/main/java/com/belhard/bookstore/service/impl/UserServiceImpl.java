@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
         return converter.toUserDto(user);
     }
 
-    private void validate (UserDto user) {
+    private void validate(UserDto user) {
         if (user.getPassword().length() < 8) {
             throw new NotUpdateException("Password cannot be shorter than 8 characters.");
         }
