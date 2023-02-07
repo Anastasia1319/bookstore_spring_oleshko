@@ -51,7 +51,6 @@ public class UserServiceImpl implements UserService {
 
     private void validate (UserDto user) {
         if (user.getPassword().length() < 8) {
-            log.error("Password shorter 8 characters");
             throw new NotUpdateException("Password cannot be shorter than 8 characters.");
         }
         log.info("Parameters have been successfully validated");

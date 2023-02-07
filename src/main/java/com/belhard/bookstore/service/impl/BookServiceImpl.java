@@ -42,16 +42,13 @@ public class BookServiceImpl implements BookService {
 
     private void validate(BookDto book) {
         if (book.getIsbn().length() > ISBN_LENGTH) {
-            log.error("Isbn parameter value is invalid");
             throw new NotUpdateException("ISBN number cannot be longer than 13 characters.");
         }
         LocalDate date = LocalDate.now();
         if (book.getPublishingYear() < 0 || book.getPublishingYear() > date.getYear()) {
-            log.error("Invalid publication year value");
             throw new NotUpdateException("Incorrect year of publication of the book entered.");
         }
         if (book.getPrice().signum() <= 0) {
-            log.error("Invalid price value");
             throw new NotUpdateException("Incorrect price of the book entered.");
         }
         log.info("Parameters have been successfully validated");
