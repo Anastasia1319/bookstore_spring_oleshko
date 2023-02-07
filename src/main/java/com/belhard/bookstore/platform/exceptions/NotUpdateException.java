@@ -1,4 +1,4 @@
-package com.belhard.bookstore.exceptions;
+package com.belhard.bookstore.platform.exceptions;
 
 public class NotUpdateException extends RuntimeException{
 

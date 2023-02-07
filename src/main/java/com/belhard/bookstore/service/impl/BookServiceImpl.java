@@ -2,8 +2,8 @@ package com.belhard.bookstore.service.impl;
 
 import com.belhard.bookstore.data.dao.BookRepository;
 import com.belhard.bookstore.data.entity.Book;
-import com.belhard.bookstore.exceptions.NotFoundException;
-import com.belhard.bookstore.exceptions.NotUpdateException;
+import com.belhard.bookstore.platform.exceptions.NotFoundException;
+import com.belhard.bookstore.platform.exceptions.NotUpdateException;
 import com.belhard.bookstore.service.BookService;
 import com.belhard.bookstore.service.dto.BookDto;
 import lombok.RequiredArgsConstructor;

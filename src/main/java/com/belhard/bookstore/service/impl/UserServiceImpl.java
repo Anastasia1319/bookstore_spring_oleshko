@@ -3,9 +3,9 @@ package com.belhard.bookstore.service.impl;
 import com.belhard.bookstore.data.dao.UserRepository;
 import com.belhard.bookstore.data.entity.User;
 
-import com.belhard.bookstore.exceptions.NotFoundException;
-import com.belhard.bookstore.exceptions.NotUpdateException;
-import com.belhard.bookstore.exceptions.SecurityException;
+import com.belhard.bookstore.platform.exceptions.NotFoundException;
+import com.belhard.bookstore.platform.exceptions.NotUpdateException;
+import com.belhard.bookstore.platform.exceptions.SecurityException;
 import com.belhard.bookstore.service.EncryptionService;
 import com.belhard.bookstore.service.UserService;
 import com.belhard.bookstore.service.dto.UserDto;

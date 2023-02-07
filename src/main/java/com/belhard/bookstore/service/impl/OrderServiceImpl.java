@@ -2,7 +2,7 @@ package com.belhard.bookstore.service.impl;
 
 import com.belhard.bookstore.data.dao.OrderRepository;
 import com.belhard.bookstore.data.entity.Order;
-import com.belhard.bookstore.exceptions.NotFoundException;
+import com.belhard.bookstore.platform.exceptions.NotFoundException;
 import com.belhard.bookstore.service.OrderService;
 import com.belhard.bookstore.service.dto.OrderDto;
 import lombok.RequiredArgsConstructor;

@@ -1,9 +1,9 @@
 package com.belhard.bookstore.web.controller;
 
-import com.belhard.bookstore.exceptions.ApplicationException;
-import com.belhard.bookstore.exceptions.NotFoundException;
-import com.belhard.bookstore.exceptions.NotUpdateException;
-import com.belhard.bookstore.exceptions.SecurityException;
+import com.belhard.bookstore.platform.exceptions.ApplicationException;
+import com.belhard.bookstore.platform.exceptions.NotFoundException;
+import com.belhard.bookstore.platform.exceptions.NotUpdateException;
+import com.belhard.bookstore.platform.exceptions.SecurityException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
