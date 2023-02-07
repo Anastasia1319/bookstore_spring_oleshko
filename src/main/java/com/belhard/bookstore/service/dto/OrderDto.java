@@ -10,9 +10,13 @@ import java.util.List;
 @Data
 public class OrderDto {
     private Long id;
+
     private User user;
+
     private BigDecimal totalCost;
+
     private Status status;
+
     private List<OrderItem> items;
 
 
