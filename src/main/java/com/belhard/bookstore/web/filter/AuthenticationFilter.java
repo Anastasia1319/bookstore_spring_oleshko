@@ -1,6 +1,6 @@
 package com.belhard.bookstore.web.filter;
 
-import com.belhard.bookstore.data.entity.Role;
+import com.belhard.bookstore.service.dto.RoleDto;
 import com.belhard.bookstore.service.dto.UserDto;
 
 import javax.servlet.FilterChain;
@@ -18,7 +18,7 @@ public class AuthenticationFilter extends HttpFilter {
             throws IOException, ServletException {
         Object object = req.getSession().getAttribute("user");
         UserDto user = (UserDto) object;
-        if (user.getRole() == Role.CUSTOMER) {
+        if (user.getRoleDto() == RoleDto.CUSTOMER) {
             res.sendRedirect("/error");
             return;
         }

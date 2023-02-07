@@ -31,7 +31,7 @@
                     <a href="/users/${user.id}">${user.firstName} ${user.lastName}</a>
                 </td>
                 <td>${user.email}</td>
-                <td>${user.role}</td>
+                <td>${user.roleDto}</td>
                 <td>
                     <form action="/users/edit/${user.id}" method="get"><input type="submit" value="Edit"></form>
                 </td>

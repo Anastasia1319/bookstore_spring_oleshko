@@ -17,31 +17,31 @@
     <label>Password<input type="password" name="password" value="" minlength="8" required></label><br/>
     <label>Admin
         <c:choose>
-            <c:when test="${user.role eq 'ADMIN'}">
-                <input type="radio" id="ADMIN" name="role" value="ADMIN" checked>
+            <c:when test="${user.roleDto eq 'ADMIN'}">
+                <input type="radio" id="ADMIN" name="roleDto" value="ADMIN" checked>
             </c:when>
             <c:otherwise>
-                <input type="radio" id="ADMIN" name="role" value="ADMIN">
+                <input type="radio" id="ADMIN" name="roleDto" value="ADMIN">
             </c:otherwise>
         </c:choose>
     </label>
     <label>Manager
         <c:choose>
-            <c:when test="${user.role eq 'MANAGER'}">
-                <input type="radio" id="MANAGER" name="role" value="MANAGER" checked>
+            <c:when test="${user.roleDto eq 'MANAGER'}">
+                <input type="radio" id="MANAGER" name="roleDto" value="MANAGER" checked>
             </c:when>
             <c:otherwise>
-                <input type="radio" id="MANAGER" name="role" value="MANAGER">
+                <input type="radio" id="MANAGER" name="roleDto" value="MANAGER">
             </c:otherwise>
         </c:choose>
     </label>
     <label>Customer
         <c:choose>
-            <c:when test="${user.role eq 'CUSTOMER'}">
-                <input type="radio" id="CUSTOMER" name="role" value="CUSTOMER" checked>
+            <c:when test="${user.roleDto eq 'CUSTOMER'}">
+                <input type="radio" id="CUSTOMER" name="roleDto" value="CUSTOMER" checked>
             </c:when>
             <c:otherwise>
-                <input type="radio" id="CUSTOMER" name="role" value="CUSTOMER">
+                <input type="radio" id="CUSTOMER" name="roleDto" value="CUSTOMER">
             </c:otherwise>
         </c:choose>
     </label><br/>
