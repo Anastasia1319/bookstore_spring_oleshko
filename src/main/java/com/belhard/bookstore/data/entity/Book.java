@@ -14,13 +14,13 @@ public class Book {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "author", length = 50)
+    @Column(name = "author", length = 300)
     private String author;
 
-    @Column(name = "title", length = 100)
+    @Column(name = "title", length = 300)
     private String title;
 
-    @Column(name = "publishin_year", length = 4)
+    @Column(name = "publishing_year")
     private Integer publishingYear;
 
     @Column(name = "isbn", length = 13, nullable = false, unique = true)
