@@ -7,6 +7,10 @@
     <link href="/css/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
+<div>
+    <jsp:include page="navbar.jsp"/>
+    <br>
+</div>
 <div class="center">
     <img src="/images/error.jpg" alt="Error"/>
     <h1 class="error">Error</h1>
