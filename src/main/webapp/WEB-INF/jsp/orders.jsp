@@ -18,6 +18,7 @@
         <th>User</th>
         <th>Total cost</th>
         <th>Status</th>
+        <th>Actions</th>
         </thead>
         <tbody>
         <c:forEach var="order" items="${orders}">
@@ -30,6 +31,9 @@
                 </td>
                 <td>${order.totalCost}</td>
                 <td>${order.status}</td>
+                <td>
+                    <form action="/orders/delete/${order.id}" method="post"><input type="submit" value="Delete"></form>
+                </td>
             </tr>
         </c:forEach>
         </tbody>
