@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -50,5 +51,11 @@ public class OrderController {
         model.addAttribute("orders", orders);
         model.addAttribute("totalPages", totalPages);
         return "orders";
+    }
+
+    @PostMapping("/delete/{id}")
+    public  String delete(@PathVariable Long id) {
+        orderService.delete(id);
+        return "redirect:/orders/" + id;
     }
 }
