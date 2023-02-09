@@ -45,6 +45,14 @@ public class OrderServiceImpl implements OrderService {
                 .toList();
     }
 
+    public void delete(Long id) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Order with id " + id + " not found"));
+        order.setStatus(Order.Status.CANCELED);
+        orderRepository.save(order);
+        log.info("Order with id " + id + " was canceled");
+    }
+
     public Long getTotalPages(Integer pageSize) {
         log.info("The method for calculating the number of pages is called");
         return orderRepository.count() / pageSize;

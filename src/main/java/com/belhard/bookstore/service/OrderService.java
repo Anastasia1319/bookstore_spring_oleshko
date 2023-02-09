@@ -12,6 +12,8 @@ public interface OrderService {
 
     List<OrderDto> getByUserId(Long id, Pageable pageable);
 
+    void delete(Long id);
+
     Long getTotalPages(Integer pageSize);
 
     Long getTotalPagesByUser(Integer pageSize, Long userId);
