@@ -12,9 +12,7 @@ public interface UserService {
 
     UserDto getById(Long id);
 
-    UserDto creat(UserDto user);
-
-    UserDto edit(UserDto user);
+    UserDto save(UserDto user);
 
     void delete(Long id);
 

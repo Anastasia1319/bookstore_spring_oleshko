@@ -57,29 +57,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto creat(UserDto user) {
-        String originalPassword = user.getPassword();
-        String hashedPassword = encryptionService.digest(originalPassword);
-        user.setPassword(hashedPassword);
-        userRepository.save(converter.toUserEntity(user));
-        User created = userRepository.findByEmail(user.getEmail())
-                .orElseThrow(() -> new NotUpdateException("User: " + user + " not created"));
-        log.info("User: " + user + " was saved");
-        return converter.toUserDto(created);
-    }
-
-    @Override
-    public UserDto edit(UserDto user) {
+    public UserDto save(UserDto user) {
         validate(user);
         String originalPassword = user.getPassword();
         String hashedPassword = encryptionService.digest(originalPassword);
         user.setPassword(hashedPassword);
         user.setActive(true);
-        userRepository.save(converter.toUserEntity(user));
-        User edited = userRepository.findById(user.getId())
-                .orElseThrow(() -> new NotUpdateException("User: " + user + " not update"));
+        User created = userRepository.saveAndFlush(converter.toUserEntity(user));
         log.info("User: " + user + " was saved");
-        return converter.toUserDto(edited);
+        return converter.toUserDto(created);
     }
 
     @Override
