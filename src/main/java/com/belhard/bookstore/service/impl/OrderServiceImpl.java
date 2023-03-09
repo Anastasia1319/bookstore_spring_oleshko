@@ -2,15 +2,14 @@ package com.belhard.bookstore.service.impl;
 
 import com.belhard.bookstore.data.dao.OrderRepository;
 import com.belhard.bookstore.data.entity.Order;
-import com.belhard.bookstore.exceptions.NotFoundException;
+import com.belhard.bookstore.platform.exceptions.NotFoundException;
 import com.belhard.bookstore.service.OrderService;
-import com.belhard.bookstore.service.dto.OrderServiceDto;
+import com.belhard.bookstore.service.dto.OrderDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -21,7 +20,7 @@ public class OrderServiceImpl implements OrderService {
     private final ConverterService converter;
 
     @Override
-    public List<OrderServiceDto> getAll(Pageable pageable) {
+    public List<OrderDto> getAll(Pageable pageable) {
         log.info("Received a list of orders from OrderRepositoryImpl");
         return orderRepository.findAll(pageable)
                 .stream()
@@ -30,7 +29,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderServiceDto getById(Long id) {
+    public OrderDto getById(Long id) {
         log.info("The OrderRepository method was called to search by id");
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Order with id " + id + " not found"));
@@ -38,7 +37,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderServiceDto> getByUserId(Long id, Pageable pageable) {
+    public List<OrderDto> getByUserId(Long id, Pageable pageable) {
         log.info("Received a list of orders by userId from OrderRepositoryImpl");
         return orderRepository.findByUserId(id, pageable)
                 .stream()
@@ -46,8 +45,21 @@ public class OrderServiceImpl implements OrderService {
                 .toList();
     }
 
-    public Long totalPages (Integer pageSize) {
+    public void delete(Long id) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Order with id " + id + " not found"));
+        order.setStatus(Order.Status.CANCELED);
+        orderRepository.save(order);
+        log.info("Order with id " + id + " was canceled");
+    }
+
+    public Long getTotalPages(Integer pageSize) {
         log.info("The method for calculating the number of pages is called");
         return orderRepository.count() / pageSize;
+    }
+
+    public Long getTotalPagesByUser(Integer pageSize, Long userId) {
+        log.info("The method for calculating the number of pages is called");
+        return (long) (orderRepository.countByUserId(userId) / pageSize);
     }
 }

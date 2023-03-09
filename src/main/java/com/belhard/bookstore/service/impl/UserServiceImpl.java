@@ -3,10 +3,12 @@ package com.belhard.bookstore.service.impl;
 import com.belhard.bookstore.data.dao.UserRepository;
 import com.belhard.bookstore.data.entity.User;
 
-import com.belhard.bookstore.exceptions.NotFoundException;
-import com.belhard.bookstore.exceptions.NotUpdateException;
+import com.belhard.bookstore.platform.exceptions.NotFoundException;
+import com.belhard.bookstore.platform.exceptions.NotUpdateException;
+import com.belhard.bookstore.platform.exceptions.SecurityException;
+import com.belhard.bookstore.service.EncryptionService;
 import com.belhard.bookstore.service.UserService;
-import com.belhard.bookstore.service.dto.UserServiceDto;
+import com.belhard.bookstore.service.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Pageable;
@@ -19,10 +21,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final EncryptionService encryptionService;
     private final ConverterService converter;
 
     @Override
-    public List<UserServiceDto> getAll(Pageable pageable) {
+    public List<UserDto> getAll(Pageable pageable) {
         log.info("Received a list of users from UserDaoImpl");
         return userRepository.findAllActiveUsers(pageable)
                 .stream()
@@ -31,7 +34,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserServiceDto getByEmail(String email) {
+    public UserDto getByEmail(String email) {
         log.info("The UserRepository method was called to search by email");
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException("User with email " + email + " not found"));
@@ -39,25 +42,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserServiceDto getById(Long id) {
+    public UserDto getById(Long id) {
         log.info("The UserRepository method was called to search by id");
-        User user = userRepository.findById(id)
+        User user = userRepository.findActiveById(id)
                 .orElseThrow(() -> new NotFoundException("User with id " + id + " not found"));
         return converter.toUserDto(user);
     }
 
-    private void validate (UserServiceDto user) {
+    private void validate(UserDto user) {
         if (user.getPassword().length() < 8) {
-            log.error("Password shorter 8 characters");
             throw new NotUpdateException("Password cannot be shorter than 8 characters.");
         }
         log.info("Parameters have been successfully validated");
     }
 
     @Override
-    public void save(UserServiceDto user) {
+    public UserDto save(UserDto user) {
         validate(user);
-        userRepository.save(converter.toUserEntity(user));
+        String originalPassword = user.getPassword();
+        String hashedPassword = encryptionService.digest(originalPassword);
+        user.setPassword(hashedPassword);
+        user.setActive(true);
+        User created = userRepository.saveAndFlush(converter.toUserEntity(user));
+        log.info("User: " + user + " was saved");
+        return converter.toUserDto(created);
     }
 
     @Override
@@ -69,15 +77,20 @@ public class UserServiceImpl implements UserService {
         log.info("User with id {} deleted", id);
     }
 
-    public UserServiceDto login(String email, String password) {
+    @Override
+    public UserDto login(String email, String password) {
+        String hashedPassword = encryptionService.digest(password);
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new NotFoundException("User with email " + email + " not found"));
+                .stream()
+                .filter(u -> u.getPassword().equals(hashedPassword))
+                .findFirst()
+                .orElseThrow(() -> new SecurityException("Wrong email or password"));
         log.info("Login completed");
         return converter.toUserDto(user);
     }
 
     @Override
-    public List<UserServiceDto> getAllWithNotActive(Pageable pageable) {
+    public List<UserDto> getAllWithNotActive(Pageable pageable) {
         log.info("Received a list of all users (active and not-active) from UserDaoImpl");
         return userRepository.findAll(pageable)
                 .stream()
@@ -86,13 +99,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Long totalPages(Integer pageSize) {
+    public Long getTotalPages(Integer pageSize) {
         log.info("The method for calculating the number of pages is called");
         return userRepository.count() / pageSize;
     }
 
     @Override
-    public Long totalPagesActive(Integer pageSize) {
+    public Long getTotalPagesActive(Integer pageSize) {
         log.info("The method for calculating the number of pages with active users is called");
         return (long) (userRepository.countByIsActiveIsTrue() / pageSize);
     }

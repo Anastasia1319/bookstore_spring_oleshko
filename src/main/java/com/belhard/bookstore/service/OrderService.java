@@ -1,13 +1,20 @@
 package com.belhard.bookstore.service;
 
-import com.belhard.bookstore.service.dto.OrderServiceDto;
+import com.belhard.bookstore.service.dto.OrderDto;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface OrderService {
-    List<OrderServiceDto> getAll(Pageable pageable);
-    OrderServiceDto getById (Long id);
-    List<OrderServiceDto> getByUserId (Long id, Pageable pageable);
-    Long totalPages (Integer pageSize);
+    List<OrderDto> getAll(Pageable pageable);
+
+    OrderDto getById(Long id);
+
+    List<OrderDto> getByUserId(Long id, Pageable pageable);
+
+    void delete(Long id);
+
+    Long getTotalPages(Integer pageSize);
+
+    Long getTotalPagesByUser(Integer pageSize, Long userId);
 }
